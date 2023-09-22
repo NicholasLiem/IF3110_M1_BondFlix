@@ -1,0 +1,18 @@
+FROM php:8.0-apache
+
+RUN a2enmod rewrite
+
+RUN apt-get update && apt-get install -y libpq-dev \
+    && docker-php-ext-install pdo pdo_pgsql
+
+# Install additional PHP extensions as needed
+# Example: Install GD extension for image processing
+# RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
+#    && docker-php-ext-install -j$(nproc) gd
+
+RUN echo "date.timezone = UTC" > /usr/local/etc/php/php.ini
+
+COPY ./frontend/ /var/www/html/
+COPY ./backend/ /var/www/php/
+
+RUN sed -i 's/DocumentRoot \/var\/www\/html/DocumentRoot \/var\/www\/php/' /etc/apache2/sites-available/000-default.conf

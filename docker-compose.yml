@@ -1,6 +1,23 @@
 version: '3.3'
 services:
   web:
-    image: tubes-1:latest
+    container_name: php-apache
+    build:
+      context: .
+      dockerfile: Dockerfile.php-apache
     ports:
-      - 8008:80
+      - 8080:80
+    volumes:
+      - ./frontend:/var/www/html
+      - ./backend:/var/www/php
+    depends_on:
+      - postgres
+  postgres:
+    container_name: postgres-db
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: wbdasik
+      POSTGRES_PASSWORD: wbdasikbossq
+      POSTGRES_DB: wbd_data
+    ports:
+      - 5432:5432
