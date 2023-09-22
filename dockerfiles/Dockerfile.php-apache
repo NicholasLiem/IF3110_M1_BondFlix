@@ -12,8 +12,10 @@ RUN apt-get update && apt-get install -y libpq-dev \
 
 RUN echo "date.timezone = UTC" > /usr/local/etc/php/php.ini
 
-# Copy the contents of src directory to /var/www/html
+RUN chown -R www-data:www-data /var/www/html
+
+RUN chmod -R 755 /var/www/html
+
 COPY ./src /var/www/html/
 
-# Restore the document root to /var/www/html
-RUN sed -i 's/DocumentRoot \/var\/www\/php/DocumentRoot \/var\/www\/html/' /etc/apache2/sites-available/000-default.conf
+RUN sed -i 's/DirectoryIndex index.html/DirectoryIndex index.php index.html/' /etc/apache2/mods-enabled/dir.conf
