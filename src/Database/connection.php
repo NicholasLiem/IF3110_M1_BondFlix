@@ -27,9 +27,7 @@ class Connection {
             $dbport = getenv('DB_PORT');
             $dbuser = getenv('DB_USER');
             $dbpass = getenv('DB_PASS');
-
-            echo $dbhost;
-
+            
             $db = new PDO("pgsql:host=$dbhost;port=$dbport;dbname=$dbname", $dbuser, $dbpass);
             $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
