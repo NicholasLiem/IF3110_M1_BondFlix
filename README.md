@@ -1,20 +1,35 @@
-## Panduan Pengerjaan
-Berikut adalah hal yang harus diperhatikan untuk pengumpulan tugas ini:
-1. Buatlah grup pada Gitlab dengan format "IF3110-2023-KXX-01-YY", dengan XX adalah nomor kelas dan YY adalah nomor kelompok.
-2. Tambahkan anggota tim pada grup anda.
-3. **Fork** pada repository ini dengan organisasi yang telah dibuat.
-4. Ubah hak akses repository hasil Fork anda menjadi **private**.
-5. Hal-hal yang harus diperhatikan.
-    * Silakan commit pada repository anda (hasil fork)
-    * Lakukan beberapa commit dengan pesan yang bermakna, contoh: “add register form”, “fix logout bug”, jangan seperti “final”, “benerin dikit”, “fix bug”.
-    * Disarankan untuk tidak melakukan commit dengan perubahan yang besar karena akan mempengaruhi penilaian (contoh: hanya melakukan satu commit kemudian dikumpulkan).
-    * Commit dari setiap anggota tim akan mempengaruhi penilaian.
-    * Jadi, setiap anggota tim harus melakukan commit yang berpengaruh terhadap proses pembuatan aplikasi.
-    * Sebagai panduan bisa mengikuti [semantic commit](https://gist.github.com/joshbuchea/6f47e86d2510bce28f8e7f42ae84c716).
-6. Buatlah file README yang berisi:
-    * Deskripsi aplikasi web
-    * Daftar requirement
-    * Cara instalasi
-    * Cara menjalankan server
-    * Screenshot tampilan aplikasi (tidak perlu semua kasus, minimal 1 per halaman), dan 
-    * Penjelasan mengenai pembagian tugas masing-masing anggota (lihat formatnya pada bagian pembagian tugas).
+# Tugas Besar 1 - Pengembangan Aplikasi Berbasis Web
+## **Web App Description**
+
+
+## **Requirements List**
+
+
+## **How to Install The Program**
+1. Clone this repository
+```sh
+https://github.com/NicholasLiem/SingleService.git
+```
+2. Change the current directory to `SingleService` folder
+```sh
+cd SingleService
+```
+3. Build and run your docker containers
+```sh
+docker-compose up --build
+```
+4. Make a new .env file based on .env.example (you can just remove .example from the file's name)
+5. If for some reason the database is not seeded, you can manually seed using
+```sh
+docker exec -it single_service_app bash
+```
+```sh
+yarn migration:run
+```
+6. (Docker Networking) Please look at this [monolith repository!](https://github.com/NicholasLiem/OHL_Monolith)
+
+## **How to Run The Program**
+
+## **Screenshot of Application**
+
+## **Workload Breakdown**
