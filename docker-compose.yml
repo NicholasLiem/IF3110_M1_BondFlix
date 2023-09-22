@@ -8,13 +8,14 @@ services:
     ports:
       - 8080:80
     volumes:
-      - ./frontend:/var/www/html
-      - ./backend:/var/www/php
+      - ./src:/var/www/html
     depends_on:
       - postgres
   postgres:
     container_name: postgres-db
-    image: postgres:latest
+    build:
+        context: .
+        dockerfile: dockerfiles/Dockerfile.postgres
     environment:
       POSTGRES_USER: wbdasik
       POSTGRES_PASSWORD: wbdasikbossq
