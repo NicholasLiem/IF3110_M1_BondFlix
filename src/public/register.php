@@ -1,26 +1,29 @@
 <?php
 global $container;
-require_once __DIR__ . '/../../services.php';
+require_once __DIR__ . '/../services.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['route']) && isset($_POST['action'])) {
     $route = $_POST['route'];
     $action = $_POST['action'];
 
     if ($route === 'user' && $action === 'register') {
-        $userService = $container->resolve('userService');
+        try {
+            $userService = $container->resolve('userService');
 
-        $username = $_POST['username'];
-        $password = $_POST['password'];
-        $email = $_POST['email'];
+            $username = $_POST['username'];
+            $password = $_POST['password'];
+            $email = $_POST['email'];
 
-        $result = $userService->registerUser($username, $password, $email);
+            $result = $userService->register($username, $password, $email);
 
-        if ($result) {
-            header("Location: success.php");
-            echo "Berhasil register";
-            exit();
-        } else {
-            $error = "Registration failed. Please try again.";
+            if ($result) {
+                echo "Successful registration";
+                header("Location: success.php");
+                exit();
+            } else {
+                $error = "Registration failed. Please try again.";
+            }
+            } catch (Exception $e) {
         }
     }
 }

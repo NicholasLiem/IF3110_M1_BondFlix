@@ -49,6 +49,35 @@ class PersistentUserRepository implements UserRepository
         }
     }
 
+    /**
+     * @throws Exception
+     */
+    public function getUserByUsername(string $username): User
+    {
+        $stmt = $this->db->prepare("
+            SELECT user_id, username, email, password_hash, is_admin
+            FROM users 
+            WHERE username = :username
+            ");
+
+        $stmt->bindParam(':username', $username);
+        if ($stmt->execute()) {
+            $userData = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            if ($userData) {
+                $user = new User();
+                $user->setUserId((int) $userData['user_id']);
+                $user->setUsername((string) $userData['username']);
+                $user->setEmail((string) $userData['email']);
+                $user->setPassword((string) $userData['password_hash']);
+                $user->setIsAdmin((bool) $userData['is_admin']);
+                return $user;
+            }
+
+        }
+        throw new Exception("Failed to fetch user data");
+    }
+
 
 //    public function updateUser(User $user): User
 //    {
