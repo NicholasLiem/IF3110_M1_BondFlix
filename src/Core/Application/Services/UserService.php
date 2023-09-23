@@ -14,13 +14,22 @@ class UserService {
         $this->userRepository = $userRepository;
     }
 
-    public function register($username, $password, $email): User
+    /**
+     * @throws Exception
+     */
+    public function register($username, $password): User
     {
+
+        $user = $this->userRepository->getUserByUsername($username);
+
+        if ($user) {
+            throw new Exception("User already registered");
+        }
+
         $user = new User();
         $user->setUsername($username);
         $hashed_password = password_hash($password, PASSWORD_BCRYPT, [12]);
         $user->setPassword($hashed_password);
-        $user->setEmail($email);
 
         return $this->userRepository->createUser($user);
     }
@@ -28,7 +37,7 @@ class UserService {
     /**
      * @throws Exception
      */
-    public function login($username, $password, $email): User
+    public function login($username, $password): User
     {
         $user = $this->userRepository->getUserByUsername($username);
 
@@ -40,7 +49,6 @@ class UserService {
 
             $_SESSION['user_id'] = $user->getUserId();
             $_SESSION['username'] = $user->getUsername();
-            $_SESSION['email'] = $user->getEmail();
             $_SESSION['is_admin'] = $user->getIsAdmin();
 
             return $user;

@@ -13,14 +13,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['route']) && isset($_P
             $username = $_POST['username'];
             $password = $_POST['password'];
 
-            $user = $userService->login($username, $password, "");
+            $user = $userService->login($username, $password);
 
             if ($user) {
                 header("Location: dashboard.php");
                 exit();
             } else {
                 $error = "Login failed. Please check your credentials and try again.";
-                echo "What the fk";
             }
         } catch (Exception $e) {
             echo $e->getMessage();

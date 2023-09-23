@@ -8,7 +8,6 @@ if (!isset($_SESSION['user_id'])) {
 
 $userID = $_SESSION['user_id'];
 $username = $_SESSION['username'];
-$email = $_SESSION['email'];
 $isAdmin = $_SESSION['is_admin'];
 
 ?>
@@ -22,7 +21,6 @@ $isAdmin = $_SESSION['is_admin'];
 <h1>Welcome to the Dashboard, <?php echo htmlspecialchars($username); ?></h1>
 <p>User ID: <?php echo htmlspecialchars($userID); ?></p>
 <p>Username: <?php echo htmlspecialchars($username); ?></p>
-<p>Email: <?php echo htmlspecialchars($email); ?></p>
 <p>Is Admin: <?php echo $isAdmin ? 'Yes' : 'No'; ?></p>
 
 

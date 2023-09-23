@@ -17,6 +17,7 @@ class Connection {
 
     private static function connectDB(){
         try {
+
             $dbhost = getenv('DB_HOST');
             $dbname = getenv('DB_NAME');
             $dbport = getenv('DB_PORT');
@@ -25,7 +26,6 @@ class Connection {
 
             $db = new PDO("pgsql:host=$dbhost;port=$dbport;dbname=$dbname", $dbuser, $dbpass);
             $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
             self::migrate($db);
             return $db;
         } catch (PDOException $e) {

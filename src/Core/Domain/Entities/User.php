@@ -6,7 +6,6 @@ class User
 {
     private $user_id;
     private $username;
-    private $email;
     private $password;
     private $is_admin;
 
@@ -19,7 +18,6 @@ class User
     ) {
         $this->user_id = $user_id;
         $this->username = $username;
-        $this->email = $email;
         $this->password = $password;
         $this->is_admin = $is_admin;
     }
@@ -32,11 +30,6 @@ class User
     public function getUsername(): string
     {
         return $this->username;
-    }
-
-    public function getEmail(): string
-    {
-        return $this->email;
     }
 
     public function getPassword(): string
@@ -57,11 +50,6 @@ class User
     public function setUsername(string $username)
     {
         $this->username = $username;
-    }
-
-    public function setEmail(string $email)
-    {
-        $this->email = $email;
     }
 
     public function setPassword(string $password){
