@@ -4,7 +4,7 @@ services:
     container_name: php-apache
     build:
       context: .
-      dockerfile: dockerfiles/Dockerfile.php-apache
+      dockerfile: dockerfile/Dockerfile.php-apache
     ports:
       - 8080:80
     volumes:
@@ -15,7 +15,7 @@ services:
     container_name: postgres-db
     build:
         context: .
-        dockerfile: dockerfiles/Dockerfile.postgres
+        dockerfile: dockerfile/Dockerfile.postgres
     environment:
       POSTGRES_USER: wbdasik
       POSTGRES_PASSWORD: wbdasikbossq
