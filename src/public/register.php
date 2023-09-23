@@ -17,13 +17,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['route']) && isset($_P
             $result = $userService->register($username, $password, $email);
 
             if ($result) {
-                echo "Successful registration";
                 header("Location: success.php");
                 exit();
             } else {
                 $error = "Registration failed. Please try again.";
             }
-            } catch (Exception $e) {
+        } catch (Exception $e) {
         }
     }
 }
@@ -47,5 +46,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['route']) && isset($_P
     <input type="email" id="email" name="email" required><br><br>
     <input type="submit" value="Register">
 </form>
+<?php
+if (isset($error)) {
+    echo '<p style="color: red;">' . $error . '</p>';
+}
+?>
 </body>
 </html>
