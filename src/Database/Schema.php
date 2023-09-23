@@ -7,9 +7,7 @@ class Schema {
         user_id SERIAL PRIMARY KEY,
         username VARCHAR(50) UNIQUE NOT NULL,
         password_hash VARCHAR(100) NOT NULL,
-        is_admin BOOLEAN NOT NULL DEFAULT false,
-        email VARCHAR(100) UNIQUE NOT NULL,
-        INDEX idx_username (username)
+        is_admin BOOLEAN NOT NULL DEFAULT false
     )";
 
     public static $mediaTableSchema = "
@@ -20,8 +18,7 @@ class Schema {
         file_type VARCHAR(20) NOT NULL,
         uploaded_at TIMESTAMP DEFAULT NOW(),
         title VARCHAR(255),
-        description VARCHAR(255),
-        INDEX idx_username (username)
+        description VARCHAR(255)
         )
     ";
 }

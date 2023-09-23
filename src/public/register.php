@@ -12,17 +12,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['route']) && isset($_P
 
             $username = $_POST['username'];
             $password = $_POST['password'];
-            $email = $_POST['email'];
 
-            $result = $userService->register($username, $password, $email);
+            $result = $userService->register($username, $password);
 
             if ($result) {
-                header("Location: success.php");
+                header("Location: dashboard.php");
                 exit();
             } else {
                 $error = "Registration failed. Please try again.";
             }
         } catch (Exception $e) {
+            echo $e->getMessage();
         }
     }
 }
@@ -42,8 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['route']) && isset($_P
     <input type="text" id="username" name="username" required><br><br>
     <label for="password">Password:</label>
     <input type="password" id="password" name="password" required><br><br>
-    <label for="email">Email:</label>
-    <input type="email" id="email" name="email" required><br><br>
+
     <input type="submit" value="Register">
 </form>
 <?php
