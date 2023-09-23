@@ -4,15 +4,10 @@ namespace Database;
 use PDO;
 use PDOException;
 
-include "schema.php";
-
+include "Schema.php";
 class Connection {
-
     private static $dbInstance = null;
-
-
     private function __construct(){}
-
     public static function getDBInstance() {
         if (self::$dbInstance === null) {
             self::$dbInstance = self::connectDB();
@@ -27,7 +22,7 @@ class Connection {
             $dbport = getenv('DB_PORT');
             $dbuser = getenv('DB_USER');
             $dbpass = getenv('DB_PASS');
-            
+
             $db = new PDO("pgsql:host=$dbhost;port=$dbport;dbname=$dbname", $dbuser, $dbpass);
             $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
