@@ -1,15 +1,17 @@
 <?php
-namespace Handlers;
+namespace Handlers\Auth;
 
 use Core\Application\Services\UserService;
 use Exception;
-class LoginHandler
+use Handlers\BaseHandler;
+
+class LoginHandler extends BaseHandler
 {
     protected static LoginHandler $instance;
-    protected UserService $userService;
+    protected $service;
     private function __construct($service)
     {
-        $this->userService = $service;
+        $this->service = $service;
     }
 
     public static function getInstance($container): LoginHandler
@@ -21,23 +23,25 @@ class LoginHandler
         }
         return self::$instance;
     }
-    public function get(): void {
-        require_once BASE_PATH . '/public/view/login.php';
+    public function get($params = null)
+    {
+        redirect('login');
     }
 
-    public function post(): void {
+    public function post($params = null)
+    {
         try {
             $username = $_POST['username'];
             $password = $_POST['password'];
 
-            if ($this->userService->login($username, $password)) {
-                header("Location: /dashboard");
+            if ($this->service->login($username, $password)) {
+                redirect('dashboard');
             } else {
-                header("Location: /login");
+                redirect('login');
             }
             exit();
         } catch (Exception $e) {
-            header("Location: /login");
+            redirect('login');
             exit();
         }
     }

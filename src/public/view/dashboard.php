@@ -1,5 +1,4 @@
 <?php
-session_start();
 
 if (!isset($_SESSION['user_id'])) {
     header("Location: login");
@@ -24,6 +23,6 @@ $isAdmin = $_SESSION['is_admin'];
 <p>Is Admin: <?php echo $isAdmin ? 'Yes' : 'No'; ?></p>
 
 
-<a href="logout.php">Logout</a>
+<a href="logout">Logout</a>
 </body>
 </html>

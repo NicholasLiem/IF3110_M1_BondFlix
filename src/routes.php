@@ -2,15 +2,17 @@
 global $routes;
 global $container;
 
+use Handlers\Auth\LoginHandler;
+use Handlers\Auth\RegisterHandler;
+use Handlers\Auth\LogoutHandler;
 use Router\Router;
-use Handlers\LoginHandler;
-use Handlers\RegisterHandler;
 
 /**
  * Registering the singleton handlers
  */
 $loginHandler = LoginHandler::getInstance($container);
 $registerHandler = RegisterHandler::getInstance($container);
+$logoutHandler = LogoutHandler::getInstance($container);
 
 /**
  * Making new router instance
@@ -41,13 +43,13 @@ $router->post('/register', function () use ($registerHandler) {
     $registerHandler->post();
 });
 
-$router->get('/dashboard', function () {
-    require_once BASE_PATH . '/public/view/dashboard.php';
+
+$router->get('/logout', function () use ($logoutHandler){
+   $logoutHandler->get();
 });
 
-
-$router->get('/register', function() {
-    require_once BASE_PATH . '/public/view/register.php';
+$router->get('/dashboard', function () {
+    require_once BASE_PATH . '/public/view/dashboard.php';
 });
 
 $router->addNotFoundHandler(function () {
