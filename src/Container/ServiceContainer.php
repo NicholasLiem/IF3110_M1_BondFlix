@@ -1,6 +1,6 @@
 <?php
 
-namespace Containers;
+namespace Container;
 use Exception;
 class ServiceContainer implements IContainer
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace Containers;
+namespace Container;
 interface IContainer
 {
     public function register($name, $factory);

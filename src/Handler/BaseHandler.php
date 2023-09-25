@@ -1,6 +1,6 @@
 <?php
 
-namespace Handlers;
+namespace Handler;
 
 abstract class BaseHandler
 {

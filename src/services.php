@@ -1,7 +1,7 @@
 <?php
 
 use Core\Infrastructure\Persistence\PersistentUserRepository;
-use Containers\ServiceContainer;
+use Container\ServiceContainer;
 use Core\Application\Services\UserService;
 use Database\Connection;
 

@@ -1,9 +1,9 @@
 <?php
-namespace Handlers\Auth;
+namespace Handler\Auth;
 
 use Core\Application\Services\UserService;
 use Exception;
-use Handlers\BaseHandler;
+use Handler\BaseHandler;
 
 class LoginHandler extends BaseHandler
 {

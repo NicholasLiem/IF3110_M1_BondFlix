@@ -2,9 +2,9 @@
 global $routes;
 global $container;
 
-use Handlers\Auth\LoginHandler;
-use Handlers\Auth\RegisterHandler;
-use Handlers\Auth\LogoutHandler;
+use Handler\Auth\LoginHandler;
+use Handler\Auth\RegisterHandler;
+use Handler\Auth\LogoutHandler;
 use Router\Router;
 
 /**

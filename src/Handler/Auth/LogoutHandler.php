@@ -1,8 +1,8 @@
 <?php
 
-namespace Handlers\Auth;
+namespace Handler\Auth;
 
-use Handlers\BaseHandler;
+use Handler\BaseHandler;
 
 class LogoutHandler extends BaseHandler
 {
