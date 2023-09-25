@@ -1,14 +1,12 @@
 <?php
 namespace Core\Application\Services;
 
-require __DIR__ . "/../../Domain/Entities/User.php";
-
 use Core\Domain\Entities\User;
 use Core\Application\Repositories\UserRepository;
 use Exception;
 
 class UserService {
-    private $userRepository;
+    private UserRepository $userRepository;
 
     public function __construct(UserRepository $userRepository) {
         $this->userRepository = $userRepository;
@@ -17,7 +15,7 @@ class UserService {
     /**
      * @throws Exception
      */
-    public function register($username, $password): User
+    public function register($username, $password): ?User
     {
 
         $user = $this->userRepository->getUserByUsername($username);
@@ -37,7 +35,7 @@ class UserService {
     /**
      * @throws Exception
      */
-    public function login($username, $password): User
+    public function login($username, $password): ?User
     {
         $user = $this->userRepository->getUserByUsername($username);
 

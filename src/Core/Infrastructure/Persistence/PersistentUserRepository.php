@@ -1,8 +1,6 @@
 <?php
 namespace Core\Infrastructure\Persistence;
 
-require_once __DIR__ . "/../../Application/Repositories/UserRepository.php";
-
 use Core\Domain\Entities\User;
 use Core\Application\Repositories\UserRepository;
 use Exception;

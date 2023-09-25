@@ -6,9 +6,10 @@ use PDOException;
 
 include "Schema.php";
 class Connection {
-    private static $dbInstance = null;
+    private static ?PDO $dbInstance = null;
     private function __construct(){}
-    public static function getDBInstance() {
+    public static function getDBInstance(): ?PDO
+    {
         if (self::$dbInstance === null) {
             self::$dbInstance = self::connectDB();
         }

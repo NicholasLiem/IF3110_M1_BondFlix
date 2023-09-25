@@ -2,19 +2,11 @@ Options -Indexes
 
 RewriteEngine On
 
-RewriteCond %{REQUEST_URI} !^/public/
-RewriteRule ^(.*)$ /public/$1 [L]
+RewriteBase /
 
+# Deliver the folder or file directly if it exists on the server
 RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
-ErrorDocument 404 /404.php
-#
-#RewriteCond %{HTTP:Authorization} ^(.*)
-#RewriteRule .* - [e=HTTP_AUTHORIZATION:%1]
-#
-#RewriteCond %{REQUEST_FILENAME} -d
-#RewriteRule ^(.*)$ public/index.php [L]
-#
-#RewriteCond %{REQUEST_FILENAME} !-d
-#RewriteCond %{REQUEST_URI} (.+)/$
-#RewriteRule ^ %1 [L,R=301]
+RewriteCond %{REQUEST_FILENAME} !-
+
+# Push every request to index.php
+RewriteRule ^(.+)$ index.php [QSA]
