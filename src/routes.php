@@ -13,7 +13,6 @@ $registerHandler = RegisterHandler::getInstance($container);
 $router = new Router();
 
 
-
 $router->get('/login', function () use ($loginHandler) {
     $loginHandler->showPage();
 });
