@@ -2,7 +2,7 @@
 
 namespace Containers;
 use Exception;
-class ServiceContainer
+class ServiceContainer implements IContainer
 {
     private array $services = [];
 

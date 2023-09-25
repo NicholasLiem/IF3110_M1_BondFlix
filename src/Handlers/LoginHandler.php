@@ -21,11 +21,11 @@ class LoginHandler
         }
         return self::$instance;
     }
-    public function showPage(): void {
+    public function get(): void {
         require_once BASE_PATH . '/public/view/login.php';
     }
 
-    public function login() {
+    public function post(): void {
         try {
             $username = $_POST['username'];
             $password = $_POST['password'];

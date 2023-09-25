@@ -21,11 +21,11 @@ class RegisterHandler
         }
         return self::$instance;
     }
-    public function showPage(): void {
+    public function get(): void {
         require_once BASE_PATH . '/public/view/register.php';
     }
 
-    public function register() {
+    public function post(): void {
         try {
             $username = $_POST['username'];
             $password = $_POST['password'];

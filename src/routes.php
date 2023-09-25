@@ -6,27 +6,39 @@ use Router\Router;
 use Handlers\LoginHandler;
 use Handlers\RegisterHandler;
 
-
+/**
+ * Registering the singleton handlers
+ */
 $loginHandler = LoginHandler::getInstance($container);
 $registerHandler = RegisterHandler::getInstance($container);
 
+/**
+ * Making new router instance
+ */
 $router = new Router();
 
 
+/**
+ * Registering the routes
+ */
+$router->get('/',function () {
+    require_once BASE_PATH . '/public/view/dashboard.php';
+});
+
 $router->get('/login', function () use ($loginHandler) {
-    $loginHandler->showPage();
+    $loginHandler->get();
 });
 
 $router->post('/login', function () use ($loginHandler) {
-    $loginHandler->login();
+    $loginHandler->post();
 });
 
 $router->get('/register', function () use ($registerHandler) {
-    $registerHandler->showPage();
+    $registerHandler->get();
 });
 
 $router->post('/register', function () use ($registerHandler) {
-    $registerHandler->register();
+    $registerHandler->post();
 });
 
 $router->get('/dashboard', function () {
