@@ -5,7 +5,27 @@ define("BASE_PATH", __DIR__);
 require_once BASE_PATH . '/Bootstrap/Autoloader.php';
 require_once BASE_PATH . '/services.php';
 require_once BASE_PATH . '/routes.php';
+require_once BASE_PATH . '/Utils/EnvLoader/DotEnv.php';
 
+use Utils\EnvLoader\DotEnv;
+
+/**
+ * Setting up DotEnv reader
+ */
+try {
+    $dotEnv = new DotEnv(BASE_PATH . '/.env');
+    $dotEnv->load();
+    $_ENV = $dotEnv->variables;
+} catch (Exception $e) {
+    echo "Fail to load .env file";
+}
+
+/**
+ * redirect use for redirecting pages
+ * @param $path
+ * @param $data
+ * @return void
+ */
 function redirect($path, $data = []) {
     extract($data);
 
