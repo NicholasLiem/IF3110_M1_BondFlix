@@ -19,13 +19,13 @@ class Connection {
     private static function connectDB(){
         try {
 
-            $dbhost = getenv('DB_HOST');
-            $dbname = getenv('DB_NAME');
-            $dbport = getenv('DB_PORT');
-            $dbuser = getenv('DB_USER');
-            $dbpass = getenv('DB_PASS');
+            $db_host = getenv('DB_HOST');
+            $db_name = getenv('DB_NAME');
+            $db_port = getenv('DB_PORT');
+            $db_user = getenv('DB_USER');
+            $db_pass = getenv('DB_PASS');
 
-            $db = new PDO("pgsql:host=$dbhost;port=$dbport;dbname=$dbname", $dbuser, $dbpass);
+            $db = new PDO("pgsql:host=$db_host;port=$db_port;dbname=$db_name", $db_user, $db_pass);
             $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             self::migrate($db);
             return $db;
