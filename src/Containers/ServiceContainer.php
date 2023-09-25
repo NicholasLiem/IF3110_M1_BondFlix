@@ -4,7 +4,7 @@ namespace Containers;
 use Exception;
 class ServiceContainer
 {
-    private $services = [];
+    private array $services = [];
 
     public function register($name, $factory)
     {
