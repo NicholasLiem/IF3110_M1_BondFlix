@@ -13,7 +13,7 @@ class RegisterHandler extends BaseHandler
         $this->service = $service;
     }
 
-    public static function getInstance($container) : RegisterHandler
+    public static function getInstance($container): RegisterHandler
     {
         if (!isset(self::$instance)) {
             self::$instance = new static(

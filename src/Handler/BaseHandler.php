@@ -4,8 +4,6 @@ namespace Handler;
 
 abstract class BaseHandler
 {
-
-
     protected function get($params = null)
     {
         // Need new exception here

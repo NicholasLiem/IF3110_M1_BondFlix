@@ -5,6 +5,7 @@ global $container;
 use Handler\Auth\LoginHandler;
 use Handler\Auth\RegisterHandler;
 use Handler\Auth\LogoutHandler;
+use Handler\Upload\UploadHandler;
 use Router\Router;
 
 /**
@@ -13,6 +14,7 @@ use Router\Router;
 $loginHandler = LoginHandler::getInstance($container);
 $registerHandler = RegisterHandler::getInstance($container);
 $logoutHandler = LogoutHandler::getInstance($container);
+$uploadHandler = UploadHandler::getInstance($container);
 
 /**
  * Making new router instance
@@ -41,6 +43,14 @@ $router->get('/register', function () use ($registerHandler) {
 
 $router->post('/register', function () use ($registerHandler) {
     $registerHandler->post();
+});
+
+$router->get('/upload', function () use ($uploadHandler){
+    $uploadHandler->get();
+});
+
+$router->post('/upload', function () use ($uploadHandler){
+    $uploadHandler->post();
 });
 
 
