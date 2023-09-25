@@ -13,8 +13,6 @@ RUN chmod -R 755 /var/www/html/
 
 COPY ./src /var/www/html/
 
-COPY envvars /etc/apache2/
-
 RUN echo "FallbackResource /public/index.php" >> /etc/apache2/sites-available/000-default.conf
 
 RUN sed -i 's/DirectoryIndex index.html/DirectoryIndex index.php index.html/' /etc/apache2/mods-enabled/dir.conf

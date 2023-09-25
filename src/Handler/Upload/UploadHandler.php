@@ -3,7 +3,7 @@
 namespace Handler\Upload;
 
 use Handler\BaseHandler;
-use Utils\ImageIUploader;
+use Utils\Uploader\ImageUploader;
 
 class UploadHandler extends BaseHandler
 {
@@ -35,12 +35,10 @@ class UploadHandler extends BaseHandler
      */
     public function post($params = null)
     {
-        $target_dir = BASE_PATH . "/uploads/";
-        $target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
-        $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
+        $target_file = basename($_FILES["fileToUpload"]["name"]);
 
-        $imageUploader = new ImageIUploader();
-        $imageUploader->upload($target_file, $imageFileType);
+        $imageUploader = new ImageUploader();
+        $imageUploader->upload($target_file);
 
         redirect('dashboard');
     }

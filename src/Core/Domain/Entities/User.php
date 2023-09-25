@@ -12,7 +12,6 @@ class User
     public function __construct(
         int $user_id = null,
         string $username = null,
-        string $email = null,
         string $password = null,
         bool $is_admin = false
     ) {
