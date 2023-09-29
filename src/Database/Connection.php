@@ -4,10 +4,12 @@ namespace Database;
 use PDO;
 use PDOException;
 
-include "Schema.php";
 class Connection {
     private static ?PDO $dbInstance = null;
+    private static array $appliedMigrations = [];
+
     private function __construct(){}
+
     public static function getDBInstance(): ?PDO
     {
         if (self::$dbInstance === null) {
@@ -18,7 +20,6 @@ class Connection {
 
     private static function connectDB(){
         try {
-
             $db_host = $_ENV['DB_HOST'];
             $db_name = $_ENV['DB_NAME'];
             $db_port = $_ENV['DB_PORT'];
@@ -30,18 +31,32 @@ class Connection {
             self::migrate($db);
             return $db;
         } catch (PDOException $e) {
-            die("Connection failed" . $e->getMessage());
+            die("Connection failed: " . $e->getMessage());
         }
     }
 
-    private static function migrate($db) {
-        $usersTableSchema = Schema::$usersTableSchema;
-        $mediaTableSchema = Schema::$mediaTableSchema;
+    public static function &getAppliedMigrations(): array
+    {
+        return self::$appliedMigrations;
+    }
 
-        $schemas = [$usersTableSchema, $mediaTableSchema];
+    private static function migrate(PDO $db) {
+        $appliedMigrations = self::getAppliedMigrations();
+        $migrationsDirectory = __DIR__ . '/Migrations/';
 
-        foreach ($schemas as $schema) {
-            $db->exec($schema);
+        foreach (glob($migrationsDirectory . '*.sql') as $migrationFile) {
+            $migrationVersion = basename($migrationFile, '.sql');
+
+            if (!in_array($migrationVersion, $appliedMigrations)) {
+                $sql = file_get_contents($migrationFile);
+                try {
+                    $db->exec($sql);
+//                    echo "Applied migration: $migrationVersion\n";
+                    self::$appliedMigrations[] = $migrationVersion;
+                } catch (PDOException $e) {
+//                    echo "Failed to apply migration: $migrationVersion - " . $e->getMessage() . "\n";.
+                }
+            }
         }
     }
 }

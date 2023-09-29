@@ -33,8 +33,8 @@ class PersistentUserRepository implements UserRepository
         $lastName = $user->getLastName();
         $username = $user->getUsername();
         $passwordHash = $user->getPasswordHash();
-        $isAdmin = $user->isIsAdmin();
-        $isSubscribed = $user->isIsSubscribed();
+        $isAdmin = $user->getIsAdmin();
+        $isSubscribed = $user->getIsSubscribed();
 
         $stmt->bindParam(':first_name', $firstName);
         $stmt->bindParam(':last_name', $lastName);
@@ -111,8 +111,8 @@ class PersistentUserRepository implements UserRepository
         $userId = $user->getUserId();
         $firstName = $user->getFirstName();
         $lastName = $user->getLastName();
-        $isAdmin = $user->isIsAdmin();
-        $isSubscribed = $user->isIsSubscribed();
+        $isAdmin = $user->getIsAdmin();
+        $isSubscribed = $user->getIsSubscribed();
 
         $stmt->bindParam(':new_username', $newUsername);
         $stmt->bindParam(':new_password', $newPasswordHash);
