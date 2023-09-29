@@ -33,7 +33,8 @@ class Connection {
             $db = new PDO("pgsql:host=$db_host;port=$db_port;dbname=$db_name", $db_user, $db_pass);
             $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-            self::runMigrations($db);
+//            self::runMigrations($db);
+//            self::seedDB($db);
             return $db;
         } catch (PDOException $e) {
             die("Connection failed: " . $e->getMessage());
@@ -46,8 +47,26 @@ class Connection {
     }
 
     private static function runMigrations(PDO $db) {
+        self::extracted($db, "migrations");
+    }
+
+    private static function seedDB(PDO $db) {
+        self::extracted($db, "seed");
+    }
+
+    /**
+     * @param PDO $db
+     * @return void
+     */
+    private static function extracted(PDO $db, string $type): void
+    {
         $appliedMigrations = self::getAppliedMigrations();
-        $migrationsDirectory = __DIR__ . '/Migrations/';
+
+        if ($type == "migrations") {
+            $migrationsDirectory = __DIR__ . '/Migrations/';
+        } else {
+            $migrationsDirectory = __DIR__ . '/Seeds/';
+        }
 
         foreach (glob($migrationsDirectory . '*.sql') as $migrationFile) {
             $migrationVersion = basename($migrationFile, '.sql');

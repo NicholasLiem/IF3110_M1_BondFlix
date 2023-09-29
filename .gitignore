@@ -2,4 +2,4 @@
 *.xml
 envvars
 src/.env
-src/logs/.gitkeep
+src/logs/logfile.txt
