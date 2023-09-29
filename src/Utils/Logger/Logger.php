@@ -24,7 +24,7 @@ class Logger
     public static function logMessage($exception) {
         $logFile = self::getLogPath();
         $timestamp = date('Y-m-d H:i:s');
-        $logEntry = "$timestamp - Exception: " . $exception . "\n";
+        $logEntry = "$timestamp: " . $exception . "\n";
 
         file_put_contents($logFile, $logEntry, FILE_APPEND);
     }

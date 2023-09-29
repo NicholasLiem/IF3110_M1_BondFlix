@@ -3,16 +3,20 @@ namespace Database;
 
 use PDO;
 use PDOException;
+use Utils\Logger\Logger;
 
 class Connection {
     private static ?PDO $dbInstance = null;
+    private static Logger $logger;
     private static array $appliedMigrations = [];
 
-    private function __construct(){}
+    private function __construct(){
+    }
 
     public static function getDBInstance(): ?PDO
     {
-        if (self::$dbInstance === null) {
+        if (self::$dbInstance === null || self::$logger === null) {
+            self::$logger = Logger::getInstance();
             self::$dbInstance = self::connectDB();
         }
         return self::$dbInstance;
@@ -28,7 +32,8 @@ class Connection {
 
             $db = new PDO("pgsql:host=$db_host;port=$db_port;dbname=$db_name", $db_user, $db_pass);
             $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            self::migrate($db);
+
+            self::runMigrations($db);
             return $db;
         } catch (PDOException $e) {
             die("Connection failed: " . $e->getMessage());
@@ -40,7 +45,7 @@ class Connection {
         return self::$appliedMigrations;
     }
 
-    private static function migrate(PDO $db) {
+    private static function runMigrations(PDO $db) {
         $appliedMigrations = self::getAppliedMigrations();
         $migrationsDirectory = __DIR__ . '/Migrations/';
 
@@ -51,10 +56,10 @@ class Connection {
                 $sql = file_get_contents($migrationFile);
                 try {
                     $db->exec($sql);
-//                    echo "Applied migration: $migrationVersion\n";
+                    self::$logger->logMessage('Successfully migrate' . $migrationFile);
                     self::$appliedMigrations[] = $migrationVersion;
                 } catch (PDOException $e) {
-//                    echo "Failed to apply migration: $migrationVersion - " . $e->getMessage() . "\n";.
+                    self::$logger->logMessage($e->getMessage());
                 }
             }
         }
