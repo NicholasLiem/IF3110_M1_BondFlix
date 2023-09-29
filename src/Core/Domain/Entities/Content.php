@@ -6,27 +6,27 @@ class Content {
     private int $content_id;
     private string $title;
     private string $description;
-    private string $release_data;
+    private string $release_date;
     private string $content_file_path;
 
     /**
      * @param int|null $content_id
      * @param string $title
      * @param string $description
-     * @param string $release_data
+     * @param string $release_date
      * @param string $content_file_path
      */
     public function __construct(
         int $content_id = null,
         string $title = '',
         string $description = '',
-        string $release_data = '',
+        string $release_date = '',
         string $content_file_path = '')
     {
         $this->content_id = $content_id;
         $this->title = $title;
         $this->description = $description;
-        $this->release_data = $release_data;
+        $this->release_date = $release_date;
         $this->content_file_path = $content_file_path;
     }
 
@@ -61,14 +61,14 @@ class Content {
         $this->description = $description;
     }
 
-    public function getReleaseData(): string
+    public function getReleaseDate(): string
     {
-        return $this->release_data;
+        return $this->release_date;
     }
 
-    public function setReleaseData(string $release_data): void
+    public function setReleaseDate(string $release_date): void
     {
-        $this->release_data = $release_data;
+        $this->release_date = $release_date;
     }
 
     public function getContentFilePath(): string
