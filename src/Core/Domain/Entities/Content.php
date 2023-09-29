@@ -8,19 +8,20 @@ class Content
     private $description;
     private $release_date;
     private $actors;
+    private $file_loc;
 
     public function __construct(
         int $content_id = null,
         string $title = null,
         string $description = null,
         string $release_date = null,
-        string $actors = null
+        string $file_loc
     ) {
       $this->content_id = $content_id;
       $this->title = $title;
       $this->description = $description;
       $this->release_date = $release_date;
-      $this->actors = $actors;
+      $this->file_loc = $file_loc;
     }
 
     public function getContentId(): int {
@@ -39,8 +40,8 @@ class Content
       return $this->release_date;
     }
 
-    public function getActors(): string {
-      return $this->actors;
+    public function getFileLoc(): string {
+      return $this->file_loc;
     }
 
     public function setContentId($content_id) {
@@ -58,9 +59,8 @@ class Content
     public function setReleaseDate($release_date) {
       $this->release_date = $release_date;
     }
-
-    public function setActors($actors) {
-      $this->actors = $actors;
-    }
     
+    public function setFileLoc($file_loc) {
+      $this->file_loc = $file_loc;
+    }
 }
