@@ -21,4 +21,14 @@ class Schema {
         description VARCHAR(255)
         )
     ";
+
+    public static $contentTableSchema = "
+    CREATE TABLE IF NOT EXISTS content (
+        content_id SERIAL PRIMARY KEY,
+        title VARCHAR(100) UNIQUE NOT NULL,
+        description VARCHAR(255) NOT NULL,
+        release_date DATE NOT NULL,
+        filename VARCHAR(255) NOT NULL
+    )
+    ";
 }
