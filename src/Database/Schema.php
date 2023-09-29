@@ -28,7 +28,7 @@ class Schema {
         title VARCHAR(100) UNIQUE NOT NULL,
         description VARCHAR(255) NOT NULL,
         release_date DATE NOT NULL,
-        actors VARCHAR(255) NOT NULL
+        filename VARCHAR(255) NOT NULL
     )
     ";
 }
