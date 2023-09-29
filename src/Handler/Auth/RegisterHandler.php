@@ -30,8 +30,10 @@ class RegisterHandler extends BaseHandler
         try {
             $username = $_POST['username'];
             $password = $_POST['password'];
+            $first_name = $_POST['first_name'];
+            $last_name = $_POST['last_name'];
 
-            if ($this->service->register($username, $password)) {
+            if ($this->service->register($username, $password, $first_name, $last_name)) {
                 redirect('login');
             } else {
                 redirect('register');

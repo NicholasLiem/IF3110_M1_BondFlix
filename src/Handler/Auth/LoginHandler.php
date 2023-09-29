@@ -45,5 +45,4 @@ class LoginHandler extends BaseHandler
             exit();
         }
     }
-
 }
