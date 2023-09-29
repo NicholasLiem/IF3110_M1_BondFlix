@@ -62,6 +62,11 @@ $router->get('/dashboard', function () {
     require_once BASE_PATH . '/public/view/dashboard.php';
 });
 
+
+$router->get('/profile', function () {
+    redirect('profile');
+});
+
 $router->addNotFoundHandler(function () {
     require_once BASE_PATH . '/public/view/404.php';
 });
