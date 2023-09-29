@@ -19,7 +19,7 @@ class LogoutHandler extends BaseHandler
     {
         if (!isset(self::$instance)) {
             self::$instance = new static(
-                $container->resolve('userService')
+                $container->resolve('authService')
             );
         }
         return self::$instance;

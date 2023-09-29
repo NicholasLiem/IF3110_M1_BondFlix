@@ -5,7 +5,7 @@ use Core\Domain\Entities\User;
 use Core\Application\Repositories\UserRepository;
 use Exception;
 
-class UserService {
+class AuthService {
     private UserRepository $userRepository;
 
     public function __construct(UserRepository $userRepository) {
@@ -43,6 +43,10 @@ class UserService {
     {
         $user = $this->userRepository->getUserByUsername($username);
 
+        if ($user == null){
+            throw new Exception("Failed to fetch user data");
+        }
+
         if (password_verify($password, $user->getPasswordHash())){
 
             if (session_status() === PHP_SESSION_NONE) {
@@ -60,7 +64,6 @@ class UserService {
         /**
          * Implement fail login logic here
          */
-
         throw new Exception("Failed to fetch user data");
     }
 }
