@@ -4,28 +4,31 @@ namespace Core\Domain\Entities;
 
 class Director
 {
-    private string $director_id;
+    private int $director_id;
     private string $first_name;
     private string $last_name;
 
     /**
-     * @param string $director_id
+     * @param int $director_id
      * @param string $first_name
      * @param string $last_name
      */
-    public function __construct(string $director_id, string $first_name, string $last_name)
+    public function __construct(
+        int $director_id = -1,
+        string $first_name = '',
+        string $last_name = '')
     {
         $this->director_id = $director_id;
         $this->first_name = $first_name;
         $this->last_name = $last_name;
     }
 
-    public function getDirectorId(): string
+    public function getDirectorId(): int
     {
         return $this->director_id;
     }
 
-    public function setDirectorId(string $director_id): void
+    public function setDirectorId(int $director_id): void
     {
         $this->director_id = $director_id;
     }

@@ -13,7 +13,7 @@ class User
     private bool $is_subscribed;
 
     /**
-     * @param int|null $user_id
+     * @param int $user_id
      * @param string $first_name
      * @param string $last_name
      * @param string $username
@@ -22,7 +22,7 @@ class User
      * @param bool $is_subscribed
      */
     public function __construct(
-        int $user_id = null,
+        int $user_id = -1,
         string $first_name = '',
         string $last_name = '',
         string $username = '',

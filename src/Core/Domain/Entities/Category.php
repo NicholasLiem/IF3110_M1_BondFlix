@@ -8,11 +8,11 @@ class Category
     private string $category_name;
 
     /**
-     * @param int|null $category_id
+     * @param int $category_id
      * @param string $category_name
      */
     public function __construct(
-        int $category_id = null,
+        int $category_id = -1,
         string $category_name = '')
     {
         $this->category_id = $category_id;

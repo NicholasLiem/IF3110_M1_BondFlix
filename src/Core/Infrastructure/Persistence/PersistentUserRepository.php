@@ -5,6 +5,7 @@ use Core\Domain\Entities\User;
 use Core\Application\Repositories\UserRepository;
 use Exception;
 use PDO;
+use Utils\Logger\Logger;
 
 class PersistentUserRepository implements UserRepository
 {
@@ -17,38 +18,44 @@ class PersistentUserRepository implements UserRepository
     /**
      * @throws Exception
      */
-    public function createUser(User $user): User
+    public function createUser(User $user): ?User
     {
-        $stmt = $this->db->prepare("
-            INSERT INTO users (
-                first_name, 
-                last_name, 
-                username, 
-                password_hash,
-                is_admin,
-                is_subscribed) 
-            VALUES (:first_name, :last_name, :username, :password, :is_admin, :is_subscribed)");
+        try {
+            $stmt = $this->db->prepare("
+                INSERT INTO users (
+                    first_name, 
+                    last_name, 
+                    username, 
+                    password_hash,
+                    is_admin,
+                    is_subscribed) 
+                VALUES (:first_name, :last_name, :username, :password_hash, :is_admin, :is_subscribed)");
 
-        $firstName = $user->getFirstName();
-        $lastName = $user->getLastName();
-        $username = $user->getUsername();
-        $passwordHash = $user->getPasswordHash();
-        $isAdmin = $user->getIsAdmin();
-        $isSubscribed = $user->getIsSubscribed();
+            $firstName = $user->getFirstName();
+            $lastName = $user->getLastName();
+            $username = $user->getUsername();
+            $passwordHash = $user->getPasswordHash();
+            $isAdmin = $user->getIsAdmin();
+            $isSubscribed = $user->getIsSubscribed();
 
-        $stmt->bindParam(':first_name', $firstName);
-        $stmt->bindParam(':last_name', $lastName);
-        $stmt->bindParam(':username', $username);
-        $stmt->bindParam(':password', $passwordHash);
-        $stmt->bindParam(':is_admin', $isAdmin);
-        $stmt->bindParam(':is_subscribed', $isSubscribed);
+            $stmt->bindParam(':first_name', $firstName);
+            $stmt->bindParam(':last_name', $lastName);
+            $stmt->bindParam(':username', $username);
+            $stmt->bindParam(':password_hash', $passwordHash);
+            $stmt->bindParam(':is_admin', $isAdmin, PDO::PARAM_BOOL);
+            $stmt->bindParam(':is_subscribed', $isSubscribed, PDO::PARAM_BOOL);
 
-        if (!$stmt->execute()) {
+            if (!$stmt->execute()) {
+                Logger::getInstance()->logMessage('User creation failed');
+                throw new Exception("User creation failed");
+            }
+
+            $user->setUserId($this->getUserByUsername($username)->getUserId());
+            return $user;
+        } catch (Exception $e) {
+            Logger::getInstance()->logMessage('User creation failed: ' . $e->getMessage());
             throw new Exception("User creation failed");
         }
-
-        $user->setUserId($this->getUserByUsername($username)->getUserId());
-        return $user;
     }
 
     /**

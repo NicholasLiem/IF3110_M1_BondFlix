@@ -10,14 +10,14 @@ class Content {
     private string $content_file_path;
 
     /**
-     * @param int|null $content_id
+     * @param int $content_id
      * @param string $title
      * @param string $description
      * @param string $release_date
      * @param string $content_file_path
      */
     public function __construct(
-        int $content_id = null,
+        int $content_id = -1,
         string $title = '',
         string $description = '',
         string $release_date = '',

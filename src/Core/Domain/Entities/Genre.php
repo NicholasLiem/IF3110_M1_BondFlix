@@ -9,11 +9,11 @@ class Genre
     public string $genre_name;
 
     /**
-     * @param int|null $genre_id
+     * @param int $genre_id
      * @param string $genre_name
      */
     public function __construct(
-        int $genre_id = null,
+        int $genre_id = -1,
         string $genre_name = '')
     {
         $this->genre_id = $genre_id;

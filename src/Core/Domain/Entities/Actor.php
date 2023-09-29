@@ -5,21 +5,20 @@ namespace Core\Domain\Entities;
 class Actor
 {
     private int $actor_id;
-
     private string $first_name;
     private string $last_name;
     private string $birth_date;
     private string $gender;
 
     /**
-     * @param int|null $actor_id
+     * @param int $actor_id
      * @param string $first_name
      * @param string $last_name
      * @param string $birth_date
      * @param string $gender
      */
     public function __construct(
-        int $actor_id = null,
+        int $actor_id = -1,
         string $first_name = '',
         string $last_name = '',
         string $birth_date = '',
