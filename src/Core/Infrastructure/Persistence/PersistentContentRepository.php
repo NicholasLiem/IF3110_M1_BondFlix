@@ -135,6 +135,6 @@ class PersistentContentRepository implements ContentRepository
 
     // TODO: function untuk cari actors yg bermain di movie
     // TODO: function untuk cari directors movie
-    // TODO: function untuk hitung rata-rata rating
     // TODO: function untuk cari genre movie
+    // TODO: function untuk hitung rata-rata rating
 }
