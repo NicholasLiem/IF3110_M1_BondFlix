@@ -24,10 +24,6 @@ class LoginHandler extends BaseHandler
         }
         return self::$instance;
     }
-    public function get($params = null)
-    {
-        redirect('login');
-    }
 
     public function post($params = null)
     {

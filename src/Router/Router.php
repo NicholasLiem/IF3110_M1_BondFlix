@@ -6,37 +6,43 @@
 
 namespace Router;
 
+use Utils\Http\HttpMethod;
+
 class Router
 {
 
     private array $handlers;
-    private $notFoundHandler;
+    private $pageNotFoundHandler;
+    private $apiNotFoundHandler;
 
-    private const METHOD_POST = 'POST';
-    private const METHOD_GET = 'GET';
-
-    public function get(string $path, $handler): void
+    public function addAPI(string $path, string $method, $handler, array $middlewares = []): void
     {
-        $this->addHandler(self::METHOD_GET, $path, $handler);
+        $this->addRoute($method, $path, $handler, $middlewares);
     }
 
-    public function post(string $path, $handler): void
+    public function addPage(string $path, $handler, array $middlewares = []): void
     {
-        $this->addHandler(self::METHOD_POST, $path, $handler);
+        $this->addRoute(HttpMethod::GET, $path, $handler, $middlewares);
     }
 
-    private function addHandler(string $method, string $path, $handler): void
+    private function addRoute(string $method, string $path, $handler, array $middlewares = []): void
     {
-        $this->handlers[$method.$path] = [
+        $this->handlers[] = [
             'path' => $path,
             'method' => $method,
             'handler' => $handler,
+            'middlewares' => $middlewares,
         ];
     }
 
-    public function addNotFoundHandler($handler): void
+    public function setPageNotFoundHandler($handler): void
     {
-        $this->notFoundHandler = $handler;
+        $this->pageNotFoundHandler = $handler;
+    }
+
+    public function setApiNotFoundHandler($handler): void
+    {
+        $this->apiNotFoundHandler = $handler;
     }
 
     public function run()
@@ -44,35 +50,47 @@ class Router
         $requestUri = parse_url($_SERVER['REQUEST_URI']);
         $requestPath = $requestUri['path'];
         $method = $_SERVER['REQUEST_METHOD'] ?? 'GET';
+        $urlParams = array_merge($_GET, $_POST);
 
         $callback = null;
+        $isApiRoute = false;
+        $middlewares = [];
+
         foreach ($this->handlers as $handler) {
-            if ($handler['path'] === $requestPath && $method === $handler['method']){
-                $callback = $handler['handler'];
-                break;
-            }
-        }
-
-        if (is_string($callback)) {
-            $parts = explode('::', $callback);
-            if (is_array($parts)){
-                $className = array_shift($parts);
-                $handler = new $className;
-
-                $method = array_shift($parts);
-                $callback = [$handler, $method];
+            if (strpos($requestPath, '/api/') === 0) {
+                if ($handler['path'] === $requestPath && $method === $handler['method']) {
+                    $callback = $handler['handler'];
+                    $isApiRoute = true;
+                    $middlewares = $handler['middlewares'];
+                    break;
+                }
+            } else {
+                if ($handler['path'] === $requestPath && $method === $handler['method']){
+                    $callback = $handler['handler'];
+                    break;
+                }
             }
         }
 
         if (!$callback) {
             header("HTTP/1.0 404 Not Found");
-            if (!empty($this->notFoundHandler)) {
-                $callback = $this->notFoundHandler;
+            if ($isApiRoute && !empty($this->apiNotFoundHandler)) {
+                $callback = $this->apiNotFoundHandler;
+            } else {
+                $callback = $this->pageNotFoundHandler;
             }
         }
 
-        call_user_func_array($callback, [
-            array_merge($_GET, $_POST)
-        ]);
+        foreach ($middlewares as $middleware) {
+            if (!$middleware($requestPath, $method)) {
+                return;
+            }
+        }
+
+        if ($isApiRoute) {
+            $callback->handle($method, $urlParams);
+        } else {
+            call_user_func_array($callback, [$urlParams]);
+        }
     }
 }
