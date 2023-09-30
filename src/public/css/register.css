@@ -12,8 +12,6 @@ body {
     height: 100vh;
 }
 
-@import url('shared-styles.css');
-
 .registration-container {
     background-color: rgba(0, 0, 0, 0.8);
     border-radius: 8px;
