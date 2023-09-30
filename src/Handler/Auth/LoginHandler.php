@@ -1,49 +1,47 @@
 <?php
 namespace Handler\Auth;
 
-use Core\Application\Services\UserService;
 use Exception;
 use Handler\BaseHandler;
+use Utils\Http\HttpStatusCode;
+use Utils\Response\Response;
 
 class LoginHandler extends BaseHandler
 {
-    protected static LoginHandler $instance;
+    protected static $instance;
     protected $service;
     private function __construct($service)
     {
-        $this->service = $service;
+        parent::__construct($service);
     }
 
     public static function getInstance($container): LoginHandler
     {
         if (!isset(self::$instance)) {
             self::$instance = new static(
-                $container->resolve('userService')
+                $container->resolve('authService')
             );
         }
         return self::$instance;
     }
-    public function get($params = null)
-    {
-        redirect('login');
-    }
 
     public function post($params = null)
     {
+        $username = $_POST['username'];
+        $password = $_POST['password'];
+
         try {
-            $username = $_POST['username'];
-            $password = $_POST['password'];
 
-            if ($this->service->login($username, $password)) {
-                redirect('dashboard');
-            } else {
-                redirect('login');
-            }
-            exit();
+            $user = $this->service->login($username, $password);
+            $response = new Response(true, HttpStatusCode::OK ,"User successfully logged in", $user->toArray());
+            $response->encode_to_JSON();
+
         } catch (Exception $e) {
-            redirect('login');
-            exit();
-        }
-    }
 
+            $response = new Response(false, HttpStatusCode::FORBIDDEN, "Invalid credentials", null);
+            $response->encode_to_JSON();
+
+        }
+
+    }
 }

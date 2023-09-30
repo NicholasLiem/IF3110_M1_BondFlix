@@ -3,9 +3,9 @@ global $routes;
 global $container;
 
 use Handler\Auth\LoginHandler;
-use Handler\Auth\RegisterHandler;
 use Handler\Auth\LogoutHandler;
-use Handler\Upload\UploadHandler;
+use Handler\Auth\RegisterHandler;
+use Middleware\Page\LoggedInCheck;
 use Router\Router;
 
 /**
@@ -14,7 +14,6 @@ use Router\Router;
 $loginHandler = LoginHandler::getInstance($container);
 $registerHandler = RegisterHandler::getInstance($container);
 $logoutHandler = LogoutHandler::getInstance($container);
-$uploadHandler = UploadHandler::getInstance($container);
 
 /**
  * Making new router instance
@@ -23,46 +22,41 @@ $router = new Router();
 
 
 /**
- * Registering the routes
+ * Registering the page routes
  */
-$router->get('/',function () {
-    require_once BASE_PATH . '/public/view/dashboard.php';
+$router->addPage('/', function () {
+    redirect('index');
 });
 
-$router->get('/login', function () use ($loginHandler) {
-    $loginHandler->get();
+$router->addPage('/login', function () {
+    redirect('login');
+}, []);
+
+$router->addPage('/dashboard', function () {
+    redirect('dashboard');
+}, [LoggedInCheck::getInstance()]);
+
+$router->addPage('/register', function () {
+    redirect('register');
 });
 
-$router->post('/login', function () use ($loginHandler) {
-    $loginHandler->post();
+/**
+ * Registering the api routes
+ */
+
+$router->addAPI('/api/auth/login', 'POST', $loginHandler, []);;
+$router->addAPI('/api/auth/register', 'POST', $registerHandler, []);;
+$router->addAPI('/api/auth/logout', 'POST', $logoutHandler, []);;
+
+/**
+ * Setting api or page fallback handler
+ */
+
+$router->setPageNotFoundHandler(function () {
+    require_once BASE_PATH . '/public/view/404.php';
 });
 
-$router->get('/register', function () use ($registerHandler) {
-    $registerHandler->get();
-});
-
-$router->post('/register', function () use ($registerHandler) {
-    $registerHandler->post();
-});
-
-$router->get('/upload', function () use ($uploadHandler){
-    $uploadHandler->get();
-});
-
-$router->post('/upload', function () use ($uploadHandler){
-    $uploadHandler->post();
-});
-
-
-$router->get('/logout', function () use ($logoutHandler){
-   $logoutHandler->get();
-});
-
-$router->get('/dashboard', function () {
-    require_once BASE_PATH . '/public/view/dashboard.php';
-});
-
-$router->addNotFoundHandler(function () {
+$router->setApiNotFoundHandler(function () {
     require_once BASE_PATH . '/public/view/404.php';
 });
 

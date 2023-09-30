@@ -5,7 +5,7 @@ use Core\Domain\Entities\User;
 use Core\Application\Repositories\UserRepository;
 use Exception;
 
-class UserService {
+class AuthService {
     private UserRepository $userRepository;
 
     public function __construct(UserRepository $userRepository) {
@@ -15,7 +15,7 @@ class UserService {
     /**
      * @throws Exception
      */
-    public function register($username, $password): ?User
+    public function register($username, $password, $first_name, $last_name): ?User
     {
 
         $user = $this->userRepository->getUserByUsername($username);
@@ -27,7 +27,11 @@ class UserService {
         $user = new User();
         $user->setUsername($username);
         $hashed_password = password_hash($password, PASSWORD_BCRYPT, [12]);
-        $user->setPassword($hashed_password);
+        $user->setFirstName($first_name);
+        $user->setLastName($last_name);
+        $user->setIsAdmin(false);
+        $user->setIsSubscribed(false);
+        $user->setPasswordHash($hashed_password);
 
         return $this->userRepository->createUser($user);
     }
@@ -39,7 +43,11 @@ class UserService {
     {
         $user = $this->userRepository->getUserByUsername($username);
 
-        if (password_verify($password, $user->getPassword())){
+        if ($user == null){
+            throw new Exception("Failed to fetch user data");
+        }
+
+        if (password_verify($password, $user->getPasswordHash())){
 
             if (session_status() === PHP_SESSION_NONE) {
                 session_start();
@@ -47,6 +55,7 @@ class UserService {
 
             $_SESSION['user_id'] = $user->getUserId();
             $_SESSION['username'] = $user->getUsername();
+            $_SESSION['first_name'] = $user->getFirstName();
             $_SESSION['is_admin'] = $user->getIsAdmin();
 
             return $user;
@@ -55,7 +64,6 @@ class UserService {
         /**
          * Implement fail login logic here
          */
-
         throw new Exception("Failed to fetch user data");
     }
 }

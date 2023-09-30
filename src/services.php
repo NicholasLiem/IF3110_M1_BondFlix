@@ -2,7 +2,7 @@
 
 use Core\Infrastructure\Persistence\PersistentUserRepository;
 use Container\ServiceContainer;
-use Core\Application\Services\UserService;
+use Core\Application\Services\AuthService;
 use Database\Connection;
 
 $container = new ServiceContainer();
@@ -16,7 +16,7 @@ $container->register('userRepository', function($container){
     return new PersistentUserRepository($db);
 });
 
-$container->register('userService', function ($container){
+$container->register('authService', function ($container){
     $userRepository = $container->resolve('userRepository');
-    return new UserService($userRepository);
+    return new AuthService($userRepository);
 });

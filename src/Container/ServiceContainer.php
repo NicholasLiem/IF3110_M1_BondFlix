@@ -2,6 +2,8 @@
 
 namespace Container;
 use Exception;
+use Utils\Logger\Logger;
+
 class ServiceContainer implements IContainer
 {
     private array $services = [];
@@ -21,6 +23,7 @@ class ServiceContainer implements IContainer
             $factory = $this->services[$name];
             return $factory($this);
         } else {
+            Logger::getInstance()->logMessage("Fail to load $name service");
             throw new Exception("Service '$name' not found in the container.");
         }
     }
