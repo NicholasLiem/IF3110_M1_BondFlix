@@ -1,14 +1,18 @@
 .admin-sidebar {
-  background-color: lightgray;
+  background-color: black;
   justify-content: center;
+  width: 250px;
+  height: 100%;
   top: 0;
   left: 0;
-  height: 100%;
+  overflow-y: auto;
 }
 
 .admin-sidebar .logo-img {
   height: 40px;
   width: auto;
+  margin: 20px 0;
+  padding: 0 20px;
 }
 
 .admin-sidebar ul {
@@ -21,8 +25,18 @@
 }
 
 .admin-sidebar a {
-  color: black;
+  color: white;
   text-decoration: none;
   font-family: "Roboto", sans-serif;
   font-size: 20px;
+}
+
+.admin-sidebar .sidebar-item {
+  background-color: transparent;
+  padding: 5px 20px;
+  transition: background-color 0.3s ease;
+}
+
+.admin-sidebar .sidebar-item:hover {
+  background-color: #E50914;
 }
