@@ -43,15 +43,15 @@ $router->addPage('/register', function () {
 
 $router->addPage('/admin', function () {
     redirect('admin');
-}, [LoggedInCheck::getInstance()]);
+}, [LoggedInCheck::getInstance(), AdminCheck::getInstance()]);
 
 $router->addPage('/admin/movies', function () {
     redirect('admin-movies');
-}, [AdminCheck::getInstance(), LoggedInCheck::getInstance()]);
+}, [LoggedInCheck::getInstance(), AdminCheck::getInstance()]);
 
 $router->addPage('/admin/movies/upload', function() {
-    redirect('adminMovieUpload');
-}, [AdminCheck::getInstance(), LoggedInCheck::getInstance()]);
+    redirect('admin-movie-upload');
+}, [LoggedInCheck::getInstance(), AdminCheck::getInstance()]);
 
 /**
  * Registering the api routes

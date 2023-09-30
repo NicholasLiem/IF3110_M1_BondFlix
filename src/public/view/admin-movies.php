@@ -5,7 +5,6 @@ $script = 'admin.js';
 include BASE_PATH . "/public/templates/header.php";
 $adminSidebarTemplate = BASE_PATH . "/public/templates/admin-sidebar.php";
 $username = $_SESSION['username'];
-
 ?>
 
 <link rel="stylesheet" href="/public/css/admin-page.css">
@@ -14,7 +13,7 @@ $username = $_SESSION['username'];
     include $adminSidebarTemplate
     ?>
     <main>
-      <a href="/adminPage/movies/upload">Upload</a>
+      <a href="/admin/movies/upload">Upload</a>
       <table>
         <tr>
           <th>No.</th>
