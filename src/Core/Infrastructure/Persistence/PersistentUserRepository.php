@@ -141,7 +141,7 @@ class PersistentUserRepository implements UserRepository
     /**
      * @throws Exception
      */
-    public function deleteUserByUsername(int $username)
+    public function deleteUserByUsername(int $username): void
     {
         $stmt = $this->db->prepare("
             DELETE FROM users
@@ -154,5 +154,46 @@ class PersistentUserRepository implements UserRepository
             throw new Exception("User deletion failed");
         }
 
+    }
+
+    public function getAllUser(): array
+    {
+        try {
+            $stmt = $this->db->prepare("
+            SELECT user_id, 
+                   first_name, 
+                   last_name, 
+                   username, 
+                   password_hash, 
+                   is_admin, 
+                   is_subscribed
+            FROM users
+            ORDER BY user_id ASC;
+        ");
+
+            if (!$stmt->execute()) {
+                throw new Exception("Database error while fetching user data");
+            }
+
+            $users = [];
+            while ($userData = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                $user = new User(
+                    (int) $userData['user_id'],
+                    $userData['first_name'],
+                    $userData['last_name'],
+                    $userData['username'],
+                    $userData['password_hash'],
+                    (bool) $userData['is_admin'],
+                    (bool) $userData['is_subscribed']
+                );
+
+                $users[] = $user;
+            }
+
+            return $users;
+        } catch (Exception $e) {
+            Logger::getInstance()->logMessage('Failed to fetch all users: ' . $e->getMessage());
+            throw new Exception("Failed to fetch all users");
+        }
     }
 }

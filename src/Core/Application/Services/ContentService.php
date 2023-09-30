@@ -33,6 +33,9 @@ class ContentService
         return $this->contentRepository->deleteContentById($content_id);
     }
 
+    /**
+     * @throws Exception
+     */
     public function updateContent(
         int $content_id, 
         null|string $title, 

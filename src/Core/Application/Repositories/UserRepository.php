@@ -9,4 +9,5 @@ interface UserRepository
     public function getUserByUsername(string $username): ?User;
     public function updateUser(User $user): ?User;
     public function deleteUserByUsername(int $username);
+    public function getAllUser() : array;
 }
