@@ -3,7 +3,7 @@
     $stylesheet = '/public/css/admin-page.css';
     $script = 'admin.js';
     include BASE_PATH . "/public/templates/header.php";
-    $adminSidebarTemplate = BASE_PATH . "/public/templates/adminSidebar.php";
+    $adminSidebarTemplate = BASE_PATH . "/public/templates/admin-sidebar.php";
     $username = $_SESSION['username'];
 ?>
 

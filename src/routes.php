@@ -43,10 +43,10 @@ $router->addPage('/register', function () {
 
 $router->addPage('/admin', function () {
     redirect('admin');
-}, [AdminCheck::getInstance(), LoggedInCheck::getInstance()]);
+}, [LoggedInCheck::getInstance()]);
 
 $router->addPage('/admin/movies', function () {
-    redirect('adminMovies');
+    redirect('admin-movies');
 }, [AdminCheck::getInstance(), LoggedInCheck::getInstance()]);
 
 $router->addPage('/admin/movies/upload', function() {
