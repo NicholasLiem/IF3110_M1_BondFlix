@@ -110,5 +110,20 @@ class User
         $this->is_subscribed = $is_subscribed;
     }
 
+    public function toArray(): array
+    {
+        return [
+            'user_id' => $this->user_id,
+            'first_name' => $this->first_name,
+            'last_name' => $this->last_name,
+            'username' => $this->username,
+            'password_hash' => $this->password_hash,
+            'is_admin' => $this->is_admin,
+            'is_subscribed' => $this->is_subscribed,
+        ];
+    }
+
+
+
 
 }
