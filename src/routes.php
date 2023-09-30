@@ -3,6 +3,7 @@ global $routes;
 global $container;
 
 use Handler\Auth\LoginHandler;
+use Middleware\Page\LoggedInCheck;
 use Router\Router;
 
 /**
@@ -19,13 +20,21 @@ $router = new Router();
 /**
  * Registering the routes
  */
-$router->addPage('/', function ($urlParams) {
-    require_once BASE_PATH . '/public/view/dashboard.php';
+$router->addPage('/', function () {
+    redirect('index');
 });
 
 $router->addPage('/login', function () {
     redirect('login');
 }, []);
+
+$router->addPage('/dashboard', function () {
+    redirect('dashboard');
+}, [LoggedInCheck::getInstance()]);
+
+$router->addPage('/register', function () {
+    redirect('register');
+});
 
 $router->addAPI('/api/login', 'GET', $loginHandler, []);
 $router->addAPI('/api/login', 'POST', $loginHandler, []);;
