@@ -1,5 +1,5 @@
 <?php
-$pageTitle = 'Users Dashboard';
+$pageTitle = 'User Dashboard';
 include BASE_PATH . "/public/templates/header.php";
 $adminSidebarTemplate = BASE_PATH . "/public/templates/admin-sidebar.php";
 $username = $_SESSION['username'];

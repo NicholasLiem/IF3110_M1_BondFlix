@@ -15,7 +15,6 @@ async function getUsers() {
                 }
 
                 userData[user.user_id] = user;
-                console.log(user.is_admin)
                 const adminStatus =  (user.is_admin === true ? 'Admin' : 'Not Admin');
                 const subscriptionStatus = (user.is_subscribed === true ? 'Subscribed' : 'Not Subscribed');
 
