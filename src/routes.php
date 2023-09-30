@@ -5,6 +5,7 @@ global $container;
 use Handler\Auth\LoginHandler;
 use Handler\Auth\LogoutHandler;
 use Handler\Auth\RegisterHandler;
+use Middleware\Page\AdminCheck;
 use Middleware\Page\LoggedInCheck;
 use Router\Router;
 
@@ -40,17 +41,17 @@ $router->addPage('/register', function () {
     redirect('register');
 });
 
-$router->addPage('/adminPage', function () {
-    redirect('adminPage');
-});
+$router->addPage('/admin', function () {
+    redirect('admin');
+}, [AdminCheck::getInstance(), LoggedInCheck::getInstance()]);
 
-$router->addPage('/adminPage/movies', function () {
+$router->addPage('/admin/movies', function () {
     redirect('adminMovies');
-});
+}, [AdminCheck::getInstance(), LoggedInCheck::getInstance()]);
 
-$router->addPage('/adminPage/movies/upload', function() {
+$router->addPage('/admin/movies/upload', function() {
     redirect('adminMovieUpload');
-});
+}, [AdminCheck::getInstance(), LoggedInCheck::getInstance()]);
 
 /**
  * Registering the api routes
@@ -58,7 +59,7 @@ $router->addPage('/adminPage/movies/upload', function() {
 
 $router->addAPI('/api/auth/login', 'POST', $loginHandler, []);;
 $router->addAPI('/api/auth/register', 'POST', $registerHandler, []);;
-$router->addAPI('/api/auth/logout', 'POST', $logoutHandler, []);;
+$router->addAPI('/api/auth/logout', 'POST', $logoutHandler, [LoggedInCheck::getInstance()]);;
 
 /**
  * Setting api or page fallback handler

@@ -67,6 +67,7 @@ class Router
             } else {
                 if ($handler['path'] === $requestPath && $method === $handler['method']){
                     $callback = $handler['handler'];
+                    $middlewares = $handler['middlewares'];
                     break;
                 }
             }

@@ -1,24 +1,20 @@
 <?php
+$pageTitle = 'Login Page';
+$stylesheet = '/public/css/register.css';
+$script = 'login.js';
+include BASE_PATH . "/public/templates/header.php"
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <title>User Login</title>
-</head>
 <body>
-<h1>User Login</h1>
-<form method="POST" action="/login">
-    <label for="username">Username:</label>
-    <input type="text" id="username" name="username" required><br><br>
-    <label for="password">Password:</label>
-    <input type="password" id="password" name="password" required><br><br>
-    <input type="submit" value="Login">
-</form>
-<?php
-if (isset($error)) {
-    echo '<p style="color: red;">' . $error . '</p>';
-}
-?>
+<div class="login-container">
+    <h1>Login</h1>
+    <form id="login-form">
+        <input type="text" id="input-username" name="username" placeholder="Username" required>
+        <input type="password" id="input-password" name="password" placeholder="Password" required>
+        <input type="submit" value="Login">
+    </form>
+</div>
+<script>
+    document.getElementById('login-form').addEventListener('submit', submitLogin);
+</script>
 </body>
-</html>

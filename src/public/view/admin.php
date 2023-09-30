@@ -1,6 +1,10 @@
 <?php
-$adminSidebarTemplate = BASE_PATH . "/public/templates/adminSidebar.php";
-//TODO: Get admin username from session
+    $pageTitle = 'Admin Dashboard';
+    $stylesheet = '/public/css/admin-page.css';
+    $script = 'admin.js';
+    include BASE_PATH . "/public/templates/header.php";
+    $adminSidebarTemplate = BASE_PATH . "/public/templates/adminSidebar.php";
+    $username = $_SESSION['username'];
 ?>
 
 <!DOCTYPE html>
@@ -9,8 +13,6 @@ $adminSidebarTemplate = BASE_PATH . "/public/templates/adminSidebar.php";
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Admin page</title>
-    <link rel="stylesheet" href="/public/css/admin-page.css">
-    <link rel="stylesheet" href="/public/css/admin-sidebar.css">
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -23,7 +25,7 @@ $adminSidebarTemplate = BASE_PATH . "/public/templates/adminSidebar.php";
     include $adminSidebarTemplate
     ?>
     <main>
-      <p>Welcome to Admin Page, username!</p>
+      <p>Welcome to Admin Page, <?php echo $username ?>!</p>
     </main>
   </body>
 </html>
