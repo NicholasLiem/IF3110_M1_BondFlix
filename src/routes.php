@@ -43,6 +43,15 @@ $router->addPage('/register', function () {
 $router->addPage('/adminPage', function () {
     redirect('adminPage');
 });
+
+$router->addPage('/adminPage/movies', function () {
+    redirect('adminMovies');
+});
+
+$router->addPage('/adminPage/movies/upload', function() {
+    redirect('adminMovieUpload');
+});
+
 /**
  * Registering the api routes
  */

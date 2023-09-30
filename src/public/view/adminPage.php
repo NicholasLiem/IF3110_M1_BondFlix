@@ -1,5 +1,6 @@
 <?php
 $adminSidebarTemplate = BASE_PATH . "/public/templates/adminSidebar.php";
+//TODO: Get admin username from session
 ?>
 
 <!DOCTYPE html>
