@@ -40,6 +40,9 @@ $router->addPage('/register', function () {
     redirect('register');
 });
 
+$router->addPage('/adminPage', function () {
+    redirect('adminPage');
+});
 /**
  * Registering the api routes
  */
