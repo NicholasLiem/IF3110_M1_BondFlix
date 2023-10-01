@@ -45,7 +45,7 @@ class Router
         $this->apiNotFoundHandler = $handler;
     }
 
-    public function run()
+    public function run(): void
     {
         $requestUri = parse_url($_SERVER['REQUEST_URI']);
         $requestPath = $requestUri['path'];
