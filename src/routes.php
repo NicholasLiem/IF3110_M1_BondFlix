@@ -39,8 +39,8 @@ $router->addPage('/dashboard', function () {
     redirect('dashboard');
 }, [LoggedInCheck::getInstance()]);
 
-$router->addPage('/register', function () {
-    redirect('register');
+$router->addPage('/register', function ($urlParams) {
+    redirect('register', ['urlParams' => $urlParams]);
 });
 
 $router->addPage('/admin', function () {
