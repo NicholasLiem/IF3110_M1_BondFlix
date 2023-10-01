@@ -6,6 +6,8 @@ error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
 require_once BASE_PATH . '/Utils/EnvLoader/DotEnv.php';
+
+use JetBrains\PhpStorm\NoReturn;
 use Utils\EnvLoader\DotEnv;
 
 /**
@@ -42,4 +44,10 @@ function redirect($path, $data = []) {
     $content = ob_get_clean();
 
     echo $content;
+}
+
+#[NoReturn] function href($url): void
+{
+    header("Location: $url");
+    exit();
 }

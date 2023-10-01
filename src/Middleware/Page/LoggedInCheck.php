@@ -23,7 +23,7 @@ class LoggedInCheck
     public function __invoke($path, $method): bool
     {
         if (!isset($_SESSION['user_id'])) {
-            throw new Exception('You are not logged in');
+            href("/login");
         }
         return true;
     }
