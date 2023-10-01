@@ -7,5 +7,6 @@ CREATE TABLE IF NOT EXISTS content (
     title VARCHAR(255) NOT NULL UNIQUE,
     description VARCHAR(255),
     release_date DATE NOT NULL,
-    content_file_path VARCHAR(255) NOT NULL
+    content_file_path VARCHAR(255) NOT NULL,
+    thumbnail_file_path VARCHAR(255) NOT NULL
 );

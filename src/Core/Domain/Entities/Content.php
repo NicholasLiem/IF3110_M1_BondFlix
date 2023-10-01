@@ -8,6 +8,7 @@ class Content {
     private string $description;
     private string $release_date;
     private string $content_file_path;
+    private string $thumbnail_file_path;
 
     /**
      * @param int $content_id
@@ -15,19 +16,23 @@ class Content {
      * @param string $description
      * @param string $release_date
      * @param string $content_file_path
+     * @param string $thumbnail_file_path
+     * 
      */
     public function __construct(
         int $content_id = -1,
         string $title = '',
         string $description = '',
         string $release_date = '',
-        string $content_file_path = '')
+        string $content_file_path = '',
+        string $thumbnail_file_path = '')
     {
         $this->content_id = $content_id;
         $this->title = $title;
         $this->description = $description;
         $this->release_date = $release_date;
         $this->content_file_path = $content_file_path;
+        $this->thumbnail_file_path = $thumbnail_file_path;
     }
 
 
@@ -79,5 +84,15 @@ class Content {
     public function setContentFilePath(string $content_file_path): void
     {
         $this->content_file_path = $content_file_path;
+    }
+
+    public function getThumbnailFilePath(): string
+    {
+        return $this->thumbnail_file_path;
+    }
+
+    public function setThumbnailFilePath($thumbnail_file_path): void
+    {
+        $this->thumbnail_file_path = $thumbnail_file_path;
     }
 }

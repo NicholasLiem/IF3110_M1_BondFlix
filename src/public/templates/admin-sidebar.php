@@ -1,6 +1,12 @@
 <?php
 ?>
 
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+  href="https://fonts.googleapis.com/css2?family=Roboto&family=Roboto+Mono&display=swap"
+  rel="stylesheet"
+/>
 <link rel="stylesheet" href="/public/css/admin-sidebar.css">
 <script src="/public/js/admin-sidebar.js"></script>
 <nav class="admin-sidebar" id="sidebar">
