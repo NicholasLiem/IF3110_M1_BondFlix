@@ -1,6 +1,13 @@
 <?php
 $pageTitle = 'Register Page';
-include BASE_PATH . "/public/templates/header.php"
+include BASE_PATH . "/public/templates/header.php";
+
+/**
+ * Kalau udah register, redirect ke dashboard saja tidak boleh register lagi, kecuali admin.
+ */
+if (isset($_SESSION["user_id"]) && !$_SESSION["is_admin"]) {
+    href('/dashboard');
+}
 ?>
 
 

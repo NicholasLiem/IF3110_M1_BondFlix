@@ -1,6 +1,18 @@
 <?php
 $pageTitle = 'Login';
-include BASE_PATH . "/public/templates/header.php"
+include BASE_PATH . "/public/templates/header.php";
+
+/**
+ * Kalau udah login, redirect ke dashboard saja tidak boleh login lagi.
+ * Kalau user adalah admin redirect ke admin dashboard, kalau bukan ke dashboard biasa
+ */
+if (isset($_SESSION["user_id"])) {
+    if (isset($_SESSION["is_admin"]) && $_SESSION["is_admin"]) {
+        href('/admin');
+    } else {
+        href('/dashboard');
+    }
+}
 ?>
 
 <link rel="stylesheet" href="/public/css/login.css">
