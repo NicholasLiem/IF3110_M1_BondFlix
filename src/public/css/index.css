@@ -24,10 +24,6 @@ body {
     justify-content: center;
 }
 
-.container {
-
-}
-
 .register-container {
     display: flex;
     width: 40%;
@@ -83,6 +79,10 @@ h3 {
     top: 20px;
     left: 20px;
     z-index: 2;
+}
+
+.submit-button {
+    padding: 10px 20px;
 }
 
 #sign-in-button {

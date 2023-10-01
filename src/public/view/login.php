@@ -25,7 +25,7 @@ if (isset($_SESSION["user_id"])) {
         <form id="login-form">
             <input type="text" id="input-username" name="username" placeholder="Username" required>
             <input type="password" id="input-password" name="password" placeholder="Password" required>
-            <input type="submit" value="Login">
+            <input type="submit" class="submit-button" value="Login">
         </form>
         <a class="register-link" href="/register">Haven't registered yet?</a>
     </div>

@@ -24,7 +24,7 @@ if (isset($_SESSION["user_id"]) && !$_SESSION["is_admin"]) {
             <input type="text" id="input-last-name" name="last_name" placeholder="Last name" required>
             <input type="password" id="input-password" name="password" placeholder="Password" required>
             <input type="password" id="input-password-confirmation" placeholder="Password confirmation" required>
-            <input type="submit" value="Register">
+            <input type="submit" class="submit-button" value="Register">
         </form>
         <a class="login-link" href="/login">Already have an account?</a>
     </div>
