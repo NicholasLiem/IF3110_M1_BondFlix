@@ -1,19 +1,7 @@
 @import url('/public/css/lib/submit-button.css');
-
-body {
-    background-image: url('/public/assets/netflix_bg.png');
-    background-size: cover;
-    background-position: center;
-    background-color: rgba(0, 0, 0, 0.1);
-    backdrop-filter: blur(3px);
-    margin: 0;
-    padding: 0;
-    font-family: Monaco, sans-serif;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
+@import url('/public/css/lib/loading.css');
+@import url('/public/css/lib/index/navbar.css');
+@import url('/public/css/lib/index/body.css');
 
 .centered-content {
     width: 70%;
@@ -73,24 +61,15 @@ h3 {
     outline: none;
 }
 
-.logo {
-    position: absolute;
-    max-width: 200px;
-    top: 20px;
-    left: 20px;
-    z-index: 2;
+.navbar #sign-in-button,
+.navbar .submit-button {
+    margin-right: 20px;
+    height: auto;
+    color: #fff;
+    text-decoration: none;
+    font-size: 18px;
 }
 
 .submit-button {
     padding: 10px 20px;
-}
-
-#sign-in-button {
-    position: absolute;
-    max-width: 200px;
-    top: 20px;
-    right: 20px;
-    z-index: 2;
-    color: #fff;
-    text-decoration: none;
 }

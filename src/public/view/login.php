@@ -18,8 +18,13 @@ if (isset($_SESSION["user_id"])) {
 <link rel="stylesheet" href="/public/css/login.css">
 <script src="/public/js/login.js"></script>
 <body>
-<div class="login-container">
+<div id="loading-overlay">
+    <div class="spinner"></div>
+</div>
+<nav class="navbar">
     <a href="/"><img src="/public/logo.png" alt="Bonflix Logo" class="logo"></a>
+</nav>
+<div class="login-container">
     <div class="overlay">
         <h1>Sign In</h1>
         <form id="login-form">
