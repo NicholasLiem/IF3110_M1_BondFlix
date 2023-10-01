@@ -14,8 +14,11 @@ async function submitLogin(e) {
         const response = await httpClient.post('/api/auth/login', data, false);
         const json = JSON.parse(response);
         if (json.success) {
-            alert("Login Successful!");
-            window.location.href = "/dashboard";
+            if (json.data.is_admin === true) {
+                window.location.href = "/admin";
+            } else {
+                window.location.href = "/dashboard";
+            }
         } else {
             alert("Login Failed: " + json.message);
         }
