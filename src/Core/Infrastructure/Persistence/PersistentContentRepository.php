@@ -11,6 +11,8 @@ use Exception;
 use PDO;
 use Utils\Logger\Logger;
 
+//TODO: exception handling, send error message to logger
+
 class PersistentContentRepository implements ContentRepository
 {
     private PDO $db;
@@ -120,6 +122,43 @@ class PersistentContentRepository implements ContentRepository
         }
     }
 
+    public function getAllContents(?int $pageNumber, int $pageSize = 10): array
+    {
+        $query = "SELECT * FROM content";
+
+        if (!is_null($pageNumber)) {
+            $query .= " LIMIT :pageSize OFFSET :offset";
+        }
+    
+        $stmt = $this->db->prepare($query);
+    
+        if (!is_null($pageNumber)) {
+            $offset = ($pageNumber - 1) * $pageSize;
+            $stmt->bindParam(':pageSize', $pageSize, PDO::PARAM_INT);
+            $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
+        }
+
+        if (!$stmt->execute()) {
+            throw new Exception("Failed to fetch content data");
+        }
+
+        $contents = [];
+        while ($contentData = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $content = new Content(
+                (int) $contentData['content_id'],
+                $contentData['title'],
+                $contentData['description'],
+                $contentData['release_date'],
+                $contentData['content_file_path'],
+                $contentData['thumbnail_file_path']
+            );
+            
+            $contents[] = $content;
+        }
+        
+        return $contents;
+    }
+
     public function getActors(Content $content): array 
     {
         try {
@@ -159,8 +198,39 @@ class PersistentContentRepository implements ContentRepository
         }
     }
 
-    public function addActors(Content $content, array $actors): void {
-        //TODO
+    public function addActor(Content $content, Actor $actor): void 
+    {
+        $stmt = $this->db->prepare("
+            INSERT INTO actor_content (actor_id, content_id)
+            VALUES (:actor_id, :content_id)
+        ");
+
+        $actor_id = $actor->getActorId();
+        $content_id = $content->getContentId();
+        $stmt->bindParam(':actor_id', $actor_id);
+        $stmt->bindParam('content_id', $content_id);
+
+        if (!$stmt->execute()) {
+            throw new Exception("Failed to add actor");
+        }
+    }
+
+    public function deleteActor(Content $content, Actor $actor): void 
+    {
+        $stmt = $this->db->prepare("
+            DELETE FROM actor_content
+            WHERE actor_id = :actor_id
+            AND content_id = :content_id
+        ");
+
+        $actor_id = $actor->getActorId();
+        $content_id = $content->getContentId();
+        $stmt->bindParam(':actor_id', $actor_id);
+        $stmt->bindParam(':content_id', $content_id);
+
+        if (!$stmt->execute()) {
+            throw new Exception("Failed to delete actor");
+        }
     }
 
     public function getCategories(Content $content): array 
@@ -199,9 +269,39 @@ class PersistentContentRepository implements ContentRepository
         }
     }
 
-    public function addCategories(Content $content, array $categories) 
+    public function addCategory(Content $content, Category $category): void
     {
-        //TODO
+        $stmt = $this->db->prepare("
+            INSERT INTO category_content (category_id, content_id)
+            VALUES (:category_id, :content_id)
+        ");
+
+        $category_id = $category->getCategoryId();
+        $content_id = $content->getContentId();
+        $stmt->bindParam(':category_id', $category_id);
+        $stmt->bindParam(':content_id', $content_id);
+
+        if (!$stmt->execute()) {
+            throw new Exception("Failed to add category");
+        }
+    }
+
+    public function deleteCategory(Content $content, Category $category): void 
+    {
+        $stmt = $this->db->prepare("
+            DELETE FROM category_content
+            WHERE category_id = :category_id
+            AND content_id = :content_id
+        ");
+
+        $category_id = $category->getCategoryId();
+        $content_id = $content->getContentId();
+        $stmt->bindParam(':category_id', $category_id);
+        $stmt->bindParam(':content_id', $content_id);
+
+        if (!$stmt->execute()) {
+            throw new Exception("Failed to delete category");
+        }
     }
 
     public function getDirectors(Content $content): array 
@@ -241,10 +341,42 @@ class PersistentContentRepository implements ContentRepository
         }
     }
 
-    public function addDirectors(Content $content, array $directors)
+    public function addDirector(Content $content, Director $director): void
     {
-        //TODO
+        $stmt = $this->db->prepare("
+            INSERT INTO director_content (director_id, content_id)
+            VALUES (:director_id, :content_id)
+        ");
+
+        $director_id = $director->getDirectorId();
+        $content_id = $content->getContentId();
+        $stmt->bindParam(':director_id', $director_id);
+        $stmt->bindParam(':content_id', $content_id);
+
+        if (!$stmt->execute()) {
+            throw new Exception("Failed to add director");
+        }
     }
+
+    public function deleteDirector(Content $content, Director $director): void 
+    {
+        $stmt = $this->db->prepare("
+            DELETE FROM director_content
+            WHERE director_id = :director_id
+            AND content_id = :content_id
+        ");
+
+        $director_id = $director->getdirectorId();
+        $content_id = $content->getContentId();
+        $stmt->bindParam(':director_id', $director_id);
+        $stmt->bindParam(':content_id', $content_id);
+
+        if (!$stmt->execute()) {
+            throw new Exception("Failed to delete director");
+        }
+    }
+
+
 
     private function getLastContentId(): int
     {
