@@ -122,7 +122,42 @@ class PersistentContentRepository implements ContentRepository
         }
     }
 
+    public function getAllContents(?int $pageNumber, int $pageSize = 10): array
+    {
+        $query = "SELECT * FROM content";
 
+        if (!is_null($pageNumber)) {
+            $query .= " LIMIT :pageSize OFFSET :offset";
+        }
+    
+        $stmt = $this->db->prepare($query);
+    
+        if (!is_null($pageNumber)) {
+            $offset = ($pageNumber - 1) * $pageSize;
+            $stmt->bindParam(':pageSize', $pageSize, PDO::PARAM_INT);
+            $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
+        }
+
+        if (!$stmt->execute()) {
+            throw new Exception("Failed to fetch content data");
+        }
+
+        $contents = [];
+        while ($contentData = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $content = new Content(
+                (int) $contentData['content_id'],
+                $contentData['title'],
+                $contentData['description'],
+                $contentData['release_date'],
+                $contentData['content_file_path'],
+                $contentData['thumbnail_file_path']
+            );
+            
+            $contents[] = $content;
+        }
+        
+        return $contents;
+    }
 
     public function getActors(Content $content): array 
     {
