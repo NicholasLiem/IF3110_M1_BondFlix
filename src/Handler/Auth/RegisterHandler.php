@@ -26,7 +26,7 @@ class RegisterHandler extends BaseHandler
         return self::$instance;
     }
 
-    public function post($params = null)
+    public function post($params = null): void
     {
         try {
             $username = $_POST['username'];

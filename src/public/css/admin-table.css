@@ -20,6 +20,7 @@ tr:nth-child(even) {
 
 td {
     padding: 8px;
+    overflow-y: auto;
     text-align: left;
 }
 

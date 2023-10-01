@@ -9,34 +9,31 @@ $username = $_SESSION['username'];
 
 <link rel="stylesheet" href="/public/css/admin-page.css">
 <link rel="stylesheet" href="/public/css/admin-table.css">
-  <body>
-    <?php
-    include $adminSidebarTemplate
-    ?>
-    <main>
-      <a href="/admin/movies/upload">Upload</a>
-      <table>
+<?php include $adminSidebarTemplate ?>
+
+<body>
+    <a href="/admin/movies/upload">Upload</a>
+    <table>
         <tr>
-          <th>No.</th>
-          <th>ID</th>
-          <th>Title</th>
-          <th>Description</th>
-          <th>Release Date</th>
-          <th>Content File Path</th>
-          <th>Action</th>
+            <th>No.</th>
+            <th>ID</th>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Release Date</th>
+            <th>Content File Path</th>
+            <th>Action</th>
         </tr>
         <tr>
-          <td>1</td>
-          <td>1</td>
-          <td>Upin Ipin</td>
-          <td>Bocah kembar</td>
-          <td>01 Januari 2000</td>
-          <td>/file/upinipin.mp4</td>
-          <td>
-            <button>Edit</button>
-            <button>Delete</button>
-          </td>
+            <td>1</td>
+            <td>1</td>
+            <td>Upin Ipin</td>
+            <td>Bocah kembar</td>
+            <td>01 Januari 2000</td>
+            <td>/file/upinipin.mp4</td>
+            <td>
+                <button>Edit</button>
+                <button>Delete</button>
+            </td>
         </tr>
-      </table>
-    </main>
-  </body>
+    </table>
+</body>

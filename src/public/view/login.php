@@ -1,10 +1,10 @@
 <?php
 $pageTitle = 'Login';
-$stylesheet = '/public/css/login.css';
-$script = 'login.js';
 include BASE_PATH . "/public/templates/header.php"
 ?>
 
+<link rel="stylesheet" href="/public/css/login.css">
+<script src="/public/js/login.js"></script>
 <body>
 <div class="login-container">
     <a href="/"><img src="/public/logo.png" alt="Bonflix Logo" class="logo"></a>

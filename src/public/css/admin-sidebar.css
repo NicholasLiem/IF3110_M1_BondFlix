@@ -40,3 +40,18 @@
 .admin-sidebar .sidebar-item:hover {
   background-color: #E50914;
 }
+
+.admin-sidebar ul li:last-child {
+  margin-top: auto;
+}
+
+.admin-sidebar ul li:last-child a {
+  color: #E50914;
+  font-weight: bold;
+  text-align: center;
+}
+
+.admin-sidebar ul li:last-child a:hover {
+  background-color: transparent;
+  color: #ff5656;
+}
