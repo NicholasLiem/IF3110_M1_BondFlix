@@ -159,7 +159,7 @@ class PersistentContentRepository implements ContentRepository
         return $contents;
     }
 
-    public function getActors(Content $content): array 
+    public function getActors(int $content_id): array 
     {
         try {
             $stmt = $this->db->prepare("
@@ -170,7 +170,6 @@ class PersistentContentRepository implements ContentRepository
                 WHERE c.content_id = :content_id
             ");
 
-        $content_id = $content->getContentId();
         $stmt->bindParam(':content_id', $content_id);
 
         if (!$stmt->execute()) {
@@ -198,15 +197,13 @@ class PersistentContentRepository implements ContentRepository
         }
     }
 
-    public function addActor(Content $content, Actor $actor): void 
+    public function addActor(int $content_id, int $actor_id): void 
     {
         $stmt = $this->db->prepare("
             INSERT INTO actor_content (actor_id, content_id)
             VALUES (:actor_id, :content_id)
         ");
 
-        $actor_id = $actor->getActorId();
-        $content_id = $content->getContentId();
         $stmt->bindParam(':actor_id', $actor_id);
         $stmt->bindParam('content_id', $content_id);
 
@@ -215,7 +212,7 @@ class PersistentContentRepository implements ContentRepository
         }
     }
 
-    public function deleteActor(Content $content, Actor $actor): void 
+    public function deleteActor(int $content_id, int $actor_id): void 
     {
         $stmt = $this->db->prepare("
             DELETE FROM actor_content
@@ -223,8 +220,6 @@ class PersistentContentRepository implements ContentRepository
             AND content_id = :content_id
         ");
 
-        $actor_id = $actor->getActorId();
-        $content_id = $content->getContentId();
         $stmt->bindParam(':actor_id', $actor_id);
         $stmt->bindParam(':content_id', $content_id);
 
@@ -233,7 +228,7 @@ class PersistentContentRepository implements ContentRepository
         }
     }
 
-    public function getCategories(Content $content): array 
+    public function getCategories(int $content_id): array 
     {
         try {
             $stmt = $this->db->prepare("
@@ -244,7 +239,7 @@ class PersistentContentRepository implements ContentRepository
                 WHERE c.content_id = :content_id
             ");
 
-            $content_id = $content->getContentId();
+
             $stmt->bindParam(':content_id', $content_id);
 
             if (!$stmt->execute()) {
@@ -269,15 +264,13 @@ class PersistentContentRepository implements ContentRepository
         }
     }
 
-    public function addCategory(Content $content, Category $category): void
+    public function addCategory(int $content_id, int $category_id): void
     {
         $stmt = $this->db->prepare("
             INSERT INTO category_content (category_id, content_id)
             VALUES (:category_id, :content_id)
         ");
 
-        $category_id = $category->getCategoryId();
-        $content_id = $content->getContentId();
         $stmt->bindParam(':category_id', $category_id);
         $stmt->bindParam(':content_id', $content_id);
 
@@ -286,7 +279,7 @@ class PersistentContentRepository implements ContentRepository
         }
     }
 
-    public function deleteCategory(Content $content, Category $category): void 
+    public function deleteCategory(int $content_id, int $category_id): void 
     {
         $stmt = $this->db->prepare("
             DELETE FROM category_content
@@ -294,8 +287,6 @@ class PersistentContentRepository implements ContentRepository
             AND content_id = :content_id
         ");
 
-        $category_id = $category->getCategoryId();
-        $content_id = $content->getContentId();
         $stmt->bindParam(':category_id', $category_id);
         $stmt->bindParam(':content_id', $content_id);
 
@@ -304,7 +295,7 @@ class PersistentContentRepository implements ContentRepository
         }
     }
 
-    public function getDirectors(Content $content): array 
+    public function getDirectors(int $content_id): array 
     {
         try {
             $stmt = $this->db->prepare("
@@ -315,7 +306,7 @@ class PersistentContentRepository implements ContentRepository
                 WHERE c.content_id = :content_id
             ");
 
-            $content_id = $content->getContentId();
+
             $stmt->bindParam(':content_id', $content_id);
 
             if (!$stmt->execute()) {
@@ -341,15 +332,13 @@ class PersistentContentRepository implements ContentRepository
         }
     }
 
-    public function addDirector(Content $content, Director $director): void
+    public function addDirector(int $content_id, int $director_id): void
     {
         $stmt = $this->db->prepare("
             INSERT INTO director_content (director_id, content_id)
             VALUES (:director_id, :content_id)
         ");
 
-        $director_id = $director->getDirectorId();
-        $content_id = $content->getContentId();
         $stmt->bindParam(':director_id', $director_id);
         $stmt->bindParam(':content_id', $content_id);
 
@@ -358,7 +347,7 @@ class PersistentContentRepository implements ContentRepository
         }
     }
 
-    public function deleteDirector(Content $content, Director $director): void 
+    public function deleteDirector(int $content_id, int $director_id): void 
     {
         $stmt = $this->db->prepare("
             DELETE FROM director_content
@@ -366,8 +355,6 @@ class PersistentContentRepository implements ContentRepository
             AND content_id = :content_id
         ");
 
-        $director_id = $director->getdirectorId();
-        $content_id = $content->getContentId();
         $stmt->bindParam(':director_id', $director_id);
         $stmt->bindParam(':content_id', $content_id);
 
@@ -375,8 +362,6 @@ class PersistentContentRepository implements ContentRepository
             throw new Exception("Failed to delete director");
         }
     }
-
-
 
     private function getLastContentId(): int
     {

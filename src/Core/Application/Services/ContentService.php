@@ -42,7 +42,8 @@ class ContentService
         null|string $description, 
         null|string $release_date, 
         null|string $content_file_path
-    ) : ?Content {
+    ) : ?Content 
+    {
         $updatedContent = $this->contentRepository->getContentById($content_id);
 
         if (is_null($updatedContent)) {
@@ -55,5 +56,53 @@ class ContentService
         if (!is_null($content_file_path)) $updatedContent->setContentFilePath($content_file_path);
 
         return $this->contentRepository->updateContent($updatedContent);
+    }
+
+    public function getContentById(int $content_id): ?Content
+    {
+        return $this->contentRepository->getContentById($content_id);
+    }
+
+    public function getAllContents(?int $pageNumber): array
+    {
+        return $this->contentRepository->getAllContents($pageNumber);
+    }
+
+    public function getActors(int $content_id): array
+    {
+        return $this->contentRepository->getActors($content_id);
+    }
+
+    public function addActor(int $content_id, int $actor_id): void
+    {
+        $this->contentRepository->addActor($content_id, $actor_id);
+    }
+    public function removeActor(int $content_id, int $actor_id): void 
+    {
+        $this->contentRepository->deleteActor($content_id, $actor_id);
+    }
+    public function getCategories(int $content_id): array 
+    {
+        return $this->contentRepository->getCategories($content_id);
+    }
+    public function addCategory(int $content_id, int $category_id): void 
+    {
+        $this->contentRepository->addCategory($content_id, $category_id);
+    }
+    public function removeCategory(int $content_id, int $category_id): void 
+    {
+        $this->contentRepository->deleteCategory($content_id, $category_id);
+    }
+    public function getDirectors(int $content_id): array 
+    {
+        return $this->contentRepository->getDirectors($content_id);
+    }
+    public function addDirector(int $content_id, int $director_id): void 
+    {
+        $this->contentRepository->addDirector($content_id, $director_id);
+    }
+    public function removeDirector(int $content_id, int $director_id): void 
+    {
+        $this->contentRepository->deleteDirector($content_id, $director_id);
     }
 }
