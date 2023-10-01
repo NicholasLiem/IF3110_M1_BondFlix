@@ -27,6 +27,11 @@ body {
     z-index: 1;
 }
 
+.register-container {
+    display: flex;
+    align-items: stretch;
+}
+
 h1 {
     color: #fff;
 }
