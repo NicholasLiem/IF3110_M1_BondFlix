@@ -1,19 +1,5 @@
 @import url('/public/css/lib/submit-button.css');
-
-body {
-    background-image: url('/public/assets/netflix_bg.png');
-    background-size: cover;
-    background-position: center;
-    background-color: rgba(0, 0, 0, 0.1);
-    backdrop-filter: blur(3px);
-    margin: 0;
-    padding: 0;
-    font-family: Monaco, sans-serif;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
+@import url('/public/css/lib/index/body.css');
 
 .centered-content {
     width: 70%;
