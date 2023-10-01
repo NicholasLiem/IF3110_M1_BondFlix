@@ -95,4 +95,16 @@ class Content {
     {
         $this->thumbnail_file_path = $thumbnail_file_path;
     }
+
+    public function toArray(): array
+    {
+        return [
+            "content_id" => $this->content_id,
+            "title" => $this->title,
+            "description" => $this->description,
+            "release_date" => $this->release_date,
+            "content_file_path" => $this->content_file_path,
+            "thumbnail_file_path" => $this->thumbnail_file_path,
+        ];
+    }
 }
