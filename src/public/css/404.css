@@ -13,7 +13,6 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    overflow-y: auto;
 }
 
 .centered-content {
@@ -25,16 +24,10 @@ body {
     justify-content: center;
 }
 
-.register-container {
-    display: flex;
-    width: 40%;
-    height: 50px;
-    align-items: stretch;
-}
-
 h1 {
-    font-size: 42px;
+    font-size: 64px;
     color: #fff;
+    font-weight: bold;
     margin-bottom: 20px;
 }
 
@@ -50,33 +43,10 @@ h3 {
     color: #fff;
 }
 
-#input-username {
-    flex: 1;
-    height: auto;
-    background: rgba(59, 55, 55, 0.6);
-    color: #fff;
-    width: 30%;
-    margin-right: 5px;
-    border-radius: 4px;
-    border: 1px solid #39db5f;
-    box-sizing: border-box;
-    font-size: 14px;
-    padding-left: 10px;
-    padding-top: 5px;
-}
-
-#input-username::placeholder {
-    font-size: 16px;
-    color: #bdb5b5;
-}
-
-#input-username:focus {
-    outline: none;
-}
 
 .navbar {
     width: 100%;
-    background-color: transparent;
+    background-color: rgb(0,0,0,1);
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -89,18 +59,21 @@ h3 {
     padding: 10px;
     margin-top: 5px;
     margin-left: 20px;
-    max-width: 150px;
-}
-
-.navbar #sign-in-button,
-.navbar .submit-button {
-    margin-right: 20px;
-    height: auto;
-    color: #fff;
-    text-decoration: none;
-    font-size: 18px;
+    max-width: 120px;
 }
 
 .submit-button {
+    background-color: #fff;
+    color: #000;
+    font-weight: normal;
+    font-size: 16px;
     padding: 10px 20px;
+}
+
+.submit-button:hover {
+    background-color: rgb(255,255,255, 0.8);
+}
+
+#back-button {
+    text-decoration: none;
 }

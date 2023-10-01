@@ -5,7 +5,10 @@
 
 <link rel="stylesheet" href="/public/css/index.css">
 <body>
-<a href="/"><img src="/public/logo.png" alt="Bonflix Logo" class="logo"></a>
+<nav class="navbar">
+    <a href="/"><img src="/public/logo.png" alt="Bonflix Logo" class="logo"></a>
+    <a href="/login" class="submit-button" id="sign-in-button">Sign In</a>
+</nav>
 <div class="centered-content">
     <div class="container">
         <h1>The biggest local and international hits. The best stories. All streaming here.</h1>
@@ -17,6 +20,5 @@
         <input type="submit" id="input-submit" class="submit-button" value="Get Started 〉">
     </div>
 </div>
-<a href="/login" id="sign-in-button" class="submit-button">Sign In</a>
 <script src="/public/js/index.js"></script>
 </body>
