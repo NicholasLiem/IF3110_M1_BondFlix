@@ -16,6 +16,7 @@ if (isset($_SESSION["user_id"]) && !$_SESSION["is_admin"]) {
 
 <body>
     <div class="registration-container">
+        <a href="/"><img src="/public/logo.png" alt="Bonflix Logo" class="logo"></a>
         <h1>User Registration</h1>
         <form id="registration-form">
             <input type="text" id="input-username" name="username" placeholder="Username" required>
@@ -25,6 +26,7 @@ if (isset($_SESSION["user_id"]) && !$_SESSION["is_admin"]) {
             <input type="password" id="input-password-confirmation" placeholder="Password confirmation" required>
             <input type="submit" value="Register">
         </form>
+        <a class="login-link" href="/login">Already have an account?</a>
     </div>
     <script>
             document.getElementById('registration-form').addEventListener('submit', submitRegister);
