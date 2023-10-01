@@ -6,12 +6,12 @@
     $adminSidebarTemplate = BASE_PATH . "/public/templates/admin-sidebar.php";
     $username = $_SESSION['username'];
 ?>
-
-<body>
-  <?php
-  include $adminSidebarTemplate
-  ?>
-  <main>
-    <p>Welcome to Admin Page, <?php echo $username ?>!</p>
-  </main>
-</body>
+    <body>
+        <?php
+        include $adminSidebarTemplate
+        ?>
+        <main>
+            <p>Welcome to Admin Page, <?php echo $username ?>!</p>
+        </main>
+    </body>
+</html>
