@@ -136,8 +136,6 @@ class PersistentUserRepository implements UserRepository
         return $user;
     }
 
-
-
     /**
      * @throws Exception
      */
@@ -156,6 +154,9 @@ class PersistentUserRepository implements UserRepository
 
     }
 
+    /**
+     * @throws Exception
+     */
     public function getAllUser(): array
     {
         try {
