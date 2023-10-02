@@ -25,7 +25,7 @@ class ContentCategoryHandler extends BaseHandler {
         return self::$instance;
     }
 
-        /*
+    /*
      * route formats:
      * /api/category/category?content_id={cid} 
      */
@@ -37,7 +37,7 @@ class ContentCategoryHandler extends BaseHandler {
             $categoriesArray[] = $category->toArray();
         }
 
-        $response = new Response(true, HttpStatusCode::OK ,"Categories(s) retrieved successfully", $categoriesArray);
+        $response = new Response(true, HttpStatusCode::OK ,"Category(s) retrieved successfully", $categoriesArray);
         $response->encode_to_JSON();
     }
 
@@ -49,7 +49,7 @@ class ContentCategoryHandler extends BaseHandler {
 
             $this->service->addCategory($content_id, $category_id);
 
-            $response = new Response(true, HttpStatusCode::OK ,"Categories(s) added successfully", null);
+            $response = new Response(true, HttpStatusCode::OK ,"Category(s) added successfully", null);
             $response->encode_to_JSON();
             
         } catch (Exception $e) {
