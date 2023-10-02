@@ -11,6 +11,7 @@ use Middleware\Page\LoggedInCheck;
 use Router\Router;
 use Handler\Content\ContentHandler;
 use Handler\Content\ContentActorHandler;
+use Handler\Content\ContentCategoryHandler;
 
 /**
  * Registering the singleton handlers
@@ -21,6 +22,7 @@ $logoutHandler = LogoutHandler::getInstance($container);
 $userHandler = UserHandler::getInstance($container);
 $contentHandler = ContentHandler::getInstance($container);
 $contentActorHandler = ContentActorHandler::getInstance($container);
+$contentCategoryHandler = ContentCategoryHandler::getInstance($container);
 
 /**
  * Making new router instance
@@ -82,6 +84,11 @@ $router->addAPI('/api/content', 'DELETE', $contentHandler, []);
 $router->addAPI('/api/content/actor', 'GET', $contentActorHandler, []);
 $router->addAPI('/api/content/actor', 'POST', $contentActorHandler, []);
 $router->addAPI('/api/content/actor', 'DELETE', $contentActorHandler, []);
+
+$router->addAPI('/api/contet/category', 'GET', $contentCategoryHandler, []);
+$router->addAPI('/api/content/category', 'POST', $contentCategoryHandler, []);
+$router->addAPI('/api/content/category', 'DELETE', $contentCategoryHandler, []);
+ 
 /**
  * Setting api or page fallback handler
  */
