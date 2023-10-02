@@ -16,7 +16,7 @@ class ContentDirectorHandler extends BaseHandler {
         parent::__construct($service);
     }
 
-    public static function getInstance($container): ContentHandler {
+    public static function getInstance($container): ContentDirectorHandler {
         if (!isset(self::$instance)) {
             self::$instance = new static(
                 $container->resolve('contentService')
@@ -25,25 +25,51 @@ class ContentDirectorHandler extends BaseHandler {
         return self::$instance;
     }
 
+        /*
+     * route formats:
+     * /api/director/director?content_id={cid} 
+     */
     protected function get($params = null)
     {
-        //TODO: implement
+        $directors = $this->service->getDirectors($params['content_id']);
+        $directorsArray = [];
+        foreach ($directors as $director) {
+            $directorsArray[] = $director->toArray();
+        }
+
+        $response = new Response(true, HttpStatusCode::OK ,"Director(s) retrieved successfully", $directorsArray);
+        $response->encode_to_JSON();
     }
 
     protected function post($params = null)
     {
-        //TODO: implement
+        try {
+            $content_id = $_POST['content_id'];
+            $director_id = $_POST['director_id'];
 
+            $this->service->addDirector($content_id, $director_id);
+
+            $response = new Response(true, HttpStatusCode::OK ,"Director(s) added successfully", null);
+            $response->encode_to_JSON();
+            
+        } catch (Exception $e) {
+            $response = new Response(true, HttpStatusCode::BAD_REQUEST ,"Failed to add director(s)", null);
+            $response->encode_to_JSON();
+        }
     }
 
-    protected function put($params = null)
-    {
-        //TODO: implement
-
-    }
-
+     /*
+     * route formats:
+     * /api/content/director?content_id={cid}&director_id={did} => delete director with id=did from content with id=cid
+     */
     protected function delete($params = null)
     {
-        //TODO: implement
+        try {
+            $this->service->removeDirector($params['content_id'], $params['director_id']);
+            $response = new Response(true, HttpStatusCode::OK, "Director deleted successfully", null);
+        } catch (Exception $e) {
+            $response = new Response(false, HttpStatusCode::BAD_REQUEST, "Director deletion failed: " . $e->getMessage(), null);
+            $response->encode_to_JSON();
+        }
     }
 }
