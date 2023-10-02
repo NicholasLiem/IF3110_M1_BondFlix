@@ -14,23 +14,25 @@ class ContentService
         $this->contentRepository = $contentRepository;
     }
 
-    public function addContent(
+    public function createContent(
         $title,
         $description,
         $release_date,
-        $content_file_path
+        $content_file_path,
+        $thumbnail_file_path
     ): ?Content {
         $content = new Content();
         $content->setTitle($title);
         $content->setDescription($description);
         $content->setReleaseDate($release_date);
         $content->setContentFilePath($content_file_path);
+        $content->setThumbnailFilePath($thumbnail_file_path);
 
         return $this->contentRepository->createContent($content);
     }
 
-    public function removeContent($content_id) {
-        return $this->contentRepository->deleteContentById($content_id);
+    public function removeContent($content_id): void {
+        $this->contentRepository->deleteContentById($content_id);
     }
 
     /**
@@ -38,10 +40,11 @@ class ContentService
      */
     public function updateContent(
         int $content_id, 
-        null|string $title, 
-        null|string $description, 
-        null|string $release_date, 
-        null|string $content_file_path
+        ?string $title, 
+        ?string $description, 
+        ?string $release_date, 
+        ?string $content_file_path,
+        ?string $thumbnail_file_path
     ) : ?Content 
     {
         $updatedContent = $this->contentRepository->getContentById($content_id);
@@ -54,6 +57,7 @@ class ContentService
         if (!is_null($description)) $updatedContent->setDescription($description);
         if (!is_null($release_date)) $updatedContent->setReleaseDate($release_date);
         if (!is_null($content_file_path)) $updatedContent->setContentFilePath($content_file_path);
+        if (!is_null($thumbnail_file_path)) $updatedContent->setThumbnailFilePath($thumbnail_file_path);
 
         return $this->contentRepository->updateContent($updatedContent);
     }

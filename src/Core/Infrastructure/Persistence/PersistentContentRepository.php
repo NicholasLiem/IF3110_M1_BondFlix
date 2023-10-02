@@ -58,19 +58,22 @@ class PersistentContentRepository implements ContentRepository
             title, 
             description, 
             release_date,
-            content_file_path
+            content_file_path,
+            thumbnail_file_path
         ) 
-        VALUES (:title, :description, :release_date, :content_file_path)");
+        VALUES (:title, :description, :release_date, :content_file_path, :thumbnail_file_path)");
 
         $title = $content->getTitle();
         $description = $content->getDescription();
         $release_date = $content->getReleaseDate();
         $content_file_path = $content->getContentFilePath();
+        $thumbnail_file_path = $content->getThumbnailFilePath();
 
         $stmt->bindParam(':title', $title);
         $stmt->bindParam(':description', $description);
         $stmt->bindParam(':release_date', $release_date);
         $stmt->bindParam(':content_file_path', $content_file_path);
+        $stmt->bindParam(':thumbnail_file_path', $thumbnail_file_path);
 
         if (!$stmt->execute()) {
             throw new Exception("Content creation failed");
@@ -87,28 +90,33 @@ class PersistentContentRepository implements ContentRepository
                 title = :new_title,
                 description = :new_description,
                 release_date = :new_release_date,
-                content_file_path = :new_content_file_path
+                content_file_path = :new_content_file_path,
+                thumbnail_file_path = :new_thumbnail_file_path
             WHERE content_id = :content_id
         ");
 
+        $contentId = $content->getContentId();
         $newTitle = $content->getTitle();
         $newDescription = $content->getDescription();
         $newReleaseDate = $content->getReleaseDate();
         $newContentFilePath = $content->getContentFilePath();
+        $newThumbnailFilePath = $content->getThumbnailFilePath();
 
         $stmt->bindParam(':new_title', $newTitle);
         $stmt->bindParam(':new_description', $newDescription);
         $stmt->bindParam(':new_release_date', $newReleaseDate);
         $stmt->bindParam(':new_content_file_path', $newContentFilePath);
+        $stmt->bindParam(':new_thumbnail_file_path', $newThumbnailFilePath);
+        $stmt->bindParam(':content_id', $contentId);
 
         if (!$stmt->execute()) {
-            throw new Exception("User update failed");
+            throw new Exception("Content update failed");
         }
 
         return $content;
     }
 
-    public function deleteContentById(int $content_id)
+    public function deleteContentById(int $content_id): void
     {
         $stmt = $this->db->prepare("
             DELETE FROM content
