@@ -27,23 +27,98 @@ class ContentHandler extends BaseHandler {
 
     protected function get($params = null)
     {
-        //TODO: implement
+        if (isset($params['content_id'])) {
+            $content = $this->service->getContentById($params['content_id']);
+            if (is_null($content)) {
+                $response = new Response(true, HttpStatusCode::NOT_FOUND ,"Content(s) not found", []);
+                $response->encode_to_JSON();
+                return;
+            }
+            $response = new Response(true, HttpStatusCode::OK ,"Content(s) retrieved successfully", $content->toArray());
+            $response->encode_to_JSON();
+            return;
+        }
+
+        $pageNumber = null;
+        if (isset($params['page'])) $pageNumber = $params['page'];
+        $contents = $this->service->getAllContents($pageNumber);
+
+        $contentsArray = [];
+        foreach ($contents as $content) {
+            $contentsArray[] = $content->toArray();
+        }
+
+        $response = new Response(true, HttpStatusCode::OK ,"Content(s) retrieved successfully", $contentsArray);
+        $response->encode_to_JSON();
     }
 
     protected function post($params = null)
     {
-        //TODO: implement
+        try {
+            $title = $_POST['title'];
+            $description = $_POST['description'];
+            $release_date = $_POST['release_date'];
+            $content_file_path = $_POST['content_file_path'];
+            $thumbnail_file_path = $_POST['thumbnail_file_path'];
 
+            $content = $this->service->createContent(
+                $title,
+                $description,
+                $release_date,
+                $content_file_path,
+                $thumbnail_file_path
+            );
+
+            $response = new Response(true, HttpStatusCode::OK, "Content created successfully", $content->toArray());
+            $response->encode_to_JSON();
+
+        } catch (Exception $e) {
+
+            $response = new Response(false, HttpStatusCode::BAD_REQUEST, "Content creation failed: " . $e->getMessage(), null);
+            $response->encode_to_JSON();
+        }
     }
 
     protected function put($params = null)
     {
-        //TODO: implement
+        try {
+            $putData = file_get_contents('php://input');
+            parse_str($putData, $_PUT);
+
+            $content_id = $_PUT['content_id'] ?? null;
+            $title = $_PUT['title'] ?? null;
+            $description = $_PUT['description'] ?? null;
+            $release_date = $_PUT['release_date'] ?? null;
+            $content_file_path = $_PUT['content_file_path'] ?? null;
+            $thumbnail_file_path = $_PUT['thumbnail_file_path'] ?? null;
+
+            $content = $this->service->updateContent(
+                $content_id,
+                $title,
+                $description,
+                $release_date,
+                $content_file_path,
+                $thumbnail_file_path
+            );
+
+            $response = new Response(true, HttpStatusCode::OK, "Content updated successfully", $content->toArray());
+            $response->encode_to_JSON();
+
+        } catch (Exception $e) {
+            $response = new Response(false, HttpStatusCode::BAD_REQUEST, "Content update failed: " . $e->getMessage(), null);
+            $response->encode_to_JSON();
+        }
 
     }
 
     protected function delete($params = null)
     {
-        //TODO: implement
+        try {
+            $this->service->removeContent($params['content_id']);
+            $response = new Response(true, HttpStatusCode::OK, "Content deleted successfully", []);
+        } catch (Exception $e) {
+            $response = new Response(false, HttpStatusCode::BAD_REQUEST, "Content deletion failed: " . $e->getMessage(), null);
+            $response->encode_to_JSON();
+        }
     }
 }

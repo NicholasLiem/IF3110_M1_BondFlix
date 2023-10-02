@@ -9,6 +9,7 @@ use Handler\User\UserHandler;
 use Middleware\Page\AdminCheck;
 use Middleware\Page\LoggedInCheck;
 use Router\Router;
+use Handler\Content\ContentHandler;
 
 /**
  * Registering the singleton handlers
@@ -17,6 +18,7 @@ $loginHandler = LoginHandler::getInstance($container);
 $registerHandler = RegisterHandler::getInstance($container);
 $logoutHandler = LogoutHandler::getInstance($container);
 $userHandler = UserHandler::getInstance($container);
+$contentHandler = ContentHandler::getInstance($container);
 
 /**
  * Making new router instance
@@ -68,6 +70,11 @@ $router->addAPI('/api/auth/register', 'POST', $registerHandler, []);;
 $router->addAPI('/api/auth/logout', 'POST', $logoutHandler, [LoggedInCheck::getInstance()]);;
 
 $router->addAPI('/api/users', 'GET', $userHandler, [AdminCheck::getInstance()]);
+
+$router->addAPI('/api/content', 'GET', $contentHandler, []);
+$router->addAPI('/api/content', 'POST', $contentHandler, []);
+$router->addAPI('/api/content', 'PUT', $contentHandler, []);
+$router->addAPI('/api/content', 'DELETE', $contentHandler, []);
 
 /**
  * Setting api or page fallback handler

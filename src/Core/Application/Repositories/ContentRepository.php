@@ -6,7 +6,7 @@ interface ContentRepository {
     public function getContentById(int $content_id) : ?Content;
     public function createContent(Content $content) : ?Content;
     public function updateContent(Content $content) : ?Content;
-    public function deleteContentById(int $content_id);
+    public function deleteContentById(int $content_id): void;
     public function getAllContents(?int $pageNumber, int $pageSize = 10): array;
     public function getActors(int $content_id): array;
     public function addActor(int $content_id, int $actor_id): void;
