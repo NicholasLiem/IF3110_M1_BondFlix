@@ -10,10 +10,9 @@ body {
 }
 
 .content {
-  flex: 1;
+  flex-grow: 1;
+  margin-left: 200px;
   display: flex;
-  /*justify-content: center;*/
-  /*align-items: center;*/
-  padding: 20px;
+  width: auto;
   background-color: #444444;
 }
