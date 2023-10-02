@@ -14,7 +14,6 @@ $username = $_SESSION['username'];
 
 <body>
     <div class="content">
-        <a href="/admin/movies/upload">Upload</a>
         <table>
             <tr>
                 <th>No.</th>
@@ -24,18 +23,6 @@ $username = $_SESSION['username'];
                 <th>Release Date</th>
                 <th>Content File Path</th>
                 <th>Action</th>
-            </tr>
-            <tr>
-                <td>1</td>
-                <td>1</td>
-                <td>Upin Ipin</td>
-                <td>Bocah kembar</td>
-                <td>01 Januari 2000</td>
-                <td>/file/upinipin.mp4</td>
-                <td>
-                    <button>Edit</button>
-                    <button>Delete</button>
-                </td>
             </tr>
         </table>
     </div>
