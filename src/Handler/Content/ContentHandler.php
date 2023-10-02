@@ -6,6 +6,8 @@ use Handler\BaseHandler;
 use Utils\Http\HttpStatusCode;
 use Utils\Response\Response;
 
+//TODO: exception handling
+
 class ContentHandler extends BaseHandler {
     
     protected static $instance;
@@ -25,12 +27,18 @@ class ContentHandler extends BaseHandler {
         return self::$instance;
     }
 
+    /*
+     * route formats: 
+     * /api/content => get all content data
+     * /api/content?page={p} => get content data at page p
+     * /api/content?content_id={id} => get a content with a specific id
+     */
     protected function get($params = null)
     {
         if (isset($params['content_id'])) {
             $content = $this->service->getContentById($params['content_id']);
             if (is_null($content)) {
-                $response = new Response(true, HttpStatusCode::NOT_FOUND ,"Content(s) not found", []);
+                $response = new Response(true, HttpStatusCode::NOT_FOUND ,"Content(s) not found", null);
                 $response->encode_to_JSON();
                 return;
             }
@@ -39,8 +47,7 @@ class ContentHandler extends BaseHandler {
             return;
         }
 
-        $pageNumber = null;
-        if (isset($params['page'])) $pageNumber = $params['page'];
+        $pageNumber = $params['page'] ?? null;
         $contents = $this->service->getAllContents($pageNumber);
 
         $contentsArray = [];
@@ -111,11 +118,15 @@ class ContentHandler extends BaseHandler {
 
     }
 
+    /*
+     * route formats: 
+     * /api/content?content_id={id} => delete a content with a specific id
+     */
     protected function delete($params = null)
     {
         try {
             $this->service->removeContent($params['content_id']);
-            $response = new Response(true, HttpStatusCode::OK, "Content deleted successfully", []);
+            $response = new Response(true, HttpStatusCode::OK, "Content deleted successfully", null);
         } catch (Exception $e) {
             $response = new Response(false, HttpStatusCode::BAD_REQUEST, "Content deletion failed: " . $e->getMessage(), null);
             $response->encode_to_JSON();

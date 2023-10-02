@@ -16,7 +16,7 @@ class ContentActorHandler extends BaseHandler {
         parent::__construct($service);
     }
 
-    public static function getInstance($container): ContentHandler {
+    public static function getInstance($container): ContentActorHandler {
         if (!isset(self::$instance)) {
             self::$instance = new static(
                 $container->resolve('contentService')
@@ -25,25 +25,51 @@ class ContentActorHandler extends BaseHandler {
         return self::$instance;
     }
 
+    /*
+     * route formats:
+     * /api/content/actor?content_id={cid} 
+     */
     protected function get($params = null)
     {
-        //TODO: implement
+        $actors = $this->service->getActors($params['content_id']);
+        $actorsArray = [];
+        foreach ($actors as $actor) {
+            $actorsArray[] = $actor->toArray();
+        }
+
+        $response = new Response(true, HttpStatusCode::OK ,"Actors(s) retrieved successfully", $actorsArray);
+        $response->encode_to_JSON();
     }
 
     protected function post($params = null)
     {
-        //TODO: implement
+        try {
+            $content_id = $_POST['content_id'];
+            $actor_id = $_POST['actor_id'];
 
+            $this->service->addActor($content_id, $actor_id);
+
+            $response = new Response(true, HttpStatusCode::OK ,"Actors(s) added successfully", null);
+            $response->encode_to_JSON();
+            
+        } catch (Exception $e) {
+            $response = new Response(true, HttpStatusCode::BAD_REQUEST ,"Failed to add actors(s)", null);
+            $response->encode_to_JSON();
+        }
     }
 
-    protected function put($params = null)
-    {
-        //TODO: implement
-
-    }
-
+     /*
+     * route formats:
+     * /api/content/actor?content_id={cid}&actor_id={aid} => delete actor with id=aid from content with id=cid
+     */
     protected function delete($params = null)
     {
-        //TODO: implement
+        try {
+            $this->service->removeActor($params['content_id'], $params['actor_id']);
+            $response = new Response(true, HttpStatusCode::OK, "Actor deleted successfully", null);
+        } catch (Exception $e) {
+            $response = new Response(false, HttpStatusCode::BAD_REQUEST, "Actor deletion failed: " . $e->getMessage(), null);
+            $response->encode_to_JSON();
+        }
     }
 }
