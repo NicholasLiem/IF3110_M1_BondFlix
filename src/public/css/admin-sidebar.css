@@ -33,12 +33,14 @@
 
 .admin-sidebar .sidebar-item {
   background-color: transparent;
+  border-radius: 4px;
   padding: 5px 20px;
   transition: background-color 0.3s ease;
 }
 
 .admin-sidebar .sidebar-item:hover {
   background-color: #E50914;
+  cursor: pointer;
 }
 
 .admin-sidebar ul li:last-child {
@@ -46,12 +48,11 @@
 }
 
 .admin-sidebar ul li:last-child a {
-  color: #E50914;
+  color: red;
   font-weight: bold;
-  text-align: center;
 }
 
 .admin-sidebar ul li:last-child a:hover {
   background-color: transparent;
-  color: #ff5656;
+  color: #fff;
 }

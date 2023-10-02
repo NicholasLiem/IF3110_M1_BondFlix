@@ -67,8 +67,8 @@ $router->addPage('/admin/users', function () {
     redirect('admin-users');
 }, [LoggedInCheck::getInstance(), AdminCheck::getInstance()]);
 
-$router->addPage('/admin/genres', function () {
-    redirect('admin-genres');
+$router->addPage('/admin/media/management', function () {
+    redirect('admin-media-management');
 }, [LoggedInCheck::getInstance(), AdminCheck::getInstance()]);
 
 $router->addPage('/admin/movies/upload', function() {

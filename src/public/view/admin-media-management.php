@@ -1,5 +1,5 @@
 <?php
-$pageTitle = 'Genre Dashboard';
+$pageTitle = 'Media Management';
 $stylesheet = '/public/css/admin-genres.css';
 $script = 'admin-genres.js';
 include BASE_PATH . "/public/templates/header.php";
@@ -8,9 +8,8 @@ $username = $_SESSION['username'];
 ?>
 
 <link rel="stylesheet" href="/public/css/admin-page.css">
-<link rel="stylesheet" href="/public/css/admin-genres.css">
+<link rel="stylesheet" href="/public/css/admin-media-management.css">
 <?php include $adminSidebarTemplate ?>
-
 <body>
 <div class="content">
     <div class="container">
@@ -28,7 +27,7 @@ $username = $_SESSION['username'];
         </form>
     </div>
 </div>
-<script src="/public/js/admin-genres.js"></script>
+<script src="/public/js/admin-media-management.js"></script>
 <script>
     document.getElementById('add-new-genre-form').addEventListener('submit', addNewGenre);
 </script>

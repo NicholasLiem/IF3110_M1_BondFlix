@@ -7,6 +7,7 @@ $username = $_SESSION['username'];
 
 <link rel="stylesheet" href="/public/css/admin-page.css">
 <link rel="stylesheet" href="/public/css/admin-table.css">
+<link rel="stylesheet" href="/public/css/admin-users.css"
 <?php include $adminSidebarTemplate ?>
 <body>
 <div class="content">
