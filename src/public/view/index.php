@@ -1,6 +1,10 @@
 <?php
     $pageTitle = 'Landing Page';
     include BASE_PATH . "/public/templates/header.php";
+
+//    if (isset($_SESSION["user_id"])){
+//        href('/dashboard');
+//    }
 ?>
 
 <link rel="stylesheet" href="/public/css/index.css">

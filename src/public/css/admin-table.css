@@ -1,16 +1,25 @@
 table {
     width: 100%;
-    border-collapse: collapse;
+    /*border-collapse: collapse;*/
+    border-collapse: separate;
+    border-spacing: 0;
     background-color: #fff;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    table-layout: auto;
 }
 
 th {
+    position: sticky;
     background-color: #3498db;
     color: #fff;
     font-weight: bold;
     padding: 12px;
-    text-align: left;
+    text-align: center;
+    top: 0;
+    z-index: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 tr:nth-child(even) {
@@ -19,8 +28,11 @@ tr:nth-child(even) {
 
 td {
     padding: 8px;
-    overflow-y: auto;
-    text-align: left;
+    /*overflow-y: auto;*/
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 button {
