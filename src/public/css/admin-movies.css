@@ -1,3 +1,5 @@
+@import url('/public/css/lib/admin/search-bar.css');
+
 #movies-item {
     background-color: #E50914;
 }
@@ -5,3 +7,4 @@
 #movies-item:hover {
     background-color: #bd0912;
 }
+
