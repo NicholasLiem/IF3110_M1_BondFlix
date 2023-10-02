@@ -1,10 +1,10 @@
 async function addNewGenre(e) {
     e.preventDefault();
 
-    const genre = document.getElementById('input-genre').value;
+    const genre_name = document.getElementById('input-genre').value;
 
     const data = {
-        genre
+        genre_name
     };
 
     try {

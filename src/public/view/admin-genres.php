@@ -22,13 +22,14 @@ $username = $_SESSION['username'];
             <input type="submit" value="Edit Genre">
         </form>
         <form id="add-new-genre-form">
-            <label for="new_genre">Add New Genre:</label>
-            <input type="text" name="new_genre" id="input-genre" required>
+            <label>Add New Genre:</label>
+            <input type="text" name="genre_name" id="input-genre" required>
             <input type="submit" id= "submit-new-genre" value="Add Genre">
         </form>
     </div>
 </div>
-<script src="/public/js/admin-genres.js">
+<script src="/public/js/admin-genres.js"></script>
+<script>
     document.getElementById('add-new-genre-form').addEventListener('submit', addNewGenre);
 </script>
 </body>
