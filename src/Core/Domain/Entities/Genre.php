@@ -41,5 +41,11 @@ class Genre
         $this->genre_name = $genre_name;
     }
 
+    public function toArray(): array {
+        return [
+            'genre_id' => $this->genre_id,
+            'genre_name' => $this->genre_name
+        ];
+    }
 
 }

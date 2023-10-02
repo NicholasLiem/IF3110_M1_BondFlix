@@ -80,4 +80,14 @@ class Actor
     {
         $this->gender = $gender;
     }
+
+    public function toArray(): array {
+        return [
+            'actor_id' => $this->actor_id,
+            'first_name' => $this->first_name,
+            'last_name' => $this->last_name,
+            'birth_date' => $this->birth_date,
+            'gender' => $this->gender
+        ];
+    }
 }
