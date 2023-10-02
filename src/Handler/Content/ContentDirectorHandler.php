@@ -25,9 +25,9 @@ class ContentDirectorHandler extends BaseHandler {
         return self::$instance;
     }
 
-        /*
+    /*
      * route formats:
-     * /api/director/director?content_id={cid} 
+     * /api/content/director?content_id={cid} 
      */
     protected function get($params = null)
     {

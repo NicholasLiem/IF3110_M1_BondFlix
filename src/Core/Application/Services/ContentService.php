@@ -109,4 +109,16 @@ class ContentService
     {
         $this->contentRepository->deleteDirector($content_id, $director_id);
     }
+    public function getGenres(int $content_id): array 
+    {
+        return $this->contentRepository->getGenres($content_id);
+    }
+    public function addGenre(int $content_id, int $genre_id): void 
+    {
+        $this->contentRepository->addGenre($content_id, $genre_id);
+    }
+    public function removeGenre(int $content_id, int $genre_id): void 
+    {
+        $this->contentRepository->deleteGenre($content_id, $genre_id);
+    }
 }

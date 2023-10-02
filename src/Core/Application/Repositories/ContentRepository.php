@@ -17,4 +17,7 @@ interface ContentRepository {
     public function getDirectors(int $content_id): array;
     public function addDirector(int $content_id, int $director_id): void;
     public function deleteDirector(int $content_id, int $director_id): void;
+    public function getGenres(int $content_id): array;
+    public function addGenre($content_id, $genre_id): void;
+    public function deleteGenre($content_id, $genre_id) : void;
 }

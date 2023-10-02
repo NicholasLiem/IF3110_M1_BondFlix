@@ -27,7 +27,7 @@ class ContentCategoryHandler extends BaseHandler {
 
     /*
      * route formats:
-     * /api/category/category?content_id={cid} 
+     * /api/content/category?content_id={cid} 
      */
     protected function get($params = null)
     {

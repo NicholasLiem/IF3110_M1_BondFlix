@@ -16,7 +16,7 @@ class ContentGenreHandler extends BaseHandler {
         parent::__construct($service);
     }
 
-    public static function getInstance($container): ContentHandler {
+    public static function getInstance($container): ContentGenreHandler {
         if (!isset(self::$instance)) {
             self::$instance = new static(
                 $container->resolve('contentService')
@@ -25,25 +25,51 @@ class ContentGenreHandler extends BaseHandler {
         return self::$instance;
     }
 
+    /*
+     * route formats:
+     * /api/content/genre?content_id={cid} 
+     */
     protected function get($params = null)
     {
-        //TODO: implement
+        $genres = $this->service->getGenres($params['content_id']);
+        $genresArray = [];
+        foreach ($genres as $genre) {
+            $genresArray[] = $genre->toArray();
+        }
+
+        $response = new Response(true, HttpStatusCode::OK ,"Genre(s) retrieved successfully", $genresArray);
+        $response->encode_to_JSON();
     }
 
     protected function post($params = null)
     {
-        //TODO: implement
+        try {
+            $content_id = $_POST['content_id'];
+            $genre_id = $_POST['genre_id'];
 
+            $this->service->addGenre($content_id, $genre_id);
+
+            $response = new Response(true, HttpStatusCode::OK ,"Genre(s) added successfully", null);
+            $response->encode_to_JSON();
+            
+        } catch (Exception $e) {
+            $response = new Response(true, HttpStatusCode::BAD_REQUEST ,"Failed to add genre(s)", null);
+            $response->encode_to_JSON();
+        }
     }
 
-    protected function put($params = null)
-    {
-        //TODO: implement
-
-    }
-
+     /*
+     * route formats:
+     * /api/content/genre?content_id={cid}&genre_id={did} => delete genre with id=did from content with id=cid
+     */
     protected function delete($params = null)
     {
-        //TODO: implement
+        try {
+            $this->service->removeGenre($params['content_id'], $params['genre_id']);
+            $response = new Response(true, HttpStatusCode::OK, "Genre deleted successfully", null);
+        } catch (Exception $e) {
+            $response = new Response(false, HttpStatusCode::BAD_REQUEST, "Genre deletion failed: " . $e->getMessage(), null);
+            $response->encode_to_JSON();
+        }
     }
 }

@@ -7,6 +7,7 @@ use Core\Domain\Entities\Actor;
 use Core\Domain\Entities\Category;
 use Core\Domain\Entities\Content;
 use Core\Domain\Entities\Director;
+use Core\Domain\Entities\Genre;
 use Exception;
 use PDO;
 use Utils\Logger\Logger;
@@ -368,6 +369,73 @@ class PersistentContentRepository implements ContentRepository
 
         if (!$stmt->execute()) {
             throw new Exception("Failed to delete director");
+        }
+    }
+
+    public function getGenres(int $content_id): array 
+    {
+        try {
+            $stmt = $this->db->prepare("
+                SELECT g.genre_id, g.genre_name
+                FROM content c
+                JOIN genre_content gc ON c.content_id = gc.content_id
+                JOIN genre g ON gc.genre_id = g.genre_id 
+                WHERE c.content_id = :content_id
+            ");
+
+
+            $stmt->bindParam(':content_id', $content_id);
+
+            if (!$stmt->execute()) {
+                throw new Exception("Failed to fetch genre data from content");
+            }
+
+            $genres = [];
+            while ($genreData = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                $genre = new Genre(
+                    (int) $genreData['genre_id'],
+                    $genreData['genre_name']
+                );
+
+                $genres[] = $genre; 
+            }
+
+            return $genres;
+
+        } catch (Exception $e) {
+            Logger::getInstance()->logMessage('Failed to fetch all content genres: ' . $e->getMessage());
+            throw new Exception("Failed to fetch content genres");
+        }
+    }
+
+    public function addGenre($content_id, $genre_id): void 
+    {
+        $stmt = $this->db->prepare("
+        INSERT INTO genre_content (genre_id, content_id)
+        VALUES (:genre_id, :content_id)
+        ");
+
+        $stmt->bindParam(':genre_id', $genre_id);
+        $stmt->bindParam(':content_id', $content_id);
+
+        if (!$stmt->execute()) {
+            throw new Exception("Failed to add genre");
+        }
+    }
+
+    public function deleteGenre($content_id, $genre_id) : void 
+    {
+        $stmt = $this->db->prepare("
+        DELETE FROM genre_content
+        WHERE genre_id = :genre_id
+        AND content_id = :content_id
+        ");
+
+        $stmt->bindParam(':genre_id', $genre_id);
+        $stmt->bindParam(':content_id', $content_id);
+
+        if (!$stmt->execute()) {
+            throw new Exception("Failed to delete genre");
         }
     }
 

@@ -12,6 +12,8 @@ use Router\Router;
 use Handler\Content\ContentHandler;
 use Handler\Content\ContentActorHandler;
 use Handler\Content\ContentCategoryHandler;
+use Handler\Content\ContentDirectorHandler;
+use Handler\Content\ContentGenreHandler;
 
 /**
  * Registering the singleton handlers
@@ -23,6 +25,8 @@ $userHandler = UserHandler::getInstance($container);
 $contentHandler = ContentHandler::getInstance($container);
 $contentActorHandler = ContentActorHandler::getInstance($container);
 $contentCategoryHandler = ContentCategoryHandler::getInstance($container);
+$contentDirectorHandler = ContentDirectorHandler::getInstance($container);
+$contentGenreHandler = ContentGenreHandler::getInstance($container);
 
 /**
  * Making new router instance
@@ -85,9 +89,17 @@ $router->addAPI('/api/content/actor', 'GET', $contentActorHandler, []);
 $router->addAPI('/api/content/actor', 'POST', $contentActorHandler, []);
 $router->addAPI('/api/content/actor', 'DELETE', $contentActorHandler, []);
 
-$router->addAPI('/api/contet/category', 'GET', $contentCategoryHandler, []);
+$router->addAPI('/api/content/category', 'GET', $contentCategoryHandler, []);
 $router->addAPI('/api/content/category', 'POST', $contentCategoryHandler, []);
 $router->addAPI('/api/content/category', 'DELETE', $contentCategoryHandler, []);
+
+$router->addAPI('/api/content/director', 'GET', $contentDirectorHandler, []);
+$router->addAPI('/api/content/director', 'POST', $contentDirectorHandler, []);
+$router->addAPI('/api/content/director', 'DELETE', $contentDirectorHandler, []);
+
+$router->addAPI('/api/content/genre', 'GET', $contentGenreHandler, []);
+$router->addAPI('/api/content/genre', 'POST', $contentGenreHandler, []);
+$router->addAPI('/api/content/genre', 'DELETE', $contentGenreHandler, []);
  
 /**
  * Setting api or page fallback handler
