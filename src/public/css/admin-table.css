@@ -1,21 +1,21 @@
 table {
-    width: 100%;
-    /*border-collapse: collapse;*/
     border-collapse: separate;
     border-spacing: 0;
     background-color: #fff;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     table-layout: auto;
+    width: auto;
+    margin: 30px;
 }
 
 th {
-    position: sticky;
+    /*position: sticky;*/
     background-color: #3498db;
     color: #fff;
     font-weight: bold;
     padding: 12px;
     text-align: center;
-    top: 0;
+    /*top: 0;*/
     z-index: 1;
     white-space: nowrap;
     overflow: hidden;
