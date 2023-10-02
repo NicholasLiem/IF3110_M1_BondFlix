@@ -1,25 +1,26 @@
 <?php
-namespace Handler\Auth;
+
+namespace Handler\Genre;
 
 use Exception;
 use Handler\BaseHandler;
 use Utils\Http\HttpStatusCode;
 use Utils\Response\Response;
 
-class LoginHandler extends BaseHandler
+class GenreHandler extends BaseHandler
 {
-    protected static $instance;
     protected $service;
+
     private function __construct($service)
     {
         parent::__construct($service);
     }
 
-    public static function getInstance($container): LoginHandler
+    public static function getInstance($container): GenreHandler
     {
         if (!isset(self::$instance)) {
             self::$instance = new static(
-                $container->resolve('authService')
+                $container->resolve('genreService')
             );
         }
         return self::$instance;
@@ -27,13 +28,12 @@ class LoginHandler extends BaseHandler
 
     public function post($params = null): void
     {
-        $username = $_POST['username'];
-        $password = $_POST['password'];
+        $genre_name = $_POST['genre_name'];
 
         try {
 
-            $user = $this->service->login($username, $password);
-            $response = new Response(true, HttpStatusCode::OK ,"User successfully logged in", $user->toArray());
+            $genre = $this->service->addGenre($genre_name);
+            $response = new Response(true, HttpStatusCode::OK ,"New genre successfully added", $genre->toArray());
             $response->encode_to_JSON();
 
         } catch (Exception $e) {

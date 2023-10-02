@@ -5,6 +5,7 @@ global $container;
 use Handler\Auth\LoginHandler;
 use Handler\Auth\LogoutHandler;
 use Handler\Auth\RegisterHandler;
+use Handler\Genre\GenreHandler;
 use Handler\User\UserHandler;
 use Middleware\Page\AdminCheck;
 use Middleware\Page\LoggedInCheck;
@@ -23,6 +24,7 @@ $userHandler = UserHandler::getInstance($container);
 $contentHandler = ContentHandler::getInstance($container);
 $contentActorHandler = ContentActorHandler::getInstance($container);
 $contentCategoryHandler = ContentCategoryHandler::getInstance($container);
+$genreHandler = GenreHandler::getInstance($container);
 
 /**
  * Making new router instance
@@ -61,6 +63,10 @@ $router->addPage('/admin/users', function () {
     redirect('admin-users');
 }, [LoggedInCheck::getInstance(), AdminCheck::getInstance()]);
 
+$router->addPage('/admin/genres', function () {
+    redirect('admin-genres');
+}, [LoggedInCheck::getInstance(), AdminCheck::getInstance()]);
+
 $router->addPage('/admin/movies/upload', function() {
     redirect('admin-movie-upload');
 }, [LoggedInCheck::getInstance(), AdminCheck::getInstance()]);
@@ -85,10 +91,11 @@ $router->addAPI('/api/content/actor', 'GET', $contentActorHandler, []);
 $router->addAPI('/api/content/actor', 'POST', $contentActorHandler, []);
 $router->addAPI('/api/content/actor', 'DELETE', $contentActorHandler, []);
 
-$router->addAPI('/api/contet/category', 'GET', $contentCategoryHandler, []);
+$router->addAPI('/api/content/category', 'GET', $contentCategoryHandler, []);
 $router->addAPI('/api/content/category', 'POST', $contentCategoryHandler, []);
 $router->addAPI('/api/content/category', 'DELETE', $contentCategoryHandler, []);
- 
+
+$router->addAPI('/api/genre', 'POST', $genreHandler, []);
 /**
  * Setting api or page fallback handler
  */
