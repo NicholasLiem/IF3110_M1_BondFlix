@@ -38,9 +38,10 @@ class UserHandler extends BaseHandler
                     $response = new Response(false, HttpStatusCode::NOT_FOUND, "User not found", null);
                 }
             } else {
-                if (isset($params['query'])) {
+                if (isset($params['query']) && isset($params['sortAscending'])) {
                     $query = $params['query'];
-                    $result = $this->service->processUserQuery($query);
+                    $sortAscending = filter_var($params['sortAscending'], FILTER_VALIDATE_BOOLEAN);
+                    $result = $this->service->processUserQuery($query, $sortAscending);
                     if (empty($result)) {
                         $response = new Response(false, HttpStatusCode::OK, "No matching users found", null);
                     } else {

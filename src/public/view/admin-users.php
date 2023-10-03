@@ -13,7 +13,7 @@ $username = $_SESSION['username'];
     <div class="content">
         <div class="search-bar">
             <input type="text" id="search-input" placeholder="Search by username, first name, or last name">
-            <button id="refresh-button" class="search-bar-button">Refresh</button>
+            <button id="sort-button" class="search-bar-button">Sort ID ↑</button>
         </div>
 
         <table class="admin-table">

@@ -1,5 +1,6 @@
 let userData = {};
 let currentUserId = null;
+let isAscending = true;
 
 /**
  * Debounce for search
@@ -46,10 +47,10 @@ function updateTable(users) {
 
 
 const searchInput = document.getElementById('search-input');
-async function fetchData(query) {
+async function fetchData(query, sortAscending) {
     try {
         const httpClient = new HttpClient();
-        const response = await httpClient.get(`/api/users?query=${query}`, null, false);
+        const response = await httpClient.get(`/api/users?query=${query}&sortAscending=${sortAscending}`, null, false);
         const json = JSON.parse(response);
         if (json.success){
             updateTable(json.data);
@@ -63,12 +64,28 @@ async function fetchData(query) {
 const debouncedFetch = helper.debounce(fetchData, 500);
 searchInput.addEventListener('input', function() {
     const query = searchInput.value.trim();
-    debouncedFetch(query);
+    debouncedFetch(query, isAscending);
 });
 
-fetchData('').then(r => {});
 
 
+/**
+ * Sort Feature
+ */
+const sortButton = document.getElementById('sort-button');
+sortButton.addEventListener('click', () => {
+    isAscending = !isAscending;
+    if (isAscending) {
+        sortButton.textContent = 'Sort ID ↑';
+    } else {
+        sortButton.textContent = 'Sort ID ↓';
+    }
+    const query = searchInput.value.trim();
+
+    fetchData(query, isAscending);
+});
+
+fetchData('', isAscending).then(r => {});
 /**
  * Delete button functionality
  */
@@ -183,7 +200,5 @@ document.getElementById("saveEditButton").addEventListener("click", async (e) =>
         alert("An error occurred during editing.");
     }
 });
-
-
 
 

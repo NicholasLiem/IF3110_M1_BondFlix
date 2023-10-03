@@ -259,10 +259,12 @@ class PersistentUserRepository implements UserRepository
     /**
      * @throws Exception
      */
-    public function processQuery($query): array
+    public function processQuery(string $query, bool $sortAscending): array
     {
         try {
             $query = '%' . $query . '%';
+
+            $orderBy = $sortAscending ? 'user_id ASC' : 'user_id DESC';
 
             $stmt = $this->db->prepare("
             SELECT user_id, 
@@ -276,7 +278,7 @@ class PersistentUserRepository implements UserRepository
             WHERE username LIKE :query
             OR first_name LIKE :query
             OR last_name LIKE :query
-            ORDER BY user_id ASC;
+            ORDER BY $orderBy;
         ");
 
             $stmt->bindParam(':query', $query, PDO::PARAM_STR);
@@ -303,8 +305,9 @@ class PersistentUserRepository implements UserRepository
             return $users;
         } catch (Exception $e) {
             Logger::getInstance()->logMessage('Failed to fetch users: ' . $e->getMessage());
-            throw new Exception("Failed to fetch users");
+            throw new Exception("Failed to fetch users: " . $e->getMessage());
         }
     }
+
 
 }

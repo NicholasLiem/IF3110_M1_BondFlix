@@ -40,8 +40,8 @@ class AdminService
         return $this->userRepository->updateUser($user);
     }
 
-    function processUserQuery(string $query) : array
+    function processUserQuery(string $query, bool $sortAscending) : array
     {
-        return $this->userRepository->processQuery($query);
+        return $this->userRepository->processQuery($query, $sortAscending);
     }
 }
