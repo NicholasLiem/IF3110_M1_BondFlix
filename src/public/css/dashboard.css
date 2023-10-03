@@ -2,8 +2,6 @@
 
 .navbar {
     left: 0;
-    /* background-color: black; */
-    /* outline: 1px solid red; */
 }
 
 .navbar #menu-left {
@@ -54,6 +52,32 @@
     font-size: 16px;
 }
 
+.account-menu {
+    position: absolute;
+    top: 60px;
+    right: 65px;
+    font-family: "Roboto", sans-serif;
+    font-size: 1rem;
+    background-color: rgb(32, 31, 31);
+    padding: 8px;
+    margin-top: 8px;
+    border-radius: 4px;
+}
+
+.account-menu ul {
+    list-style-type: none;
+    padding-left: 0;
+    margin: 0;
+}
+
+.account-menu li {
+    padding: 8px;
+}
+
+.account-menu li:hover {
+    background-color: rgb(86, 84, 84);
+}
+
 body {
     margin: 0;
     padding: 0;
@@ -84,7 +108,7 @@ body {
     position: relative;
     z-index: 2;
     left: 50px;
-    width: 30%;
+    width: 40%;
 }
 
 .description-card h2 {
@@ -104,6 +128,47 @@ body {
 .description-card button div {
     display: flex;
 }
-/* .navbar:hover {
-    background-color: black;
-} */
+
+#btns-container {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 32px;
+    gap: 16px;
+}
+
+.description-card button {
+    min-width: 125px;
+    height: 60px;
+    padding: 0 16px;
+    border: 0;
+    border-radius: 8px;
+}
+
+#play-btn:hover {
+    background-color: rgb(199, 197, 197);
+}
+
+#more-info-btn {
+    background-color: rgba(163, 163, 163, 0.5);
+    color: white;
+}
+#more-info-btn:hover {
+    background-color: rgba(222, 222, 222, 0.5);
+}
+
+#more-info-btn svg {
+    fill: white;
+}
+
+.btn-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 2rem;
+    font-weight: bold;
+    padding: 10px 0;
+}
+
+.btn-content svg {
+    height: 40px;
+}
