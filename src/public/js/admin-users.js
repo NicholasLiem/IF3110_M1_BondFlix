@@ -1,5 +1,6 @@
 
 const userData = {};
+let currentUserId = null;
 async function getUsers() {
     try {
         const httpClient = new HttpClient();
@@ -44,10 +45,7 @@ async function getUsers() {
     }
 }
 
-getUsers().then(r => {});
 
-const pollingInterval = 30000;
-setInterval(getUsers, pollingInterval);
 
 /**
  * Delete button functionality
@@ -62,7 +60,6 @@ document.addEventListener("click", async (event) => {
             const httpClient = new HttpClient();
             const response = await httpClient.delete(`/api/users?userId=${userId}`);
             const json = JSON.parse(response);
-            console.log(json);
             if (json.success) {
                 alert('Delete operation successful');
                 location.reload();
@@ -83,8 +80,11 @@ document.addEventListener("click", async (event) => {
  */
 const closeBtn = document.querySelector(".close");
 const editUserModal = document.getElementById("editUserModal");
-// const editUserForm = document.getElementById("editUserForm");
 const editUsernameInput = document.getElementById("editUsername");
+const editFirstNameInput = document.getElementById("editFirstName");
+const editLastNameInput = document.getElementById("editLastName");
+const editAdminSelect = document.getElementById("editStatusAdmin");
+const editSubscriptionSelect = document.getElementById("editStatusSubscription");
 document.addEventListener("click", async (event) => {
     const target = event.target;
 
@@ -92,7 +92,20 @@ document.addEventListener("click", async (event) => {
         const userId = target.closest("tr").getAttribute("data-user-id");
         const user = userData[userId];
 
-        editUsernameInput.value = user.username;
+        currentUserId = userId;
+
+        const username = user.username;
+        const firstName = user.first_name;
+        const lastName = user.last_name;
+        const isAdmin = user.is_admin;
+        const isSubscribed = user.is_subscribed;
+
+        editUsernameInput.value = username;
+        editFirstNameInput.value = firstName;
+        editLastNameInput.value = lastName;
+
+        editAdminSelect.value = isAdmin.toString();
+        editSubscriptionSelect.value = isSubscribed.toString();
         editUserModal.style.display = "block";
     }
 
@@ -112,35 +125,45 @@ window.addEventListener("click", (event) => {
     }
 });
 
-// editUserForm.addEventListener("submit", async (event) => {
-//     event.preventDefault();
-//
-//     const userId = event.target.closest("tr").getAttribute("data-user-id");
-//     const editedUsername = editUsernameInput.value;
-//
-//     const requestData = {
-//         userId: userId,
-//         username: editedUsername,
-//     };
-//
-//     try {
-//         const httpClient = new HttpClient();
-//         const response = await httpClient.put(`/api/users/${userId}`, JSON.stringify(requestData));
-//         const json = JSON.parse(response);
-//
-//         if (json.success) {
-//             alert('Edit operation successful');
-//             location.reload();
-//         } else {
-//             console.error("Edit operation failed:", response.error);
-//             alert("Edit operation failed: " + response.error);
-//         }
-//     } catch (error) {
-//         console.error("An error occurred during editing:", error);
-//         alert("An error occurred during editing.");
-//     }
-//
-//     // Close the edit modal after submitting
-//     editUserModal.style.display = "none";
-// });
+document.getElementById("saveEditButton").addEventListener("click", async (e) => {
+    e.preventDefault();
 
+    const userId = currentUserId;
+    const username = document.getElementById("editUsername").value;
+    const first_name = document.getElementById("editFirstName").value;
+    const last_name = document.getElementById("editLastName").value;
+    const is_admin = document.getElementById("editStatusAdmin").value === 'true'; // Convert to boolean
+    const is_subscribed = document.getElementById("editStatusSubscription").value === 'true'; // Convert to boolean
+
+    const updatedUserData = {
+        userId,
+        username: username,
+        first_name: first_name,
+        last_name: last_name,
+        is_admin: is_admin,
+        is_subscribed: is_subscribed,
+    };
+
+    try {
+        const httpClient = new HttpClient();
+        const response = await httpClient.put(`/api/users?userId=${userId}`, updatedUserData, false);
+        const json = JSON.parse(response);
+
+        if (json.success) {
+            alert('Edit operation successful');
+            location.reload();
+        } else {
+            console.error("Edit operation failed:", json.error);
+            alert("Edit operation failed: " + json.error);
+        }
+    } catch (error) {
+        console.error("An error occurred during editing:", error);
+        console.log(error.toString());
+        alert("An error occurred during editing.");
+    }
+});
+
+getUsers().then(r => {});
+
+const pollingInterval = 30000;
+setInterval(getUsers, pollingInterval);

@@ -87,6 +87,7 @@ $router->addAPI('/api/auth/logout', 'POST', $logoutHandler, [LoggedInCheck::getI
 
 $router->addAPI('/api/users', 'GET', $userHandler, [AdminCheck::getInstance()]);
 $router->addAPI('/api/users', 'DELETE', $userHandler, [AdminCheck::getInstance()]);
+$router->addAPI('/api/users', 'PUT', $userHandler, [AdminCheck::getInstance()]);
 
 //TODO: add middleware if needed
 $router->addAPI('/api/content', 'GET', $contentHandler, []);

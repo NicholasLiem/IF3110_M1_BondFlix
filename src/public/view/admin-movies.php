@@ -34,7 +34,7 @@ $username = $_SESSION['username'];
             <!--        </div>-->
             <button id="refresh-button" class="search-bar-button">Refresh</button>
         </div>
-        <table>
+        <table class="admin-table">
             <tr>
                 <th>No.</th>
                 <th>ID</th>

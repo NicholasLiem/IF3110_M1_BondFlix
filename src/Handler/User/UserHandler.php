@@ -1,7 +1,6 @@
 <?php
 namespace Handler\User;
 
-use Core\Application\Services\AdminService;
 use Exception;
 use Handler\BaseHandler;
 use Utils\Http\HttpStatusCode;
@@ -53,7 +52,6 @@ class UserHandler extends BaseHandler
     public function delete($params = null): void
     {
         try {
-
             if (isset($params['userId'])) {
                 $user_id = $params['userId'];
                 $user = $this->service->getUserById($user_id);
@@ -82,4 +80,47 @@ class UserHandler extends BaseHandler
             $response->encode_to_JSON();
         }
     }
+
+    public function put($params = null): void
+    {
+        try {
+            if (isset($params['userId'])) {
+
+                $userId = $params['userId'];
+                $username = $params['username'];
+                $firstName = $params['first_name'];
+                $lastName = $params['last_name'];
+
+                $isAdmin = filter_var($params['is_admin'], FILTER_VALIDATE_BOOLEAN);
+                $isSubscribed = filter_var($params['is_subscribed'], FILTER_VALIDATE_BOOLEAN);
+
+                $user = $this->service->getUserById($userId);
+                if ($user !== null) {
+                    $user->setUsername($username);
+                    $user->setFirstName($firstName);
+                    $user->setLastName($lastName);
+                    $user->setIsAdmin($isAdmin);
+                    $user->setIsSubscribed($isSubscribed);
+
+                    $result =$this->service->updateUser($user);
+                    if ($result) {
+                        $response = new Response(true, HttpStatusCode::OK, "User update success", $user->toArray());
+                    } else {
+                        $response = new Response(false, HttpStatusCode::NO_CONTENT, "User update failed", null);
+                    }
+                } else {
+                    $response = new Response(false, HttpStatusCode::NOT_FOUND, "User not found", null);
+                }
+
+            } else {
+                $response = new Response(false, HttpStatusCode::BAD_REQUEST, "Invalid user data", null);
+            }
+
+            $response->encode_to_JSON();
+        } catch (Exception $e) {
+            $response = new Response(false, HttpStatusCode::BAD_REQUEST, "User update failed: " . $e->getMessage(), null);
+            $response->encode_to_JSON();
+        }
+    }
+
 }
