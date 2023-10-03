@@ -1,0 +1,7 @@
+#media-item {
+    background-color: #E50914;
+}
+
+#media-item:hover {
+    background-color: #bd0912;
+}

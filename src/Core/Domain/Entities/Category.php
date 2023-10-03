@@ -40,4 +40,10 @@ class Category
         $this->category_name = $category_name;
     }
 
+    public function toArray(): array {
+        return [
+            'category_id' => $this->category_id,
+            'category_name' => $this->category_name 
+        ];
+    }
 }

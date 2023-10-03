@@ -101,6 +101,46 @@ class PersistentUserRepository implements UserRepository
     /**
      * @throws Exception
      */
+    public function getUserById(string $user_id): ?User
+    {
+        $stmt = $this->db->prepare("
+            SELECT user_id, 
+                   first_name, 
+                   last_name, 
+                   username, 
+                   password_hash, 
+                   is_admin, 
+                   is_subscribed
+            FROM users 
+            WHERE user_id = :user_id
+        ");
+
+        $stmt->bindParam(':user_id', $user_id);
+
+        if (!$stmt->execute()) {
+            throw new Exception("Database error while fetching user data");
+        }
+
+        $userData = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if (!$userData) {
+            return null;
+        }
+
+        return new User(
+            (int) $userData['user_id'],
+            $userData['first_name'],
+            $userData['last_name'],
+            $userData['username'],
+            $userData['password_hash'],
+            (bool) $userData['is_admin'],
+            (bool) $userData['is_subscribed']
+        );
+    }
+
+    /**
+     * @throws Exception
+     */
     public function updateUser(User $user): User
     {
         $stmt = $this->db->prepare("
@@ -136,12 +176,10 @@ class PersistentUserRepository implements UserRepository
         return $user;
     }
 
-
-
     /**
      * @throws Exception
      */
-    public function deleteUserByUsername(int $username)
+    public function deleteUserByUsername(int $username): bool
     {
         $stmt = $this->db->prepare("
             DELETE FROM users
@@ -153,6 +191,68 @@ class PersistentUserRepository implements UserRepository
         if (!$stmt->execute()) {
             throw new Exception("User deletion failed");
         }
+        return true;
+    }
 
+    /**
+     * @throws Exception
+     */
+    public function deleteUserById(int $user_id): bool
+    {
+        $stmt = $this->db->prepare("
+            DELETE FROM users
+            WHERE user_id = :user_id
+        ");
+
+        $stmt->bindParam(':user_id', $user_id);
+
+        if (!$stmt->execute()) {
+            throw new Exception("User deletion failed");
+        }
+        return true;
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function getAllUser(): array
+    {
+        try {
+            $stmt = $this->db->prepare("
+            SELECT user_id, 
+                   first_name, 
+                   last_name, 
+                   username, 
+                   password_hash, 
+                   is_admin, 
+                   is_subscribed
+            FROM users
+            ORDER BY user_id ASC;
+        ");
+
+            if (!$stmt->execute()) {
+                throw new Exception("Database error while fetching user data");
+            }
+
+            $users = [];
+            while ($userData = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                $user = new User(
+                    (int) $userData['user_id'],
+                    $userData['first_name'],
+                    $userData['last_name'],
+                    $userData['username'],
+                    $userData['password_hash'],
+                    (bool) $userData['is_admin'],
+                    (bool) $userData['is_subscribed']
+                );
+
+                $users[] = $user;
+            }
+
+            return $users;
+        } catch (Exception $e) {
+            Logger::getInstance()->logMessage('Failed to fetch all users: ' . $e->getMessage());
+            throw new Exception("Failed to fetch all users");
+        }
     }
 }

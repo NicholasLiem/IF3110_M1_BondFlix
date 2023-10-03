@@ -53,5 +53,11 @@ class Director
         $this->last_name = $last_name;
     }
 
-
+    public function toArray(): array {
+        return [
+            'director_id' => $this->director_id, 
+            'first_name '=> $this->first_name,
+            'last_name' => $this->last_name
+        ];
+    }
 }

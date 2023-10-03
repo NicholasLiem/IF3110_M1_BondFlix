@@ -26,7 +26,8 @@ class LogoutHandler extends BaseHandler
         }
         return self::$instance;
     }
-    public function post($params = null) {
+    public function post($params = null): void
+    {
 
         if (session_status() == PHP_SESSION_NONE) {
             session_start();

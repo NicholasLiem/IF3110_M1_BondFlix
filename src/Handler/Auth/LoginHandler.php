@@ -25,7 +25,7 @@ class LoginHandler extends BaseHandler
         return self::$instance;
     }
 
-    public function post($params = null)
+    public function post($params = null): void
     {
         $username = $_POST['username'];
         $password = $_POST['password'];

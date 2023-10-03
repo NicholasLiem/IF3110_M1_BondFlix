@@ -1,0 +1,23 @@
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+body {
+  display: flex;
+}
+
+.content {
+  flex-grow: 1;
+  margin-left: 200px;
+  justify-items: center;
+  flex-direction: column;
+  display: flex;
+  width: auto;
+  min-height: 100vh;
+  height: auto;
+  background-color: #1e1e1e;
+  overflow: auto;
+}

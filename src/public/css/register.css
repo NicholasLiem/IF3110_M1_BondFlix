@@ -1,53 +1,67 @@
 @import url('shared-styles.css');
-
-body {
-    font-family: Arial, sans-serif;
-    background-color: #000;
-    color: #fff;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-}
-
-@import url('shared-styles.css');
+@import url('/public/css/lib/submit-button.css');
+@import url('/public/css/lib/index/body.css');
+@import url('/public/css/lib/index/navbar.css');
 
 .registration-container {
     background-color: rgba(0, 0, 0, 0.8);
-    border-radius: 8px;
     padding: 20px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     max-width: 300px;
     margin: 0 auto;
-    text-align: center;
+    text-align: left;
+    z-index: 1;
 }
 
 h1 {
-    color: #e50914;
+    color: #fff;
 }
 
-input[type="text"],
-input[type="password"] {
+#input-username,
+#input-password,
+#input-first-name,
+#input-last-name,
+#input-password-confirmation{
     width: 100%;
     padding: 10px;
+    border-radius: 4px;
     margin-top: 5px;
-    margin-bottom: 15px;
     border: 1px solid #ccc;
-    border-radius: 4px;
+    box-sizing:border-box;
 }
 
-input[type="submit"] {
-    background-color: #e50914;
+#input-username:focus,
+#input-password:focus,
+#input-first-name,
+#input-last-name,
+#input-password-confirmation{
+    outline: none;
+}
+
+#input-username:hover,
+#input-password:hover,
+#input-first-name,
+#input-last-name,
+#input-password-confirmation{
+}
+
+.submit-button {
+    height: 30px;
+    font-size: 14px;
+    font-weight: normal;
+    margin-top: 20px;
+    margin-bottom: 5px;
+    width: 100%;
+}
+
+.login-link {
+    font-size: 12px;
+    text-decoration: none;
     color: #fff;
-    border: none;
-    border-radius: 4px;
-    padding: 10px;
-    cursor: pointer;
-    width: auto;
+    transition: text-decoration 0.2s;
+    float: right;
 }
 
-input[type="submit"]:hover {
-    background-color: #ff1f1f;
+.login-link:hover {
+    text-decoration: underline;
 }

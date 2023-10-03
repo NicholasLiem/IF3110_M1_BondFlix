@@ -7,6 +7,11 @@ async function submitRegister(e) {
     const password = document.getElementById('input-password').value;
     const password_confirmation = document.getElementById('input-password-confirmation').value;
 
+    if (password !== password_confirmation) {
+        alert("Password do not match!")
+        return;
+    }
+
     const data = {
         username,
         first_name,

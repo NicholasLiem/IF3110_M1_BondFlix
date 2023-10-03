@@ -25,7 +25,6 @@ class AdminCheck
         if (isset($_SESSION['user_id']) && isset($_SESSION['is_admin']) && $_SESSION['is_admin']) {
             return true;
         }
-
-        throw new Exception('You are not an admin');
+        href("/login");
     }
 }

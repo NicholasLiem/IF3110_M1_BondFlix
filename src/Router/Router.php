@@ -45,7 +45,7 @@ class Router
         $this->apiNotFoundHandler = $handler;
     }
 
-    public function run()
+    public function run(): void
     {
         $requestUri = parse_url($_SERVER['REQUEST_URI']);
         $requestPath = $requestUri['path'];
@@ -67,6 +67,7 @@ class Router
             } else {
                 if ($handler['path'] === $requestPath && $method === $handler['method']){
                     $callback = $handler['handler'];
+                    $middlewares = $handler['middlewares'];
                     break;
                 }
             }
