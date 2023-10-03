@@ -92,7 +92,7 @@ class ContentHandler extends BaseHandler {
             $putData = file_get_contents('php://input');
             parse_str($putData, $_PUT);
 
-            $content_id = $_PUT['content_id'] ?? null;
+            $content_id = $_PUT['content_id'];
             $title = $_PUT['title'] ?? null;
             $description = $_PUT['description'] ?? null;
             $release_date = $_PUT['release_date'] ?? null;

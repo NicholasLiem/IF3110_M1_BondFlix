@@ -46,18 +46,18 @@ $username = $_SESSION['username'];
                 <th>Action</th>
             </tr>
         </table>
-        <div id="editUserModal" class="modal">
+        <div id="editContentModal" class="modal">
             <div class="modal-content">
                 <span class="close">&times;</span>
-                <h2>Edit User</h2>
-                <table class="edit-user-modal">
+                <h2>Edit Content</h2>
+                <table class="edit-content-modal">
                     <tr>
                         <td><label for="editTitle">Title</label></td>
                         <td><input type="text" id="editTitle" name="title" required></td>
                     </tr>
                     <tr>
                         <td><label for="editDescription">Description</label></td>
-                        <td><input type="text" id="editDescription" name="description" required></td>
+                        <td><textarea name="description" id="editDescription" cols="30" rows="10" required></textarea></td>
                     </tr>
                     <tr>
                         <td><label for="editReleaseDate">Release Date</label></td>
@@ -65,11 +65,11 @@ $username = $_SESSION['username'];
                     </tr>
                     <tr>
                         <td><label for="editContentFilePath">Content File Path</label></td>
-                        <td><input type="text" id="editContentFilePath" name="conentFilePath" required></td>
+                        <td><input type="text" id="editContentFilePath" name="contentFilePath" required></td>
                     </tr>
                     <tr>
-                        <td><label for="editThumbnailPath">Thumbnail File Path</label></td>
-                        <td><input type="text" id="editThumbnailPath">Thumbnail Path</td>
+                        <td><label for="editThumbnailFilePath">Thumbnail File Path</label></td>
+                        <td><input type="text" id="editThumbnailFilePath" name="thumbnailFilePath" required></td>
                     </tr>
                 </table>
                 <button type="submit" class="submit-edit" id="saveEditButton">Save</button>

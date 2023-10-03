@@ -8,3 +8,7 @@
 #movies-item:hover {
     background-color: #bd0912;
 }
+
+.modal textarea {
+    resize: none;
+}

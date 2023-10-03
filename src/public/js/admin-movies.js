@@ -1,5 +1,5 @@
 const contentData = {};
-let currentcontentId = null;
+let currentContentId = null;
 
 async function getcontents() {
     try {
@@ -14,6 +14,8 @@ async function getcontents() {
                     const row = table.insertRow();
                     row.setAttribute("data-content-id", content.content_id);
                 }
+
+                contentData[content.content_id] = content;
 
                 const row = document.querySelector(
                     `[data-content-id="${content.content_id}"]`
@@ -58,8 +60,6 @@ document.addEventListener("click", async (event) => {
             const response = await httpClient.delete(
                 `/api/content?content_id=${contentId}`
             );
-            console.log(response);
-            return;
             const json = JSON.parse(response);
             if (json.success) {
                 alert("Delete operation successful");
@@ -74,6 +74,102 @@ document.addEventListener("click", async (event) => {
         }
     }
 });
+
+/**
+ * Edit modal functionality
+ * @type {HTMLElement}
+ */
+const closeBtn = document.querySelector(".close");
+const editContentModal = document.getElementById("editContentModal");
+const editTitleInput = document.getElementById("editTitle");
+const editDescriptionInput = document.getElementById("editDescription");
+const editReleaseDateInput = document.getElementById("editReleaseDate");
+const editContentFilePathInput = document.getElementById("editContentFilePath");
+const editThumbnailFilePathInput = document.getElementById(
+    "editThumbnailFilePath"
+);
+
+document.addEventListener("click", async (event) => {
+    const target = event.target;
+
+    if (target.classList.contains("edit-button")) {
+        const contentId = target.closest("tr").getAttribute("data-content-id");
+        const content = contentData[contentId];
+        currentContentId = contentId;
+
+        const title = content.title;
+        const description = content.description;
+        const releaseDate = content.release_date;
+        const contentFilePath = content.content_file_path;
+        const thumbnailFilePath = content.thumbnail_file_path;
+
+        editTitleInput.value = title;
+        editDescriptionInput.value = description;
+        editReleaseDateInput.value = releaseDate;
+        editContentFilePathInput.value = contentFilePath;
+        editThumbnailFilePathInput.value = thumbnailFilePath;
+
+        editContentModal.style.display = "block";
+    }
+
+    if (target.classList.contains("close")) {
+        editContentModal.style.display = "none";
+    }
+});
+
+closeBtn.addEventListener("click", () => {
+    editContentModal.style.display = "none";
+});
+
+window.addEventListener("click", (event) => {
+    if (event.target === editContentModal) {
+        editContentModal.style.display = "none";
+    }
+});
+
+document
+    .getElementById("saveEditButton")
+    .addEventListener("click", async (e) => {
+        e.preventDefault();
+
+        const contentId = currentContentId;
+        const title = editTitleInput.value;
+        const description = editDescriptionInput.value;
+        const releaseDate = editReleaseDateInput.value;
+        const contentFilePath = editContentFilePathInput.value;
+        const thumbnailFilePath = editThumbnailFilePathInput.value;
+
+        const updatedContentData = {
+            content_id: contentId,
+            title: title,
+            description: description,
+            release_date: releaseDate,
+            content_file_path: contentFilePath,
+            thumbnail_file_path: thumbnailFilePath,
+        };
+
+        try {
+            const httpClient = new HttpClient();
+            const response = await httpClient.put(
+                `/api/content`,
+                updatedContentData,
+                false
+            );
+
+            const json = JSON.parse(response);
+            if (json.success) {
+                alert("Edit operation successful");
+                location.reload();
+            } else {
+                console.error("Edit operation failed:", json.error);
+                alert("Edit operation failed: " + json.error);
+            }
+        } catch (error) {
+            console.error("An error occurred during editing:", error);
+            console.log(error.toString());
+            alert("An error occurred during editing.");
+        }
+    });
 
 getcontents().then((r) => {});
 
