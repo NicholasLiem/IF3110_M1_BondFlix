@@ -67,6 +67,7 @@ class ContentCategoryHandler extends BaseHandler {
         try {
             $this->service->removeCategory($params['content_id'], $params['category_id']);
             $response = new Response(true, HttpStatusCode::OK, "Category deleted successfully", null);
+            $response->encode_to_JSON();
         } catch (Exception $e) {
             $response = new Response(false, HttpStatusCode::BAD_REQUEST, "Category deletion failed: " . $e->getMessage(), null);
             $response->encode_to_JSON();

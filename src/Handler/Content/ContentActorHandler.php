@@ -69,6 +69,7 @@ class ContentActorHandler extends BaseHandler {
         try {
             $this->service->removeActor($params['content_id'], $params['actor_id']);
             $response = new Response(true, HttpStatusCode::OK, "Actor deleted successfully", null);
+            $response->encode_to_JSON();
         } catch (Exception $e) {
             $response = new Response(false, HttpStatusCode::BAD_REQUEST, "Actor deletion failed: " . $e->getMessage(), null);
             $response->encode_to_JSON();

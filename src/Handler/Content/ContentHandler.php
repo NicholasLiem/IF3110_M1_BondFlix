@@ -127,6 +127,7 @@ class ContentHandler extends BaseHandler {
         try {
             $this->service->removeContent($params['content_id']);
             $response = new Response(true, HttpStatusCode::OK, "Content deleted successfully", null);
+            $response->encode_to_JSON();
         } catch (Exception $e) {
             $response = new Response(false, HttpStatusCode::BAD_REQUEST, "Content deletion failed: " . $e->getMessage(), null);
             $response->encode_to_JSON();

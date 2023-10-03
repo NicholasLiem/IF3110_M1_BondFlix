@@ -67,6 +67,7 @@ class ContentDirectorHandler extends BaseHandler {
         try {
             $this->service->removeDirector($params['content_id'], $params['director_id']);
             $response = new Response(true, HttpStatusCode::OK, "Director deleted successfully", null);
+            $response->encode_to_JSON();
         } catch (Exception $e) {
             $response = new Response(false, HttpStatusCode::BAD_REQUEST, "Director deletion failed: " . $e->getMessage(), null);
             $response->encode_to_JSON();

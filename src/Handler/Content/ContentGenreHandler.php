@@ -67,6 +67,7 @@ class ContentGenreHandler extends BaseHandler {
         try {
             $this->service->removeGenre($params['content_id'], $params['genre_id']);
             $response = new Response(true, HttpStatusCode::OK, "Genre deleted successfully", null);
+            $response->encode_to_JSON();
         } catch (Exception $e) {
             $response = new Response(false, HttpStatusCode::BAD_REQUEST, "Genre deletion failed: " . $e->getMessage(), null);
             $response->encode_to_JSON();
