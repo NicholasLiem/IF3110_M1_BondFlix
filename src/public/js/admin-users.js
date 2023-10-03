@@ -29,8 +29,8 @@ async function getUsers() {
                     <td id="admin-status-symbol" class="${adminStatusClass}">${adminStatus}</td>
                     <td id="subscribe-status-symbol" class="${subscriptionStatusClass}">${subscriptionStatus}</td>
                     <td>
-                        <button>Edit</button>
-                        <button>Delete</button>
+                        <button class="edit-button">Edit</button>
+                        <button class="delete-button">Delete</button>
                     </td>
                 `;
             });
@@ -44,6 +44,30 @@ async function getUsers() {
     }
 }
 
+document.addEventListener("click", async (event) => {
+    const target = event.target;
+
+    if (target.classList.contains("delete-button") || target.id === "delete-button") {
+        const userId = target.closest("tr").getAttribute("data-user-id");
+
+        try {
+            const httpClient = new HttpClient();
+            const response = await httpClient.delete(`/api/users?userId=${userId}`);
+            const json = JSON.parse(response);
+            console.log(json);
+            if (json.success) {
+                alert('Delete operation successful');
+                location.reload();
+            } else {
+                console.error("Delete operation failed:", response.error);
+                alert("Delete operation failed." + response.error);
+            }
+        } catch (error) {
+            console.error("An error occurred during deletion:", error);
+            alert("An error occurred during deletion.");
+        }
+    }
+});
 getUsers().then(r => {});
 
 const pollingInterval = 30000;

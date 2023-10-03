@@ -84,6 +84,7 @@ $router->addAPI('/api/auth/register', 'POST', $registerHandler, []);;
 $router->addAPI('/api/auth/logout', 'POST', $logoutHandler, [LoggedInCheck::getInstance()]);;
 
 $router->addAPI('/api/users', 'GET', $userHandler, [AdminCheck::getInstance()]);
+$router->addAPI('/api/users', 'DELETE', $userHandler, [AdminCheck::getInstance()]);
 
 //TODO: add middleware if needed
 $router->addAPI('/api/content', 'GET', $contentHandler, []);
@@ -108,6 +109,7 @@ $router->addAPI('/api/content/genre', 'POST', $contentGenreHandler, []);
 $router->addAPI('/api/content/genre', 'DELETE', $contentGenreHandler, []);
 
 $router->addAPI('/api/genre', 'POST', $genreHandler, []);
+
 /**
  * Setting api or page fallback handler
  */
