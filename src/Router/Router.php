@@ -50,7 +50,11 @@ class Router
         $requestUri = parse_url($_SERVER['REQUEST_URI']);
         $requestPath = $requestUri['path'];
         $method = $_SERVER['REQUEST_METHOD'] ?? 'GET';
-        $urlParams = array_merge($_GET, $_POST);
+
+        $rawInput = file_get_contents("php://input");
+
+        parse_str($rawInput, $requestData);
+        $urlParams = array_merge($_GET, $_POST, $requestData);
 
         $callback = null;
         $isApiRoute = false;

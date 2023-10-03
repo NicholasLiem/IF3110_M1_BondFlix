@@ -1,4 +1,4 @@
-table {
+.admin-table {
     border-collapse: separate;
     border-spacing: 0;
     background-color: #fff;
@@ -10,7 +10,7 @@ table {
     margin: 30px;
 }
 
-th {
+.admin-table th {
     /*position: sticky;*/
     background-color: #E50914;
     color: #f2f2f2;
@@ -24,11 +24,11 @@ th {
     text-overflow: ellipsis;
 }
 
-tr:nth-child(even) {
+.admin-table tr:nth-child(even) {
     background-color: #f2f2f2;
 }
 
-td {
+.admin-table td {
     padding: 8px;
     /*overflow-y: auto;*/
     text-align: center;
@@ -37,7 +37,7 @@ td {
     text-overflow: ellipsis;
 }
 
-button {
+.admin-table button {
     padding: 4px 8px;
     background-color: #831010;
     border-radius: 4px;
@@ -46,7 +46,7 @@ button {
     cursor: pointer;
 }
 
-button:hover {
+.admin-table button:hover {
     background-color: #690c0c;
 }
 

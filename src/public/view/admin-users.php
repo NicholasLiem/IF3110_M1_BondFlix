@@ -32,7 +32,7 @@ $username = $_SESSION['username'];
             <button id="refresh-button" class="search-bar-button">Refresh</button>
         </div>
 
-        <table>
+        <table class="admin-table">
             <tr>
                 <th>ID</th>
                 <th>Username</th>
@@ -48,13 +48,39 @@ $username = $_SESSION['username'];
             <div class="modal-content">
                 <span class="close">&times;</span>
                 <h2>Edit User</h2>
-                <form id="editUserForm">
-                    <label for="editUsername">Username:</label>
-                    <input type="text" id="editUsername" name="username" required>
-                    <button type="submit">Save</button>
-                </form>
+                <table class="edit-user-modal">
+                    <tr>
+                        <td><label for="editUsername">Username</label></td>
+                        <td><input type="text" id="editUsername" name="username" required></td>
+                    </tr>
+                    <tr>
+                        <td><label for="editFirstName">First Name</label></td>
+                        <td><input type="text" id="editFirstName" name="firstName" required></td>
+                    </tr>
+                    <tr>
+                        <td><label for="editLastName">Last Name</label></td>
+                        <td><input type="text" id="editLastName" name="lastName"></td>
+                    </tr>
+                    <tr>
+                        <td><label for="editStatusAdmin">Admin Status</label></td>
+                        <td><select id="editStatusAdmin" name="statusAdmin">
+                                <option value="true">Yes</option>
+                                <option value="false">No</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><label for="editStatusSubscription">Subscription Status</label></td>
+                        <td><select id="editStatusSubscription" name="statusSubscription">
+                                <option value="true">Yes</option>
+                                <option value="false">No</option>
+                            </select>
+                        </td>
+                    </tr>
+                </table>
+                <button type="submit" class="submit-edit" id="saveEditButton">Save</button>
             </div>
         </div>
-        </div>
+    </div>
     <script src="/public/js/admin-users.js"></script>
 </body>

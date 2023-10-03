@@ -166,8 +166,8 @@ class PersistentUserRepository implements UserRepository
         $stmt->bindParam(':user_id', $userId);
         $stmt->bindParam(':first_name', $firstName);
         $stmt->bindParam(':last_name', $lastName);
-        $stmt->bindParam(':is_admin', $isAdmin);
-        $stmt->bindParam(':is_subscribed', $isSubscribed);
+        $stmt->bindParam(':is_admin', $isAdmin, PDO::PARAM_BOOL);
+        $stmt->bindParam(':is_subscribed', $isSubscribed, PDO::PARAM_BOOL);
 
         if (!$stmt->execute()) {
             throw new Exception("User update failed");

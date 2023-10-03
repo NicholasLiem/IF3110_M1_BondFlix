@@ -16,7 +16,7 @@ class ImageUploader implements IUploader
     /**
      * @throws Exception
      */
-    public function upload($targetFile)
+    public function upload($targetFile): void
     {
         $targetDir = BASE_PATH . $this->rootDir;
 
