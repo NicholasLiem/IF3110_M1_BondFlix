@@ -44,6 +44,14 @@ async function getUsers() {
     }
 }
 
+getUsers().then(r => {});
+
+const pollingInterval = 30000;
+setInterval(getUsers, pollingInterval);
+
+/**
+ * Delete button functionality
+ */
 document.addEventListener("click", async (event) => {
     const target = event.target;
 
@@ -68,7 +76,71 @@ document.addEventListener("click", async (event) => {
         }
     }
 });
-getUsers().then(r => {});
 
-const pollingInterval = 30000;
-setInterval(getUsers, pollingInterval);
+/**
+ * Edit modal functionality
+ * @type {HTMLElement}
+ */
+const closeBtn = document.querySelector(".close");
+const editUserModal = document.getElementById("editUserModal");
+// const editUserForm = document.getElementById("editUserForm");
+const editUsernameInput = document.getElementById("editUsername");
+document.addEventListener("click", async (event) => {
+    const target = event.target;
+
+    if (target.classList.contains("edit-button")) {
+        const userId = target.closest("tr").getAttribute("data-user-id");
+        const user = userData[userId];
+
+        editUsernameInput.value = user.username;
+        editUserModal.style.display = "block";
+    }
+
+    if (target.classList.contains("close")) {
+        editUserModal.style.display = "none";
+    }
+});
+
+
+closeBtn.addEventListener("click", () => {
+    editUserModal.style.display = "none";
+});
+
+window.addEventListener("click", (event) => {
+    if (event.target === editUserModal) {
+        editUserModal.style.display = "none";
+    }
+});
+
+// editUserForm.addEventListener("submit", async (event) => {
+//     event.preventDefault();
+//
+//     const userId = event.target.closest("tr").getAttribute("data-user-id");
+//     const editedUsername = editUsernameInput.value;
+//
+//     const requestData = {
+//         userId: userId,
+//         username: editedUsername,
+//     };
+//
+//     try {
+//         const httpClient = new HttpClient();
+//         const response = await httpClient.put(`/api/users/${userId}`, JSON.stringify(requestData));
+//         const json = JSON.parse(response);
+//
+//         if (json.success) {
+//             alert('Edit operation successful');
+//             location.reload();
+//         } else {
+//             console.error("Edit operation failed:", response.error);
+//             alert("Edit operation failed: " + response.error);
+//         }
+//     } catch (error) {
+//         console.error("An error occurred during editing:", error);
+//         alert("An error occurred during editing.");
+//     }
+//
+//     // Close the edit modal after submitting
+//     editUserModal.style.display = "none";
+// });
+
