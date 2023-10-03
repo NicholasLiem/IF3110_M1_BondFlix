@@ -30,24 +30,41 @@ class UserHandler extends BaseHandler
     {
         try {
             if (isset($params['username'])) {
-                $user = $this->service->getUserByUsername($params['username']);
-                $response = new Response(true, HttpStatusCode::OK, "User(s) retrieved successfully", $user->toArray());
+                $username = $params['username'];
+                $user = $this->service->getUserByUsername($username);
+                if ($user) {
+                    $response = new Response(true, HttpStatusCode::OK, "User retrieved successfully", $user->toArray());
+                } else {
+                    $response = new Response(false, HttpStatusCode::NOT_FOUND, "User not found", null);
+                }
             } else {
-                $users = $this->service->getAllUsers();
-
-                $userArrays = array_map(function ($user) {
-                    return $user->toArray();
-                }, $users);
-
-                $response = new Response(true, HttpStatusCode::OK, "User(s) retrieved successfully", $userArrays);
+                if (isset($params['query'])) {
+                    $query = $params['query'];
+                    $result = $this->service->processUserQuery($query);
+                    if (empty($result)) {
+                        $response = new Response(false, HttpStatusCode::OK, "No matching users found", null);
+                    } else {
+                        $userArrays = array_map(function ($user) {
+                            return $user->toArray();
+                        }, $result);
+                        $response = new Response(true, HttpStatusCode::OK, "Query processed successfully", $userArrays);
+                    }
+                } else {
+                    $users = $this->service->getAllUsers();
+                    $userArrays = array_map(function ($user) {
+                        return $user->toArray();
+                    }, $users);
+                    $response = new Response(true, HttpStatusCode::OK, "Users retrieved successfully", $userArrays);
+                }
             }
-
             $response->encode_to_JSON();
+
         } catch (Exception $e) {
-            $response = new Response(false, HttpStatusCode::BAD_REQUEST, "User(s) retrieval failed: " . $e->getMessage(), null);
+            $response = new Response(false, HttpStatusCode::BAD_REQUEST, "Request failed: " . $e->getMessage(), null);
             $response->encode_to_JSON();
         }
     }
+
 
     public function delete($params = null): void
     {

@@ -33,6 +33,7 @@ class Connection {
             $db = new PDO("pgsql:host=$db_host;port=$db_port;dbname=$db_name", $db_user, $db_pass);
             $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 //            self::runMigrations($db);
+//            self::seedDB($db);
             return $db;
         } catch (PDOException $e) {
             die("Connection failed: " . $e->getMessage());

@@ -1,50 +1,72 @@
-
-const userData = {};
+let userData = {};
 let currentUserId = null;
-async function getUsers() {
+
+/**
+ * Debounce for search
+ */
+
+const helper = new Helper();
+function updateTable(users) {
+    const tableBody = document.querySelector("table tbody");
+
+    while (tableBody.firstChild) {
+        tableBody.removeChild(tableBody.firstChild);
+    }
+
+    const filteredUserData = {};
+
+    users.forEach(user => {
+        if (user && Object.keys(user).length > 0) {
+            const row = tableBody.insertRow();
+            row.setAttribute("data-user-id", user.user_id);
+
+            filteredUserData[user.user_id] = user;
+            const adminStatus = (user.is_admin === true ? '✓' : '✗');
+            const subscriptionStatus = (user.is_subscribed === true ? '✓' : '✗');
+            const adminStatusClass = user.is_admin ? 'green-status' : 'red-status';
+            const subscriptionStatusClass = user.is_subscribed ? 'green-status' : 'red-status';
+
+            row.innerHTML = `
+        <td>${user.user_id}</td>
+        <td>${user.username}</td>
+        <td>${user.first_name}</td>
+        <td>${user.last_name}</td>
+        <td id="admin-status-symbol" class="${adminStatusClass}">${adminStatus}</td>
+        <td id="subscribe-status-symbol" class="${subscriptionStatusClass}">${subscriptionStatus}</td>
+        <td>
+          <button class="edit-button">Edit</button>
+          <button class="delete-button">Delete</button>
+        </td>
+      `;
+        }
+    });
+
+    userData = filteredUserData;
+}
+
+
+const searchInput = document.getElementById('search-input');
+async function fetchData(query) {
     try {
         const httpClient = new HttpClient();
-        const response = await httpClient.get('/api/users', null, false);
+        const response = await httpClient.get(`/api/users?query=${query}`, null, false);
         const json = JSON.parse(response);
-
-        if (Array.isArray(json.data)) {
-            json.data.forEach((user) => {
-                if (!userData[user.user_id]) {
-                    const table = document.querySelector("table tbody");
-                    const row = table.insertRow();
-                    row.setAttribute("data-user-id", user.user_id);
-                }
-
-                userData[user.user_id] = user;
-                const adminStatus =  (user.is_admin === true ? '✓' : '✗');
-                const subscriptionStatus = (user.is_subscribed === true ? '✓' : '✗');
-                const adminStatusClass = user.is_admin ? 'green-status' : 'red-status';
-                const subscriptionStatusClass = user.is_subscribed ? 'green-status' : 'red-status';
-
-                const row = document.querySelector(`[data-user-id="${user.user_id}"]`);
-                row.innerHTML = `
-                    <td>${user.user_id}</td>
-                    <td>${user.username}</td>
-                    <td>${user.first_name}</td>
-                    <td>${user.last_name}</td>
-                    <td id="admin-status-symbol" class="${adminStatusClass}">${adminStatus}</td>
-                    <td id="subscribe-status-symbol" class="${subscriptionStatusClass}">${subscriptionStatus}</td>
-                    <td>
-                        <button class="edit-button">Edit</button>
-                        <button class="delete-button">Delete</button>
-                    </td>
-                `;
-            });
-        } else {
-            console.error("Invalid API response:", json);
-            alert("Invalid API response.");
+        if (json.success){
+            updateTable(json.data);
         }
     } catch (error) {
-        console.error("An error occurred:", error);
-        alert("An error occurred while processing your request.");
+        console.error("An error occurred during fetch data:", error);
+        alert("An error occurred during fetch data.");
     }
 }
 
+const debouncedFetch = helper.debounce(fetchData, 500);
+searchInput.addEventListener('input', function() {
+    const query = searchInput.value.trim();
+    debouncedFetch(query);
+});
+
+fetchData('').then(r => {});
 
 
 /**
@@ -158,12 +180,10 @@ document.getElementById("saveEditButton").addEventListener("click", async (e) =>
         }
     } catch (error) {
         console.error("An error occurred during editing:", error);
-        console.log(error.toString());
         alert("An error occurred during editing.");
     }
 });
 
-getUsers().then(r => {});
 
-const pollingInterval = 30000;
-setInterval(getUsers, pollingInterval);
+
+

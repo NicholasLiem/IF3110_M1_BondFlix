@@ -39,4 +39,9 @@ class AdminService
     {
         return $this->userRepository->updateUser($user);
     }
+
+    function processUserQuery(string $query) : array
+    {
+        return $this->userRepository->processQuery($query);
+    }
 }
