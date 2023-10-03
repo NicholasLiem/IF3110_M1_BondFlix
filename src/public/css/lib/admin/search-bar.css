@@ -8,7 +8,7 @@
 
 #search-input {
     width: 420px;
-    height: 30px;
+    height: auto;
     border-radius: 4px;
     box-sizing: border-box;
     border: none;

@@ -38,10 +38,12 @@ class UserHandler extends BaseHandler
                     $response = new Response(false, HttpStatusCode::NOT_FOUND, "User not found", null);
                 }
             } else {
-                if (isset($params['query']) && isset($params['sortAscending'])) {
+                if (isset($params['query']) && isset($params['sortAscending']) && isset($params['isAdmin']) && isset($params['isSubscribed'])) {
                     $query = $params['query'];
                     $sortAscending = filter_var($params['sortAscending'], FILTER_VALIDATE_BOOLEAN);
-                    $result = $this->service->processUserQuery($query, $sortAscending);
+                    $isAdmin = filter_var($params['isAdmin'], FILTER_VALIDATE_BOOLEAN);
+                    $isSubscribed = filter_var($params['isSubscribed'], FILTER_VALIDATE_BOOLEAN);
+                    $result = $this->service->processUserQuery($query, $sortAscending, $isAdmin, $isSubscribed);
                     if (empty($result)) {
                         $response = new Response(false, HttpStatusCode::OK, "No matching users found", null);
                     } else {

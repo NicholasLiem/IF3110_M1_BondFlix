@@ -14,6 +14,8 @@ $username = $_SESSION['username'];
         <div class="search-bar">
             <input type="text" id="search-input" placeholder="Search by username, first name, or last name">
             <button id="sort-button" class="search-bar-button">Sort ID ↑</button>
+            <button id="admin-filter-button" class="search-bar-button">Is Admin ✓</button>
+            <button id="sub-filter-button" class="search-bar-button">Is Subscribed ✓</button>
         </div>
 
         <table class="admin-table">

@@ -1,6 +1,8 @@
 let userData = {};
 let currentUserId = null;
 let isAscending = true;
+let isAdmin = true;
+let isSubscribed = true;
 
 /**
  * Debounce for search
@@ -26,7 +28,6 @@ function updateTable(users) {
             const subscriptionStatus = (user.is_subscribed === true ? '✓' : '✗');
             const adminStatusClass = user.is_admin ? 'green-status' : 'red-status';
             const subscriptionStatusClass = user.is_subscribed ? 'green-status' : 'red-status';
-
             row.innerHTML = `
         <td>${user.user_id}</td>
         <td>${user.username}</td>
@@ -47,10 +48,10 @@ function updateTable(users) {
 
 
 const searchInput = document.getElementById('search-input');
-async function fetchData(query, sortAscending) {
+async function fetchData(query, sortAscending, isAdmin, isSubscribed) {
     try {
         const httpClient = new HttpClient();
-        const response = await httpClient.get(`/api/users?query=${query}&sortAscending=${sortAscending}`, null, false);
+        const response = await httpClient.get(`/api/users?query=${query}&sortAscending=${sortAscending}&isAdmin=${isAdmin}&isSubscribed=${isSubscribed}`, null, false);
         const json = JSON.parse(response);
         if (json.success){
             updateTable(json.data);
@@ -64,7 +65,7 @@ async function fetchData(query, sortAscending) {
 const debouncedFetch = helper.debounce(fetchData, 500);
 searchInput.addEventListener('input', function() {
     const query = searchInput.value.trim();
-    debouncedFetch(query, isAscending);
+    debouncedFetch(query, isAscending, isAdmin, isSubscribed);
 });
 
 
@@ -82,10 +83,44 @@ sortButton.addEventListener('click', () => {
     }
     const query = searchInput.value.trim();
 
-    fetchData(query, isAscending);
+    fetchData(query, isAscending, isAdmin, isSubscribed);
 });
 
-fetchData('', isAscending).then(r => {});
+
+/**
+ * Filter feature 1 (isAdmin)
+ */
+const isAdminButton = document.getElementById('admin-filter-button');
+isAdminButton.addEventListener('click', () => {
+    isAdmin = !isAdmin;
+    if (isAdmin) {
+        isAdminButton.textContent = 'Is Admin ✓';
+    } else {
+        isAdminButton.textContent = 'Is Admin ✗';
+    }
+    const query = searchInput.value.trim();
+
+    fetchData(query, isAscending, isAdmin, isSubscribed);
+});
+
+
+/**
+ * Filter feature 2 (isSubscribed)
+ */
+const isSubscribedButton = document.getElementById('sub-filter-button');
+isSubscribedButton.addEventListener('click', () => {
+    isSubscribed = !isSubscribed;
+    if (isSubscribed) {
+        isSubscribedButton.textContent = 'Is Subscribed ✓';
+    } else {
+        isSubscribedButton.textContent = 'Is Subscribed ✗';
+    }
+    const query = searchInput.value.trim();
+
+    fetchData(query, isAscending, isAdmin, isSubscribed);
+});
+
+fetchData('', isAscending, isAdmin, isSubscribed).then(r => {});
 /**
  * Delete button functionality
  */
