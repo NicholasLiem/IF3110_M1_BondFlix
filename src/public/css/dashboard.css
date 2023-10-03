@@ -172,3 +172,7 @@ body {
 .btn-content svg {
     height: 40px;
 }
+
+.account-menu ul a:hover li:hover{
+    cursor: pointer;
+}

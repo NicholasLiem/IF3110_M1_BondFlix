@@ -43,11 +43,10 @@ include BASE_PATH . "/public/templates/header.php";
                         <a href="">Account</a>
                     </li>
                     <li>
-                        <a href="">Logout</a>
+                        <a href="" onclick="logout()">Logout</a>
                     </li>
                 </ul>
             </div>
-
         </div>
     </nav>
     <main>
@@ -99,4 +98,5 @@ include BASE_PATH . "/public/templates/header.php";
 
 
     <a href="logout">Logout</a> -->
+    <script src="/public/js/dashboard.js"></script>
 </body>
