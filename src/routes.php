@@ -15,6 +15,7 @@ use Handler\Content\ContentActorHandler;
 use Handler\Content\ContentCategoryHandler;
 use Handler\Content\ContentDirectorHandler;
 use Handler\Content\ContentGenreHandler;
+use Handler\Upload\UploadHandler;
 
 /**
  * Registering the singleton handlers
@@ -22,6 +23,7 @@ use Handler\Content\ContentGenreHandler;
 $loginHandler = LoginHandler::getInstance($container);
 $registerHandler = RegisterHandler::getInstance($container);
 $logoutHandler = LogoutHandler::getInstance($container);
+$uploadHandler = UploadHandler::getInstance($container);
 $userHandler = UserHandler::getInstance($container);
 $contentHandler = ContentHandler::getInstance($container);
 $contentActorHandler = ContentActorHandler::getInstance($container);
@@ -109,6 +111,9 @@ $router->addAPI('/api/content/genre', 'POST', $contentGenreHandler, []);
 $router->addAPI('/api/content/genre', 'DELETE', $contentGenreHandler, []);
 
 $router->addAPI('/api/genre', 'POST', $genreHandler, []);
+
+$router->addAPI('/api/upload', 'GET', $uploadHandler, []);
+$router->addAPI('/api/upload', 'POST', $uploadHandler, []);
 
 /**
  * Setting api or page fallback handler
