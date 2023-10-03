@@ -6,7 +6,7 @@ async function getcontents() {
         const httpClient = new HttpClient();
         const response = await httpClient.get("/api/content", null, false);
         const json = JSON.parse(response);
-        console.log(json);
+
         if (Array.isArray(json.data)) {
             json.data.forEach((content) => {
                 if (!contentData[content.content_id]) {
@@ -40,6 +40,40 @@ async function getcontents() {
         alert("An error occurred while processing your request.");
     }
 }
+
+/**
+ * Delete button functionality
+ */
+document.addEventListener("click", async (event) => {
+    const target = event.target;
+
+    if (
+        target.classList.contains("delete-button") ||
+        target.id === "delete-button"
+    ) {
+        const contentId = target.closest("tr").getAttribute("data-content-id");
+
+        try {
+            const httpClient = new HttpClient();
+            const response = await httpClient.delete(
+                `/api/content?content_id=${contentId}`
+            );
+            console.log(response);
+            return;
+            const json = JSON.parse(response);
+            if (json.success) {
+                alert("Delete operation successful");
+                location.reload();
+            } else {
+                console.error("Delete operation failed:", response.error);
+                alert("Delete operation failed." + response.error);
+            }
+        } catch (error) {
+            console.error("An error occurred during deletion:", error);
+            alert("An error occurred during deletion.");
+        }
+    }
+});
 
 getcontents().then((r) => {});
 
