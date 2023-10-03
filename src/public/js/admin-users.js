@@ -15,8 +15,10 @@ async function getUsers() {
                 }
 
                 userData[user.user_id] = user;
-                const adminStatus =  (user.is_admin === true ? 'Admin' : 'Not Admin');
-                const subscriptionStatus = (user.is_subscribed === true ? 'Subscribed' : 'Not Subscribed');
+                const adminStatus =  (user.is_admin === true ? '✓' : '✗');
+                const subscriptionStatus = (user.is_subscribed === true ? '✓' : '✗');
+                const adminStatusClass = user.is_admin ? 'green-status' : 'red-status';
+                const subscriptionStatusClass = user.is_subscribed ? 'green-status' : 'red-status';
 
                 const row = document.querySelector(`[data-user-id="${user.user_id}"]`);
                 row.innerHTML = `
@@ -24,8 +26,8 @@ async function getUsers() {
                     <td>${user.username}</td>
                     <td>${user.first_name}</td>
                     <td>${user.last_name}</td>
-                    <td>${adminStatus}</td>
-                    <td>${subscriptionStatus}</td>
+                    <td id="admin-status-symbol" class="${adminStatusClass}">${adminStatus}</td>
+                    <td id="subscribe-status-symbol" class="${subscriptionStatusClass}">${subscriptionStatus}</td>
                     <td>
                         <button>Edit</button>
                         <button>Delete</button>

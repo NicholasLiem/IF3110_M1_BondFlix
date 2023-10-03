@@ -33,13 +33,13 @@ $username = $_SESSION['username'];
     </div>
     <table>
         <tr>
-            <th>User ID</th>
+            <th>ID</th>
             <th>Username</th>
             <th>First Name</th>
             <th>Last Name</th>
-            <th>Admin Status</th>
-            <th>Subscription</th>
-            <th>Action</th>
+            <th>Admin</th>
+            <th>Subscribed</th>
+            <th>Menu</th>
         </tr>
     </table>
 </div>
