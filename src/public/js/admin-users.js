@@ -1,8 +1,8 @@
 let userData = {};
 let currentUserId = null;
 let isAscending = true;
-let isAdmin = true;
-let isSubscribed = true;
+// let isAdmin = true;
+// let isSubscribed = true;
 
 /**
  * Debounce for search
@@ -48,12 +48,12 @@ function updateTable(users) {
 
 
 const searchInput = document.getElementById('search-input');
-async function fetchData(query, sortAscending, isAdmin, isSubscribed) {
+async function fetchData(query, sortAscending) {
     try {
         const httpClient = new HttpClient();
-        const response = await httpClient.get(`/api/users?query=${query}&sortAscending=${sortAscending}&isAdmin=${isAdmin}&isSubscribed=${isSubscribed}`, null, false);
+        const response = await httpClient.get(`/api/users?query=${query}&sortAscending=${sortAscending}`, null, false);
         const json = JSON.parse(response);
-        if (json.success){
+        if (json.success) {
             updateTable(json.data);
         }
     } catch (error) {
@@ -65,7 +65,7 @@ async function fetchData(query, sortAscending, isAdmin, isSubscribed) {
 const debouncedFetch = helper.debounce(fetchData, 500);
 searchInput.addEventListener('input', function() {
     const query = searchInput.value.trim();
-    debouncedFetch(query, isAscending, isAdmin, isSubscribed);
+    debouncedFetch(query, isAscending);
 });
 
 
@@ -83,44 +83,44 @@ sortButton.addEventListener('click', () => {
     }
     const query = searchInput.value.trim();
 
-    fetchData(query, isAscending, isAdmin, isSubscribed);
+    fetchData(query, isAscending);
 });
 
 
-/**
- * Filter feature 1 (isAdmin)
- */
-const isAdminButton = document.getElementById('admin-filter-button');
-isAdminButton.addEventListener('click', () => {
-    isAdmin = !isAdmin;
-    if (isAdmin) {
-        isAdminButton.textContent = 'Is Admin ✓';
-    } else {
-        isAdminButton.textContent = 'Is Admin ✗';
-    }
-    const query = searchInput.value.trim();
+// /**
+//  * Filter feature 1 (isAdmin)
+//  */
+// const isAdminButton = document.getElementById('admin-filter-button');
+// isAdminButton.addEventListener('click', () => {
+//     isAdmin = !isAdmin;
+//     if (isAdmin) {
+//         isAdminButton.textContent = 'Is Admin ✓';
+//     } else {
+//         isAdminButton.textContent = 'Is Admin ✗';
+//     }
+//     const query = searchInput.value.trim();
+//
+//     fetchData(query, isAscending, isAdmin, isSubscribed);
+// });
+//
+//
+// /**
+//  * Filter feature 2 (isSubscribed)
+//  */
+// const isSubscribedButton = document.getElementById('sub-filter-button');
+// isSubscribedButton.addEventListener('click', () => {
+//     isSubscribed = !isSubscribed;
+//     if (isSubscribed) {
+//         isSubscribedButton.textContent = 'Is Subscribed ✓';
+//     } else {
+//         isSubscribedButton.textContent = 'Is Subscribed ✗';
+//     }
+//     const query = searchInput.value.trim();
+//
+//     fetchData(query, isAscending, isAdmin, isSubscribed);
+// });
 
-    fetchData(query, isAscending, isAdmin, isSubscribed);
-});
-
-
-/**
- * Filter feature 2 (isSubscribed)
- */
-const isSubscribedButton = document.getElementById('sub-filter-button');
-isSubscribedButton.addEventListener('click', () => {
-    isSubscribed = !isSubscribed;
-    if (isSubscribed) {
-        isSubscribedButton.textContent = 'Is Subscribed ✓';
-    } else {
-        isSubscribedButton.textContent = 'Is Subscribed ✗';
-    }
-    const query = searchInput.value.trim();
-
-    fetchData(query, isAscending, isAdmin, isSubscribed);
-});
-
-fetchData('', isAscending, isAdmin, isSubscribed).then(r => {});
+fetchData('', isAscending).then(r => {});
 /**
  * Delete button functionality
  */

@@ -259,7 +259,7 @@ class PersistentUserRepository implements UserRepository
     /**
      * @throws Exception
      */
-    public function processQuery(string $query, bool $sortAscending, bool $isAdmin, bool $isSubscribed): array
+    public function processQuery(string $query, bool $sortAscending): array
     {
         try {
             $query = '%' . $query . '%';
@@ -278,14 +278,10 @@ class PersistentUserRepository implements UserRepository
             WHERE (username LIKE :query
                 OR first_name LIKE :query
                 OR last_name LIKE :query)
-                AND is_admin = :isAdmin
-                AND is_subscribed = :isSubscribed
             ORDER BY $orderBy;
         ");
 
             $stmt->bindParam(':query', $query, PDO::PARAM_STR);
-            $stmt->bindParam(':isAdmin', $isAdmin, PDO::PARAM_BOOL);
-            $stmt->bindParam(':isSubscribed', $isSubscribed, PDO::PARAM_BOOL);
 
             if (!$stmt->execute()) {
                 throw new Exception("Database error while fetching user data");
