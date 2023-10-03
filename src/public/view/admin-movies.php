@@ -10,6 +10,7 @@ $username = $_SESSION['username'];
 <link rel="stylesheet" href="/public/css/admin-page.css">
 <link rel="stylesheet" href="/public/css/admin-table.css">
 <link rel="stylesheet" href="/public/css/admin-movies.css">
+<script src="/public/js/admin-movies.js" defer></script>
 <?php include $adminSidebarTemplate ?>
 
 <body>
@@ -36,12 +37,12 @@ $username = $_SESSION['username'];
         </div>
         <table class="admin-table">
             <tr>
-                <th>No.</th>
                 <th>ID</th>
                 <th>Title</th>
                 <th>Description</th>
                 <th>Release Date</th>
                 <th>Content File Path</th>
+                <th>Thumbnail File Path</th>
                 <th>Action</th>
             </tr>
         </table>
