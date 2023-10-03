@@ -12,36 +12,26 @@ $username = $_SESSION['username'];
 <body>
     <div class="content">
         <div class="search-bar">
-            <input type="text" id="search-input" placeholder="Search...">
-            <button id="search-button" class="search-bar-button">Search</button>
-            <!--        <button id="sort-button" class="search-bar-button">-->
-            <!--            <span class="sort-text">Sort</span>-->
-            <!--            <span class="arrow-down"></span>-->
-            <!--        </button>-->
-            <!--        <div class="dropdown filter-dropdown search-bar-button">-->
-            <!--            <button id="filter-button" class="filter-button">-->
-            <!--                <span class="filter-text">Filter</span>-->
-            <!--                <span class="arrow-down"></span>-->
-            <!--            </button>-->
-            <!--            <div class="dropdown-content filter-dropdown-content">-->
-            <!--                <a href="#">Option 1</a>-->
-            <!--                <a href="#">Option 2</a>-->
-            <!--                <a href="#">Option 3</a>-->
-            <!--            </div>-->
-            <!--        </div>-->
-            <button id="refresh-button" class="search-bar-button">Refresh</button>
+            <input type="text" id="search-input" placeholder="Search by username, first name, or last name">
+            <button id="sort-button" class="search-bar-button">Sort ID ↑</button>
+            <button id="admin-filter-button" class="search-bar-button">Is Admin ✓</button>
+            <button id="sub-filter-button" class="search-bar-button">Is Subscribed ✓</button>
         </div>
 
         <table class="admin-table">
-            <tr>
-                <th>ID</th>
-                <th>Username</th>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>Admin</th>
-                <th>Subscribed</th>
-                <th>Menu</th>
-            </tr>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Username</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Admin</th>
+                    <th>Subscribed</th>
+                    <th>Menu</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
         </table>
 
         <div id="editUserModal" class="modal">

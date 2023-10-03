@@ -9,45 +9,6 @@
     background-color: #bd0912;
 }
 
-/*.arrow-down {*/
-/*    position: absolute;*/
-/*    top: 50%;*/
-/*    right: 10px;*/
-/*    transform: translateY(-50%);*/
-/*    width: 0;*/
-/*    height: 0;*/
-/*    border-left: 5px solid transparent;*/
-/*    border-right: 5px solid transparent;*/
-/*    border-top: 5px solid #fff;*/
-/*    transition: transform 0.3s ease;*/
-/*}*/
-
-/*.sort-button.active .arrow-down {*/
-/*    transform: translateY(-50%) rotate(180deg);*/
-/*}*/
-
-/*.dropdown {*/
-/*    position: relative;*/
-/*    display: inline-block;*/
-/*}*/
-
-/*.dropdown-content {*/
-/*    display: none;*/
-/*    position: absolute;*/
-/*    background-color: #f9f9f9;*/
-/*    min-width: 160px;*/
-/*    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);*/
-/*    z-index: 1;*/
-/*}*/
-
-/*.filter-button .filter-text {*/
-/*    margin-right: 10px;*/
-/*}*/
-
-/*.filter-button.active .arrow-down {*/
-/*    transform: translateY(-50%) rotate(180deg);*/
-/*}*/
-
 h2 {
     font-family: "Roboto", sans-serif;
     font-weight: normal;

@@ -8,6 +8,7 @@
     <link rel="shortcut icon" href="/public/favicon.ico" type="image/x-icon" />
     <title>Bondflix - <?php echo $pageTitle; ?></title>
     <script src="/public/js/http_client.js"></script>
+    <script src="/public/js/helper.js"></script>
 </head>
 
 <!--<script>-->

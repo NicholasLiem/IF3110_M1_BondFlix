@@ -1,52 +1,126 @@
-
-const userData = {};
+let userData = {};
 let currentUserId = null;
-async function getUsers() {
-    try {
-        const httpClient = new HttpClient();
-        const response = await httpClient.get('/api/users', null, false);
-        const json = JSON.parse(response);
+let isAscending = true;
+// let isAdmin = true;
+// let isSubscribed = true;
 
-        if (Array.isArray(json.data)) {
-            json.data.forEach((user) => {
-                if (!userData[user.user_id]) {
-                    const table = document.querySelector("table tbody");
-                    const row = table.insertRow();
-                    row.setAttribute("data-user-id", user.user_id);
-                }
+/**
+ * Debounce for search
+ */
 
-                userData[user.user_id] = user;
-                const adminStatus =  (user.is_admin === true ? '✓' : '✗');
-                const subscriptionStatus = (user.is_subscribed === true ? '✓' : '✗');
-                const adminStatusClass = user.is_admin ? 'green-status' : 'red-status';
-                const subscriptionStatusClass = user.is_subscribed ? 'green-status' : 'red-status';
+const helper = new Helper();
+function updateTable(users) {
+    const tableBody = document.querySelector("table tbody");
 
-                const row = document.querySelector(`[data-user-id="${user.user_id}"]`);
-                row.innerHTML = `
-                    <td>${user.user_id}</td>
-                    <td>${user.username}</td>
-                    <td>${user.first_name}</td>
-                    <td>${user.last_name}</td>
-                    <td id="admin-status-symbol" class="${adminStatusClass}">${adminStatus}</td>
-                    <td id="subscribe-status-symbol" class="${subscriptionStatusClass}">${subscriptionStatus}</td>
-                    <td>
-                        <button class="edit-button">Edit</button>
-                        <button class="delete-button">Delete</button>
-                    </td>
-                `;
-            });
-        } else {
-            console.error("Invalid API response:", json);
-            alert("Invalid API response.");
-        }
-    } catch (error) {
-        console.error("An error occurred:", error);
-        alert("An error occurred while processing your request.");
+    while (tableBody.firstChild) {
+        tableBody.removeChild(tableBody.firstChild);
     }
+
+    const filteredUserData = {};
+
+    users.forEach(user => {
+        if (user && Object.keys(user).length > 0) {
+            const row = tableBody.insertRow();
+            row.setAttribute("data-user-id", user.user_id);
+
+            filteredUserData[user.user_id] = user;
+            const adminStatus = (user.is_admin === true ? '✓' : '✗');
+            const subscriptionStatus = (user.is_subscribed === true ? '✓' : '✗');
+            const adminStatusClass = user.is_admin ? 'green-status' : 'red-status';
+            const subscriptionStatusClass = user.is_subscribed ? 'green-status' : 'red-status';
+            row.innerHTML = `
+        <td>${user.user_id}</td>
+        <td>${user.username}</td>
+        <td>${user.first_name}</td>
+        <td>${user.last_name}</td>
+        <td id="admin-status-symbol" class="${adminStatusClass}">${adminStatus}</td>
+        <td id="subscribe-status-symbol" class="${subscriptionStatusClass}">${subscriptionStatus}</td>
+        <td>
+          <button class="edit-button">Edit</button>
+          <button class="delete-button">Delete</button>
+        </td>
+      `;
+        }
+    });
+
+    userData = filteredUserData;
 }
 
 
+const searchInput = document.getElementById('search-input');
+async function fetchData(query, sortAscending) {
+    try {
+        const httpClient = new HttpClient();
+        const response = await httpClient.get(`/api/users?query=${query}&sortAscending=${sortAscending}`, null, false);
+        const json = JSON.parse(response);
+        if (json.success) {
+            updateTable(json.data);
+        }
+    } catch (error) {
+        console.error("An error occurred during fetch data:", error);
+        alert("An error occurred during fetch data.");
+    }
+}
 
+const debouncedFetch = helper.debounce(fetchData, 500);
+searchInput.addEventListener('input', function() {
+    const query = searchInput.value.trim();
+    debouncedFetch(query, isAscending);
+});
+
+
+
+/**
+ * Sort Feature
+ */
+const sortButton = document.getElementById('sort-button');
+sortButton.addEventListener('click', () => {
+    isAscending = !isAscending;
+    if (isAscending) {
+        sortButton.textContent = 'Sort ID ↑';
+    } else {
+        sortButton.textContent = 'Sort ID ↓';
+    }
+    const query = searchInput.value.trim();
+
+    fetchData(query, isAscending);
+});
+
+
+// /**
+//  * Filter feature 1 (isAdmin)
+//  */
+// const isAdminButton = document.getElementById('admin-filter-button');
+// isAdminButton.addEventListener('click', () => {
+//     isAdmin = !isAdmin;
+//     if (isAdmin) {
+//         isAdminButton.textContent = 'Is Admin ✓';
+//     } else {
+//         isAdminButton.textContent = 'Is Admin ✗';
+//     }
+//     const query = searchInput.value.trim();
+//
+//     fetchData(query, isAscending, isAdmin, isSubscribed);
+// });
+//
+//
+// /**
+//  * Filter feature 2 (isSubscribed)
+//  */
+// const isSubscribedButton = document.getElementById('sub-filter-button');
+// isSubscribedButton.addEventListener('click', () => {
+//     isSubscribed = !isSubscribed;
+//     if (isSubscribed) {
+//         isSubscribedButton.textContent = 'Is Subscribed ✓';
+//     } else {
+//         isSubscribedButton.textContent = 'Is Subscribed ✗';
+//     }
+//     const query = searchInput.value.trim();
+//
+//     fetchData(query, isAscending, isAdmin, isSubscribed);
+// });
+
+fetchData('', isAscending).then(r => {});
 /**
  * Delete button functionality
  */
@@ -158,12 +232,8 @@ document.getElementById("saveEditButton").addEventListener("click", async (e) =>
         }
     } catch (error) {
         console.error("An error occurred during editing:", error);
-        console.log(error.toString());
         alert("An error occurred during editing.");
     }
 });
 
-getUsers().then(r => {});
 
-const pollingInterval = 30000;
-setInterval(getUsers, pollingInterval);
