@@ -4,5 +4,5 @@ namespace Utils\Uploader;
 
 interface IUploader
 {
-    public function upload($targetFile);
+    public function upload($targetFile, $uploadDir);
 }

@@ -34,4 +34,14 @@ class AdminService
     {
         return $this->userRepository->deleteUserById($user_id);
     }
+
+    function updateUser(User $user): ?User
+    {
+        return $this->userRepository->updateUser($user);
+    }
+
+    function processUserQuery(string $query) : array
+    {
+        return $this->userRepository->processQuery($query);
+    }
 }
