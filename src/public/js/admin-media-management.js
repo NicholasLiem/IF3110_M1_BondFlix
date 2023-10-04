@@ -10,7 +10,7 @@ const closeButtons = document.querySelectorAll(".close");
 const saveEditGenreButton = document.getElementById("saveEditGenreButton");
 const addGenreButton = document.getElementById("add-genre-button");
 
-let selectedGenreIdToEdit = {};
+let selectedGenreIdToEdit = null;
 
 async function fetchData() {
     try {
@@ -33,13 +33,13 @@ async function fetchData() {
             // categoryResponse,
             // directorResponse,
         ]);
-
-        const genreJson = JSON.parse(genreResponse);
+        console.log(genreResponse);
+        const genreJson = JSON.parse(genreResponse.body);
         genreJson.data.forEach((genre) => {
             genreData[genre.genre_id] = genre.genre_name;
         });
 
-        console.log(genreData);
+        // console.log(genreData);
     } catch (error) {
         console.error("An error occurred during fetch data:", error);
         alert("An error occurred during fetch data.");
@@ -81,7 +81,7 @@ async function editGenre(newGenreName) {
             updatedGenreData,
             false
         );
-        const json = JSON.parse(response);
+        const json = JSON.parse(response.body);
 
         if (json.success) {
             alert("Edit genre successful");
