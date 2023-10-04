@@ -1,7 +1,7 @@
 const contentData = {};
 let currentContentId = null;
 
-async function getcontents() {
+async function getContents() {
     try {
         const httpClient = new HttpClient();
         const response = await httpClient.get("/api/content", null, false);
@@ -171,7 +171,7 @@ document
         }
     });
 
-getcontents().then((r) => {});
+getContents().then((r) => {});
 
 const pollingInterval = 30000;
-setInterval(getcontents, pollingInterval);
+setInterval(getContents, pollingInterval);

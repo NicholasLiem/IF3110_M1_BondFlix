@@ -5,3 +5,36 @@
 #media-item:hover {
     background-color: #bd0912;
 }
+
+h2 {
+    margin: 0;
+}
+
+.genre-container {
+    background-color: white;
+    padding: 30px;
+}
+
+.category-container {
+    background-color: white;
+    padding: 30px;
+}
+
+.director-container {
+    background-color: white;
+    padding: 30px;
+}
+
+.actor-container {
+    background-color: white;
+    padding: 30px;
+}
+
+.manage-genre-table {
+    text-align: left;
+    text-decoration: none;
+}
+
+.manage-genre-table select {
+    width: 100%;
+}

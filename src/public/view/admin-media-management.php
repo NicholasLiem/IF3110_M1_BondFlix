@@ -13,18 +13,57 @@ $username = $_SESSION['username'];
 <?php include $adminSidebarTemplate ?>
 <div class="content">
     <div class="container">
-        <form>
-            <label for="edit_genre_id">Select a Genre to Edit:</label>
-            <select name="edit_genre_id" id="edit_genre_id">
-                <option value="test">test</option>
-            </select>
-            <input type="submit" value="Edit Genre">
-        </form>
-        <form id="add-new-genre-form">
-            <label>Add New Genre:</label>
-            <input type="text" name="genre_name" id="input-genre" required>
-            <input type="submit" id="submit-new-genre" value="Add Genre">
-        </form>
+        <div class="genre-container">
+            <h2>Manage Genre</h2>
+            <table class="manage-genre-table">
+                <tr>
+                    <th><label for="edit_genre_id">Select a Genre to Edit</label></th>
+                    <th><select name="edit_genre_id" id="edit_genre_id">
+                            <option value="test">test</option>
+                        </select></th>
+                    <th><input type="submit" value="Edit Genre"></th>
+                </tr>
+                <tr>
+                    <th><label>Add New Genre</label></th>
+                    <th><input type="text" name="genre_name" id="input-genre" required</th>
+                    <th><input type="submit" id="submit-new-genre" value="Add Genre"></th>
+                </tr>
+            </table>
+        </div>
+        <div class="category-container">
+            <h2>Manage Genre</h2>
+            <table class="manage-genre-table">
+                <tr>
+                    <th><label for="edit_genre_id">Select a Genre to Edit</label></th>
+                    <th><select name="edit_genre_id" id="edit_genre_id">
+                            <option value="test">test</option>
+                        </select></th>
+                    <th><input type="submit" value="Edit Genre"></th>
+                </tr>
+                <tr>
+                    <th><label>Add New Genre</label></th>
+                    <th><input type="text" name="genre_name" id="input-genre" required</th>
+                    <th><input type="submit" id="submit-new-genre" value="Add Genre"></th>
+                </tr>
+            </table>
+        </div>
+        <div class="actor-container">
+            <h2>Manage Actor</h2>
+            <table class="manage-genre-table">
+                <tr>
+                    <th><label for="edit_genre_id">Select a Genre to Edit</label></th>
+                    <th><select name="edit_genre_id" id="edit_genre_id">
+                            <option value="test">test</option>
+                        </select></th>
+                    <th><input type="submit" value="Edit Genre"></th>
+                </tr>
+                <tr>
+                    <th><label>Add New Genre</label></th>
+                    <th><input type="text" name="genre_name" id="input-genre" required</th>
+                    <th><input type="submit" id="submit-new-genre" value="Add Genre"></th>
+                </tr>
+            </table>
+        </div>
     </div>
 </div>
 
