@@ -287,4 +287,78 @@ document.getElementById("saveEditButton").addEventListener("click", async (e) =>
     }
 });
 
-
+/*  Modal add user button
+ */
+// const newUserModal = document.getElementById("newUserModal");
+//
+// closeBtn.addEventListener("click", () => {
+//     newUserModal.style.display = "none";
+// });
+//
+// window.addEventListener("click", (event) => {
+//     if (event.target === newUserModal) {
+//         newUserModal.style.display = "none";
+//     }
+// });
+// document.getElementById("newUserButton").addEventListener("click", async (e) => {
+//     e.preventDefault();
+//
+//     const username = document.getElementById("newUsername").value;
+//     const first_name = document.getElementById("newFirstName").value;
+//     const last_name = document.getElementById("newLastName").value;
+//     const password = document.getElementById('newPassword').value;
+//     const password_confirmation = document.getElementById('newPasswordConfirmation').value;
+//
+//     if (username === '') {
+//         alert("Please enter a username.");
+//         return;
+//     }
+//
+//     if (first_name === '') {
+//         alert("Please enter your first name.");
+//         return;
+//     }
+//
+//     if (last_name === '') {
+//         alert("Please enter your last name.");
+//         return;
+//     }
+//
+//     if (password === '') {
+//         alert("Please enter a password.");
+//         return;
+//     }
+//
+//     if (password.length < 6) {
+//         alert("Password must be at least 6 characters long.");
+//         return;
+//     }
+//
+//     if (password !== password_confirmation) {
+//         alert("Password do not match!")
+//         return;
+//     }
+//
+//     const data = {
+//         username,
+//         first_name,
+//         last_name,
+//         password,
+//         password_confirmation
+//     };
+//
+//     try {
+//         const httpClient = new HttpClient();
+//         const response = await httpClient.post('/api/auth/register', data, false);
+//         const json = JSON.parse(response);
+//         if (json.success) {
+//             alert("Registration successful!");
+//             window.location.href = "/login";
+//         } else {
+//             alert("Registration failed: " + json.message);
+//         }
+//     } catch (error) {
+//         console.error("An error occurred:", error);
+//         alert("An error occurred while processing your request.");
+//     }
+// });

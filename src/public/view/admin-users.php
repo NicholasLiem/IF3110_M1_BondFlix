@@ -17,7 +17,7 @@ $username = $_SESSION['username'];
             <button id="admin-filter-button" class="search-bar-button">Is Admin ✓</button>
             <button id="sub-filter-button" class="search-bar-button">Is Subscribed ✓</button>
             <button id="enable-filter-button" class="search-bar-button">Filter Disabled ✗</button>
-            <button id="add-user-button" class="search-bar-button">Add User</button>
+            <button id="add-user-button" class="search-bar-button">New User</button>
         </div>
 
         <table class="admin-table">
@@ -71,6 +71,35 @@ $username = $_SESSION['username'];
                     </tr>
                 </table>
                 <button type="submit" class="submit-edit" id="saveEditButton">Save</button>
+            </div>
+        </div>
+        <div id="newUserModal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h2>Edit User</h2>
+                <table class="new-user-modal">
+                    <tr>
+                        <td><label for="newUsername">Username</label></td>
+                        <td><input type="text" id="newUsername" name="username" required></td>
+                    </tr>
+                    <tr>
+                        <td><label for="newFirstName">First Name</label></td>
+                        <td><input type="text" id="newFirstName" name="firstName" required></td>
+                    </tr>
+                    <tr>
+                        <td><label for="newLastName">Last Name</label></td>
+                        <td><input type="text" id="newLastName" name="lastName"></td>
+                    </tr>
+                    <tr>
+                        <td><label for="newPassword">Password</label></td>
+                        <td><input type="text" id="newPassword" name="password"></td>
+                    </tr>
+                    <tr>
+                        <td><label for="newPasswordConfirmation">Password Confirmation</label></td>
+                        <td><input type="text" id="newPasswordConfirmation" name="passwordConfirmation"></td>
+                    </tr>
+                </table>
+                <button type="submit" class="submit-new-user" id="newUserButton">Save</button>
             </div>
         </div>
     </div>
