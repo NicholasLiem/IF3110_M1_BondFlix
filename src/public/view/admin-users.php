@@ -17,6 +17,7 @@ $username = $_SESSION['username'];
             <button id="admin-filter-button" class="search-bar-button">Is Admin ✓</button>
             <button id="sub-filter-button" class="search-bar-button">Is Subscribed ✓</button>
             <button id="enable-filter-button" class="search-bar-button">Filter Disabled ✗</button>
+            <button id="add-user-button" class="search-bar-button">Add User</button>
         </div>
 
         <table class="admin-table">

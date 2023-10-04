@@ -19,3 +19,7 @@ h2 {
 #enable-filter-button {
     background-color: red;
 }
+
+#add-user-button {
+    margin-left: auto;
+}
