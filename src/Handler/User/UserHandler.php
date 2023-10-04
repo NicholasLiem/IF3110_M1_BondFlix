@@ -41,8 +41,8 @@ class UserHandler extends BaseHandler
                 if (isset($params['query'])) {
                     $query = $params['query'];
                     $sortAscending = filter_var($params['sortAscending'], FILTER_VALIDATE_BOOLEAN);
-//                    $isAdmin = filter_var($params['isAdmin'], FILTER_VALIDATE_BOOLEAN);
-//                    $isSubscribed = filter_var($params['isSubscribed'], FILTER_VALIDATE_BOOLEAN);
+                    $isAdmin = filter_var($params['isAdmin'], FILTER_VALIDATE_BOOLEAN);
+                    $isSubscribed = filter_var($params['isSubscribed'], FILTER_VALIDATE_BOOLEAN);
                     $result = $this->service->processUserQuery($query, $sortAscending);
 
                     if ($sortAscending) {
@@ -55,19 +55,27 @@ class UserHandler extends BaseHandler
                         });
                     }
 
-//                    $filteredResult = [];
-//                    foreach ($result as $user) {
-//                        if ($isAdmin && $user->getIsAdmin() && $isSubscribed && $user->getIsSubscribed()) {
-//                            $filteredResult[] = $user;
-//                        }
-//                    }
+                    $filteredResult = [];
 
-                    if (empty($result)) {
+                    foreach ($result as $user) {
+                        $filterConditions = [
+                            ($user->getIsAdmin() === $isAdmin),
+                            ($user->getIsSubscribed() === $isSubscribed),
+                        ];
+
+                        if (array_reduce($filterConditions, function($carry, $condition) {
+                            return $carry && $condition;
+                        }, true)) {
+                            $filteredResult[] = $user;
+                        }
+                    }
+
+                    if (empty($filteredResult)) {
                         $response = new Response(false, HttpStatusCode::OK, "No matching users found", null);
                     } else {
                         $userArrays = array_map(function ($user) {
                             return $user->toArray();
-                        }, $result);
+                        }, $filteredResult);
                         $response = new Response(true, HttpStatusCode::OK, "Query processed successfully", $userArrays);
                     }
                 } else {
