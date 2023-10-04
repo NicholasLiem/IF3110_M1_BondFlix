@@ -57,6 +57,10 @@ $router->addPage('/register', function ($urlParams) {
     redirect('register', ['urlParams' => $urlParams]);
 });
 
+$router->addPage('/account', function () {
+    redirect('account');
+}, [LoggedInCheck::getInstance()]);
+
 $router->addPage('/admin', function () {
     redirect('admin');
 }, [LoggedInCheck::getInstance(), AdminCheck::getInstance()]);

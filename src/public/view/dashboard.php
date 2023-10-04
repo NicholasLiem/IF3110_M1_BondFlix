@@ -40,7 +40,7 @@ include BASE_PATH . "/public/templates/header.php";
             <div class="account-menu">
                 <ul>
                     <li>
-                        <a href="">Account</a>
+                        <a href="/account">Account</a>
                     </li>
                     <li>
                         <a href="" onclick="logout()">Logout</a>
@@ -86,8 +86,14 @@ include BASE_PATH . "/public/templates/header.php";
                     </div>
                 </div>
             </div>
-            <div id="more-recommendation">
-
+            <div class="more-recommendation">
+                <h2>Most Popular Movies</h2>
+                <div class="recommendations-content">
+                    <img src="/public/thumbnail1.jpg" alt="thumbnail1">
+                    <img src="/public/thumbnail2.jpg" alt="thumbnail2">
+                    <img src="/public/thumbnail3.jpg" alt="thumbnail3">
+                    <img src="/public/thumbnail4.jpg" alt="thumbnail4">
+                </div>
             </div>
         </div>
     </main>
