@@ -1,5 +1,7 @@
+@import url("/public/css/lib/admin/modal.css");
+
 #media-item {
-    background-color: #E50914;
+    background-color: #e50914;
 }
 
 #media-item:hover {
@@ -30,11 +32,15 @@ h2 {
     padding: 30px;
 }
 
-.manage-genre-table {
+.manage-table {
     text-align: left;
     text-decoration: none;
 }
 
-.manage-genre-table select {
+.manage-table select {
     width: 100%;
 }
+
+/* #editActorModal {
+    display: block;
+} */

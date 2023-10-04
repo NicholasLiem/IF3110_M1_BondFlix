@@ -77,36 +77,28 @@ class GenreHandler extends BaseHandler
 
     public function put($params = null) {
         try {
-            if (!isset($params['genre_id'])) {
-                $response = new Response(false, HttpStatusCode::BAD_REQUEST, "Insufficient parameter: genre_id", null);
+            $putData = file_get_contents('php://input');
+            parse_str($putData, $_PUT);
+
+            $genre_id = $_PUT['genre_id'];
+            $genre_name = $_PUT['genre_name'];
+
+            if (is_null($this->service->getGenreById($genre_id))) {
+                $response = new Response(false, HttpStatusCode::BAD_REQUEST, "Genre not found", null);
                 $response->encode_to_JSON();
                 return;
             }
 
-            $genreId = $params['genre_id'];
+            $updatedGenre = $this->service->updateGenre($genre_id, $genre_name);
 
-            $genre = $this->service->getUserById($genreId);
-            if (is_null($genre)) {
-                $response = new Response(false, HttpStatusCode::NOT_FOUND, "User not found", null);
-                $response->encode_to_JSON();
-                return;
-            }
-
-            $genre->setGenreName($params['genre_name']);
-
-            $result =$this->service->updateGenre($genre);
-
-            if ($result) {
-                $response = new Response(true, HttpStatusCode::OK, "Genre update success", $genre->toArray());
-            } else {
-                $response = new Response(false, HttpStatusCode::NO_CONTENT, "User update failed", null);
-            } 
-
+            $response = new Response(true, HttpStatusCode::OK, "Genre updated successfully", $updatedGenre->toArray());
             $response->encode_to_JSON();
+
         } catch (Exception $e) {
             $response = new Response(false, HttpStatusCode::BAD_REQUEST, "Genre update failed: " . $e->getMessage(), null);
             $response->encode_to_JSON();
         }
+
     }
 
     public function delete($params = null) {

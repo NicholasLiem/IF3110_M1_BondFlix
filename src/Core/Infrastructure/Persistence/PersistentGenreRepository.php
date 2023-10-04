@@ -38,15 +38,15 @@ class PersistentGenreRepository implements GenreRepository
             $genre->setGenreId($this->getGenreIdByName($genreName)->getGenreId());
             return $genre;
         } catch (Exception $e) {
-            Logger::getInstance()->logMessage('User creation failed: ' . $e->getMessage());
-            throw new Exception("User creation failed");
+            Logger::getInstance()->logMessage('Genre creation failed: ' . $e->getMessage());
+            throw new Exception("Genre creation failed");
         }
     }
 
     public function getGenreById(int $genre_id): ?Genre
     {
         try {
-            $stmt = $this->db->prepare("SELECT genre_id FROM genre WHERE genre_id = :genre_id");
+            $stmt = $this->db->prepare("SELECT * FROM genre WHERE genre_id = :genre_id");
             $stmt->bindParam(':genre_id', $genre_id);
             $stmt->execute();
 
@@ -96,12 +96,14 @@ class PersistentGenreRepository implements GenreRepository
             WHERE genre_id = :genre_id"
         );
 
+        $genreId = $genre->getGenreId();
         $newGenreName = $genre->getGenreName();
 
         $stmt->bindParam(':new_genre_name', $newGenreName);
+        $stmt->bindParam('genre_id', $genreId);
 
         if (!$stmt->execute()) {
-            throw new Exception("User update failed");
+            throw new Exception("Genre update failed");
         }
 
         return $genre;
@@ -147,8 +149,8 @@ class PersistentGenreRepository implements GenreRepository
 
             return $genres;
         } catch (Exception $e) {
-            Logger::getInstance()->logMessage('Failed to fetch all users: ' . $e->getMessage());
-            throw new Exception("Failed to fetch all users");
+            Logger::getInstance()->logMessage('Failed to fetch all genres: ' . $e->getMessage());
+            throw new Exception("Failed to fetch all genres");
         }
     }
 }
