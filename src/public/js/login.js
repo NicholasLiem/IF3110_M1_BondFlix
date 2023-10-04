@@ -12,7 +12,7 @@ async function submitLogin(e) {
     try {
         const httpClient = new HttpClient();
         const response = await httpClient.post('/api/auth/login', data, false);
-        const json = JSON.parse(response);
+        const json = JSON.parse(response.body);
         if (json.success) {
             if (json.data.is_admin === true) {
                 window.location.href = "/admin";

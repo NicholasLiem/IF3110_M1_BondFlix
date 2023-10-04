@@ -57,6 +57,7 @@ async function addNewGenre() {
         const httpClient = new HttpClient();
         const response = await httpClient.post("/api/genre", data, false);
         const json = JSON.parse(response);
+
         if (json.success) {
             alert("Success adding new genre!");
         } else {

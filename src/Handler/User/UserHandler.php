@@ -31,6 +31,8 @@ class UserHandler extends BaseHandler
     {
         try {
             $resultArray = [];
+            $page = isset($params['page']) ? intval($params['page']) : 1;
+            $pageSize = isset($params['pageSize']) ? intval($params['pageSize']) : 10;
             if (isset($params['username'])) {
                 $username = $params['username'];
                 $singleUser = $this->service->getUserByUsername($username);
@@ -40,7 +42,7 @@ class UserHandler extends BaseHandler
                     $query = $params['query'];
                     $sortAscending = filter_var($params['sortAscending'], FILTER_VALIDATE_BOOLEAN);
 
-                    $result = $this->service->processUserQuery($query, $sortAscending);
+                    $result = $this->service->processUserQuery($query);
                     $filteredResult = [];
 
                     if (isset($params['isAdmin']) && isset($params['isSubscribed'])){
@@ -70,12 +72,22 @@ class UserHandler extends BaseHandler
                             return $b->getUserId() - $a->getUserId();
                         });
                     }
-
-                    $resultArray = ArrayMapper::mapObjectsToArray($filteredResult);
+                    $totalPages = ceil(count($filteredResult) / $pageSize);
+                    header("X-Total-Pages: " . $totalPages);
+                    $startIndex = ($page - 1) * $pageSize;
+                    $pagedResult = array_slice($filteredResult, $startIndex, $pageSize);
                 } else {
                     $users = $this->service->getAllUsers();
-                    $resultArray = ArrayMapper::mapObjectsToArray($users);
+                    $totalUsers = count($users);
+                    $totalPages = ceil($totalUsers / $pageSize);
+                    header("X-Total-Pages: " . $totalPages);
+                    $page = max(1, min($page, $totalPages));
+
+                    $startIndex = ($page - 1) * $pageSize;
+                    $pagedResult = array_slice($users, $startIndex, $pageSize);
+
                 }
+                $resultArray = ArrayMapper::mapObjectsToArray($pagedResult);
             }
 
             if (!empty($resultArray)) {
@@ -133,6 +145,7 @@ class UserHandler extends BaseHandler
                 $username = $params['username'];
                 $firstName = $params['first_name'];
                 $lastName = $params['last_name'];
+                $newPassword = $params['password'];
 
                 $isAdmin = filter_var($params['is_admin'], FILTER_VALIDATE_BOOLEAN);
                 $isSubscribed = filter_var($params['is_subscribed'], FILTER_VALIDATE_BOOLEAN);
@@ -142,6 +155,9 @@ class UserHandler extends BaseHandler
                     $user->setUsername($username);
                     $user->setFirstName($firstName);
                     $user->setLastName($lastName);
+                    if (isset($newPassword)){
+                        $user->setPasswordHash($newPassword);
+                    }
                     $user->setIsAdmin($isAdmin);
                     $user->setIsSubscribed($isSubscribed);
 
