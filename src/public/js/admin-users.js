@@ -130,7 +130,7 @@ function initEventListeners() {
         Elements.isAdminButton.textContent = `Is Admin ${buttonText}`;
         Elements.isAdminButton.classList.toggle('green-status', UserTable.isAdmin);
         Elements.isAdminButton.classList.toggle('red-status', !UserTable.isAdmin);
-        Elements.isAdminButton.style.backgroundColor = UserTable.isAdmin ? 'green' : 'red';
+        Elements.isAdminButton.style.backgroundColor = UserTable.isAdmin ? 'green' : '#e50914';
         fetchData();
     });
 
@@ -140,7 +140,7 @@ function initEventListeners() {
         Elements.isSubscribedButton.textContent = `Is Subscribed ${buttonText}`;
         Elements.isSubscribedButton.classList.toggle('green-status', UserTable.isSubscribed);
         Elements.isSubscribedButton.classList.toggle('red-status', !UserTable.isSubscribed);
-        Elements.isSubscribedButton.style.backgroundColor = UserTable.isSubscribed ? 'green' : 'red';
+        Elements.isSubscribedButton.style.backgroundColor = UserTable.isSubscribed ? 'green' : '#e50914';
         fetchData();
     });
 
@@ -149,7 +149,7 @@ function initEventListeners() {
         Elements.filterEnableButton.textContent = `Filter ${UserTable.filterEnabled ? 'Enabled ✓' : 'Disabled ✗'}`;
         Elements.filterEnableButton.classList.toggle('green-status', UserTable.filterEnabled);
         Elements.filterEnableButton.classList.toggle('red-status', !UserTable.filterEnabled);
-        Elements.filterEnableButton.style.backgroundColor = UserTable.filterEnabled ? 'green' : 'red';
+        Elements.filterEnableButton.style.backgroundColor = UserTable.filterEnabled ? 'green' : '#e50914';
         fetchData();
     });
 

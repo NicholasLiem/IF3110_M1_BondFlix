@@ -22,10 +22,17 @@ h2 {
 
 #admin-filter-button {
     background-color: green;
+    color: white;
 }
 
 #sub-filter-button {
     background-color: green;
+    color: white;
+}
+
+#enable-filter-button {
+    background-color: #e50914;
+    color: white;
 }
 
 .new-user-modal {
@@ -47,5 +54,16 @@ h2 {
 }
 
 .pagination {
+    margin-top: auto;
+    margin-bottom: 30px;
     margin-left: 30px;
+}
+
+.pagination button {
+    border-radius: 4px;
+    font-family: "Roboto", sans-serif;
+    padding: 8px 12px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
 }

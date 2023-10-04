@@ -85,7 +85,7 @@ $username = $_SESSION['username'];
         <div id="newUserModal" class="modal">
             <div class="modal-content">
                 <span class="close" id="close-user">&times;</span>
-                <h2>Edit User</h2>
+                <h2>New User</h2>
                 <table class="new-user-modal">
                     <tr>
                         <td><label for="newUsername">Username</label></td>
