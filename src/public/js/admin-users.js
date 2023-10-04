@@ -4,12 +4,13 @@ let isAscending = true;
 let isAdmin = true;
 let isSubscribed = true;
 let filterEnable = false;
+let totalPages = 1
+let pageNum = 1;
 
-/**
- * Debounce for search
- */
 
 const helper = new Helper();
+const prevPageButton = document.getElementById("prevPageButton");
+const nextPageButton = document.getElementById("nextPageButton");
 function updateTable(users) {
     const tableBody = document.querySelector("table tbody");
 
@@ -68,15 +69,20 @@ async function fetchData(query, sortAscending, isAdmin, isSubscribed) {
         let response;
         if (filterEnable) {
             response = await httpClient.get(
-                `/api/users?query=${query}&sortAscending=${sortAscending}&isAdmin=${isAdmin}&isSubscribed=${isSubscribed}`,
+                `/api/users?query=${query}&sortAscending=${sortAscending}&isAdmin=${isAdmin}&isSubscribed=${isSubscribed}&page=${pageNum}`,
                 null, false);
         } else {
             response = await httpClient.get(
-                `/api/users?query=${query}&sortAscending=${sortAscending}`,
+                `/api/users?query=${query}&sortAscending=${sortAscending}&page=${pageNum}`,
                 null, false);
         }
+        const headers = response.headers;
+        totalPages = headers['x-total-pages'];
+        prevPageButton.disabled = pageNum === 1;
+        nextPageButton.disabled = pageNum >= totalPages;
 
-        const json = JSON.parse(response);
+        // console.log("Total pages:" + totalPages);
+        const json = JSON.parse(response.body);
         if (json.success) {
             updateTable(json.data);
         } else {
@@ -93,8 +99,6 @@ searchInput.addEventListener('input', function() {
     const query = searchInput.value.trim();
     debouncedFetch(query, isAscending, isAdmin, isSubscribed);
 });
-
-
 
 /**
  * Sort Feature
@@ -173,7 +177,24 @@ filterEnableButton.addEventListener('click', () => {
     fetchData(query, isAscending, isAdmin, isSubscribed);
 });
 
+prevPageButton.addEventListener("click", () => {
+    if (pageNum > 1) {
+        pageNum--;
+        const query = searchInput.value.trim();
+        fetchData(query, isAscending, isAdmin, isSubscribed);
+    }
+});
+
+nextPageButton.addEventListener("click", () => {
+    if (pageNum < totalPages) {
+        pageNum++;
+        const query = searchInput.value.trim();
+        fetchData(query, isAscending, isAdmin, isSubscribed);
+    }
+});
 fetchData('', isAscending,  isAdmin, isSubscribed).then(r => {});
+
+
 /**
  * Delete button functionality
  */

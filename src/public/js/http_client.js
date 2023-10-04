@@ -14,6 +14,21 @@ class HttpClient {
             this.http.onload = () => {
                 if (!asXML) {
                     try {
+                        const responseHeaders = this.http.getAllResponseHeaders();
+                        const headersArray = responseHeaders.trim().split('\n');
+                        const headers = {};
+
+                        headersArray.forEach(header => {
+                            const [name, value] = header.split(':');
+                            headers[name.trim()] = value.trim();
+                        });
+
+                        const responseData = {
+                            headers,
+                            body: this.http.responseText,
+                        };
+
+                        resolve(responseData);
                         resolve(this.http.responseText);
                     } catch (e) {
                         reject(e);

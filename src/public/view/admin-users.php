@@ -36,6 +36,11 @@ $username = $_SESSION['username'];
             </tbody>
         </table>
 
+        <div class="pagination">
+            <button id="prevPageButton">Previous</button>
+            <button id="nextPageButton">Next</button>
+        </div>
+
         <div id="editUserModal" class="modal">
             <div class="modal-content">
                 <span class="close" id="close-edit">&times;</span>

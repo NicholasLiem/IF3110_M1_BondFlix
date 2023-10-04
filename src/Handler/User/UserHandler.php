@@ -31,6 +31,8 @@ class UserHandler extends BaseHandler
     {
         try {
             $resultArray = [];
+            $page = isset($params['page']) ? intval($params['page']) : 1;
+            $pageSize = isset($params['pageSize']) ? intval($params['pageSize']) : 10;
             if (isset($params['username'])) {
                 $username = $params['username'];
                 $singleUser = $this->service->getUserByUsername($username);
@@ -70,12 +72,22 @@ class UserHandler extends BaseHandler
                             return $b->getUserId() - $a->getUserId();
                         });
                     }
-
-                    $resultArray = ArrayMapper::mapObjectsToArray($filteredResult);
+                    $totalPages = ceil(count($filteredResult) / $pageSize);
+                    header("X-Total-Pages: " . $totalPages);
+                    $startIndex = ($page - 1) * $pageSize;
+                    $pagedResult = array_slice($filteredResult, $startIndex, $pageSize);
                 } else {
                     $users = $this->service->getAllUsers();
-                    $resultArray = ArrayMapper::mapObjectsToArray($users);
+                    $totalUsers = count($users);
+                    $totalPages = ceil($totalUsers / $pageSize);
+                    header("X-Total-Pages: " . $totalPages);
+                    $page = max(1, min($page, $totalPages));
+
+                    $startIndex = ($page - 1) * $pageSize;
+                    $pagedResult = array_slice($users, $startIndex, $pageSize);
+
                 }
+                $resultArray = ArrayMapper::mapObjectsToArray($pagedResult);
             }
 
             if (!empty($resultArray)) {

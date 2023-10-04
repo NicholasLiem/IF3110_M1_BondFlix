@@ -49,3 +49,7 @@ h2 {
     width: 100%;
     box-sizing: border-box;
 }
+
+.pagination {
+    margin-left: 30px;
+}
