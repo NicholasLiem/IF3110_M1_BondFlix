@@ -41,33 +41,34 @@ class UserHandler extends BaseHandler
                 if (isset($params['query'])) {
                     $query = $params['query'];
                     $sortAscending = filter_var($params['sortAscending'], FILTER_VALIDATE_BOOLEAN);
-                    $isAdmin = filter_var($params['isAdmin'], FILTER_VALIDATE_BOOLEAN);
-                    $isSubscribed = filter_var($params['isSubscribed'], FILTER_VALIDATE_BOOLEAN);
                     $result = $this->service->processUserQuery($query, $sortAscending);
+                    $filteredResult = [];
+                    if (isset($params['isAdmin']) && isset($params['isSubscribed'])){
+                        $isAdmin = filter_var($params['isAdmin'], FILTER_VALIDATE_BOOLEAN);
+                        $isSubscribed = filter_var($params['isSubscribed'], FILTER_VALIDATE_BOOLEAN);
+                        foreach ($result as $user) {
+                            $filterConditions = [
+                                ($user->getIsAdmin() === $isAdmin),
+                                ($user->getIsSubscribed() === $isSubscribed),
+                            ];
+                            if (array_reduce($filterConditions, function($carry, $condition) {
+                                return $carry && $condition;
+                            }, true)) {
+                                $filteredResult[] = $user;
+                            }
+                        }
+                    } else {
+                        $filteredResult = $result;
+                    }
 
                     if ($sortAscending) {
-                        usort($result, function ($a, $b) {
+                        usort($filteredResult, function ($a, $b) {
                             return $a->getUserId() - $b->getUserId();
                         });
                     } else {
-                        usort($result, function ($a, $b) {
+                        usort($filteredResult, function ($a, $b) {
                             return $b->getUserId() - $a->getUserId();
                         });
-                    }
-
-                    $filteredResult = [];
-
-                    foreach ($result as $user) {
-                        $filterConditions = [
-                            ($user->getIsAdmin() === $isAdmin),
-                            ($user->getIsSubscribed() === $isSubscribed),
-                        ];
-
-                        if (array_reduce($filterConditions, function($carry, $condition) {
-                            return $carry && $condition;
-                        }, true)) {
-                            $filteredResult[] = $user;
-                        }
                     }
 
                     if (empty($filteredResult)) {
@@ -86,8 +87,8 @@ class UserHandler extends BaseHandler
                     $response = new Response(true, HttpStatusCode::OK, "Users retrieved successfully", $userArrays);
                 }
             }
-            $response->encode_to_JSON();
 
+            $response->encode_to_JSON();
         } catch (Exception $e) {
             $response = new Response(false, HttpStatusCode::BAD_REQUEST, "Request failed: " . $e->getMessage(), null);
             $response->encode_to_JSON();

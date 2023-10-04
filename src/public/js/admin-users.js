@@ -3,6 +3,7 @@ let currentUserId = null;
 let isAscending = true;
 let isAdmin = true;
 let isSubscribed = true;
+let filterEnable = false;
 
 /**
  * Debounce for search
@@ -64,9 +65,17 @@ const searchInput = document.getElementById('search-input');
 async function fetchData(query, sortAscending, isAdmin, isSubscribed) {
     try {
         const httpClient = new HttpClient();
-        const response = await httpClient.get(
-            `/api/users?query=${query}&sortAscending=${sortAscending}&isAdmin=${isAdmin}&isSubscribed=${isSubscribed}`,
-            null, false);
+        let response;
+        if (filterEnable) {
+            response = await httpClient.get(
+                `/api/users?query=${query}&sortAscending=${sortAscending}&isAdmin=${isAdmin}&isSubscribed=${isSubscribed}`,
+                null, false);
+        } else {
+            response = await httpClient.get(
+                `/api/users?query=${query}&sortAscending=${sortAscending}`,
+                null, false);
+        }
+
         const json = JSON.parse(response);
         if (json.success) {
             updateTable(json.data);
@@ -137,6 +146,30 @@ isSubscribedButton.addEventListener('click', () => {
     fetchData(query, isAscending, isAdmin, isSubscribed);
 });
 
+
+/**
+ * Enable filter function
+ */
+const filterEnableButton = document.getElementById('enable-filter-button');
+
+filterEnableButton.addEventListener('click', () => {
+    filterEnable = !filterEnable;
+    if (filterEnable) {
+        filterEnableButton.textContent = 'Filter Enabled ✓';
+        filterEnableButton.style.backgroundColor = "green";
+    } else {
+        filterEnableButton.textContent = 'Filter Disabled ✗'
+        filterEnableButton.style.backgroundColor = "red";
+    }
+    const query = searchInput.value.trim();
+
+    if (filterEnable) {
+        fetchData(query, isAscending, null, null);
+    } else {
+        fetchData(query, isAscending, isAdmin, isSubscribed);
+    }
+});
+
 fetchData('', isAscending,  isAdmin, isSubscribed).then(r => {});
 /**
  * Delete button functionality
@@ -164,6 +197,7 @@ document.addEventListener("click", async (event) => {
         }
     }
 });
+
 
 /**
  * Edit modal functionality
