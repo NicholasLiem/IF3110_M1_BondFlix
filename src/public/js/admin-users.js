@@ -1,391 +1,158 @@
-let userData = {};
-let currentUserId = null;
-let isAscending = true;
-let isAdmin = true;
-let isSubscribed = true;
-let filterEnable = false;
-let totalPages = 1
-let pageNum = 1;
+const UserTable = {
+    data: {},
+    currentPage: 1,
+    totalPages: 1,
+    isAscending: true,
+    isAdmin: true,
+    isSubscribed: true,
+    filterEnabled: false,
+    pageSize: 10,
+};
 
+const Elements = {
+    searchInput: document.getElementById('search-input'),
+    sortButton: document.getElementById('sort-button'),
+    isAdminButton: document.getElementById('admin-filter-button'),
+    isSubscribedButton: document.getElementById('sub-filter-button'),
+    filterEnableButton: document.getElementById('enable-filter-button'),
+    prevPageButton: document.getElementById('prevPageButton'),
+    nextPageButton: document.getElementById('nextPageButton'),
+};
 
-const helper = new Helper();
-const prevPageButton = document.getElementById("prevPageButton");
-const nextPageButton = document.getElementById("nextPageButton");
+const Constants = {
+    BUTTON_TEXT: {
+        ENABLED: '✓',
+        DISABLED: '✗',
+    },
+    BUTTON_CLASSES: {
+        ENABLED: 'green-status',
+        DISABLED: 'red-status',
+    },
+};
+
 function updateTable(users) {
-    const tableBody = document.querySelector("table tbody");
+    const tableBody = document.querySelector('table tbody');
+    tableBody.innerHTML = '';
 
-    while (tableBody.firstChild) {
-        tableBody.removeChild(tableBody.firstChild);
-    }
-
-    const filteredUserData = {};
-
-    users.forEach(user => {
-        if (user && Object.keys(user).length > 0) {
+    if (users && users.length > 0) {
+        users.forEach(user => {
             const row = tableBody.insertRow();
-            row.setAttribute("data-user-id", user.user_id);
+            row.setAttribute('data-user-id', user.user_id);
 
-            filteredUserData[user.user_id] = user;
-            const adminStatus = (user.is_admin === true ? '✓' : '✗');
-            const subscriptionStatus = (user.is_subscribed === true ? '✓' : '✗');
-            const adminStatusClass = user.is_admin ? 'green-status' : 'red-status';
-            const subscriptionStatusClass = user.is_subscribed ? 'green-status' : 'red-status';
+            const adminStatus = user.is_admin ? Constants.BUTTON_TEXT.ENABLED : Constants.BUTTON_TEXT.DISABLED;
+            const subscriptionStatus = user.is_subscribed ? Constants.BUTTON_TEXT.ENABLED : Constants.BUTTON_TEXT.DISABLED;
+            const adminStatusClass = user.is_admin ? Constants.BUTTON_CLASSES.ENABLED : Constants.BUTTON_CLASSES.DISABLED;
+            const subscriptionStatusClass = user.is_subscribed ? Constants.BUTTON_CLASSES.ENABLED : Constants.BUTTON_CLASSES.DISABLED;
+
             row.innerHTML = `
         <td>${user.user_id}</td>
         <td>${user.username}</td>
         <td>${user.first_name}</td>
         <td>${user.last_name}</td>
-        <td id="admin-status-symbol" class="${adminStatusClass}">${adminStatus}</td>
-        <td id="subscribe-status-symbol" class="${subscriptionStatusClass}">${subscriptionStatus}</td>
+        <td class="${adminStatusClass}">${adminStatus}</td>
+        <td class="${subscriptionStatusClass}">${subscriptionStatus}</td>
         <td>
-          <button class="edit-button" id="edit-button">Edit</button>
+          <button class="edit-button">Edit</button>
           <button class="delete-button">Delete</button>
         </td>
       `;
+        });
+    } else {
+        const placeholderRow = tableBody.insertRow();
+        placeholderRow.innerHTML = `
+      <td colspan="7">No data available</td>
+    `;
+    }
+
+    UserTable.data = users;
+}
+
+
+function handlePaginationButtons() {
+    Elements.prevPageButton.disabled = UserTable.currentPage === 1;
+    Elements.nextPageButton.disabled = UserTable.currentPage === UserTable.totalPages;
+}
+
+async function fetchData() {
+    try {
+        const httpClient = new HttpClient();
+        const query = Elements.searchInput.value.trim();
+        let url = `/api/users?query=${query}&sortAscending=${UserTable.isAscending}&page=${UserTable.currentPage}&pageSize=${UserTable.pageSize}`;
+
+        if (UserTable.filterEnabled) {
+            url += `&isAdmin=${UserTable.isAdmin}&isSubscribed=${UserTable.isSubscribed}`;
+        }
+        const response = await httpClient.get(
+            url,
+            null,
+            false
+        );
+
+
+        const data = JSON.parse(response.body).data
+        UserTable.totalPages = parseInt(response.headers['x-total-pages']);
+        updateTable(data);
+        handlePaginationButtons();
+    } catch (error) {
+        console.error('An error occurred during fetch data:', error);
+        alert('An error occurred during fetch data.');
+    }
+}
+
+function initEventListeners() {
+    Elements.searchInput.addEventListener('input', () => {
+        fetchData();
+    });
+
+    Elements.sortButton.addEventListener('click', () => {
+        UserTable.isAscending = !UserTable.isAscending;
+        Elements.sortButton.textContent = `Sort ID ${UserTable.isAscending ? '↑' : '↓'}`;
+        fetchData();
+    });
+
+    Elements.isAdminButton.addEventListener('click', () => {
+        UserTable.isAdmin = !UserTable.isAdmin;
+        const buttonText = UserTable.isAdmin ? Constants.BUTTON_TEXT.ENABLED : Constants.BUTTON_TEXT.DISABLED;
+        const buttonClass = UserTable.isAdmin ? Constants.BUTTON_CLASSES.ENABLED : Constants.BUTTON_CLASSES.DISABLED;
+        Elements.isAdminButton.textContent = `Is Admin ${buttonText}`;
+        Elements.isAdminButton.classList.toggle('green-status', UserTable.isAdmin);
+        Elements.isAdminButton.classList.toggle('red-status', !UserTable.isAdmin);
+        fetchData();
+    });
+
+    Elements.isSubscribedButton.addEventListener('click', () => {
+        UserTable.isSubscribed = !UserTable.isSubscribed;
+        const buttonText = UserTable.isSubscribed ? Constants.BUTTON_TEXT.ENABLED : Constants.BUTTON_TEXT.DISABLED;
+        const buttonClass = UserTable.isSubscribed ? Constants.BUTTON_CLASSES.ENABLED : Constants.BUTTON_CLASSES.DISABLED;
+        Elements.isSubscribedButton.textContent = `Is Subscribed ${buttonText}`;
+        Elements.isSubscribedButton.classList.toggle('green-status', UserTable.isSubscribed);
+        Elements.isSubscribedButton.classList.toggle('red-status', !UserTable.isSubscribed);
+        fetchData();
+    });
+
+    Elements.filterEnableButton.addEventListener('click', () => {
+        UserTable.filterEnabled = !UserTable.filterEnabled;
+        Elements.filterEnableButton.textContent = `Filter ${UserTable.filterEnabled ? 'Enabled ✓' : 'Disabled ✗'}`;
+        Elements.filterEnableButton.classList.toggle('green-status', UserTable.filterEnabled);
+        Elements.filterEnableButton.classList.toggle('red-status', !UserTable.filterEnabled);
+        fetchData();
+    });
+
+    Elements.prevPageButton.addEventListener('click', () => {
+        if (UserTable.currentPage > 1) {
+            UserTable.currentPage--;
+            fetchData();
         }
     });
 
-    userData = filteredUserData;
+    Elements.nextPageButton.addEventListener('click', () => {
+        if (UserTable.currentPage < UserTable.totalPages) {
+            UserTable.currentPage++;
+            fetchData();
+        }
+    });
 }
 
-function resetTable() {
-    const tableBody = document.querySelector("table tbody");
+initEventListeners();
 
-    while (tableBody.firstChild) {
-        tableBody.removeChild(tableBody.firstChild);
-    }
-
-    const placeholderRow = tableBody.insertRow();
-    placeholderRow.innerHTML = `
-        <td colspan="7">No data available</td>
-    `;
-}
-
-
-const searchInput = document.getElementById('search-input');
-async function fetchData(query, sortAscending, isAdmin, isSubscribed) {
-    try {
-        const httpClient = new HttpClient();
-        let response;
-        if (filterEnable) {
-            response = await httpClient.get(
-                `/api/users?query=${query}&sortAscending=${sortAscending}&isAdmin=${isAdmin}&isSubscribed=${isSubscribed}&page=${pageNum}`,
-                null, false);
-        } else {
-            response = await httpClient.get(
-                `/api/users?query=${query}&sortAscending=${sortAscending}&page=${pageNum}`,
-                null, false);
-        }
-        const headers = response.headers;
-        totalPages = headers['x-total-pages'];
-        prevPageButton.disabled = pageNum === 1;
-        nextPageButton.disabled = pageNum >= totalPages;
-
-        // console.log("Total pages:" + totalPages);
-        const json = JSON.parse(response.body);
-        if (json.success) {
-            updateTable(json.data);
-        } else {
-            resetTable()
-        }
-    } catch (error) {
-        console.error("An error occurred during fetch data:", error);
-        alert("An error occurred during fetch data.");
-    }
-}
-
-const debouncedFetch = helper.debounce(fetchData, 500);
-searchInput.addEventListener('input', function() {
-    const query = searchInput.value.trim();
-    debouncedFetch(query, isAscending, isAdmin, isSubscribed);
-});
-
-/**
- * Sort Feature
- */
-const sortButton = document.getElementById('sort-button');
-sortButton.addEventListener('click', () => {
-    isAscending = !isAscending;
-    if (isAscending) {
-        sortButton.textContent = 'Sort ID ↑';
-    } else {
-        sortButton.textContent = 'Sort ID ↓';
-    }
-    const query = searchInput.value.trim();
-
-    fetchData(query, isAscending, isAdmin, isSubscribed);
-});
-
-
-/**
- * Filter feature 1 (isAdmin)
- */
-const isAdminButton = document.getElementById('admin-filter-button');
-isAdminButton.addEventListener('click', () => {
-    isAdmin = !isAdmin;
-    if (isAdmin) {
-        isAdminButton.textContent = 'Is Admin ✓';
-        isAdminButton.style.backgroundColor = "green";
-
-    } else {
-        isAdminButton.textContent = 'Is Admin ✗';
-        isAdminButton.style.backgroundColor = "red";
-
-    }
-    const query = searchInput.value.trim();
-
-    fetchData(query, isAscending, isAdmin, isSubscribed);
-});
-
-
-/**
- * Filter feature 2 (isSubscribed)
- */
-const isSubscribedButton = document.getElementById('sub-filter-button');
-isSubscribedButton.addEventListener('click', () => {
-    isSubscribed = !isSubscribed;
-    if (isSubscribed) {
-        isSubscribedButton.textContent = 'Is Subscribed ✓';
-        isSubscribedButton.style.backgroundColor = "green";
-
-    } else {
-        isSubscribedButton.textContent = 'Is Subscribed ✗';
-        isSubscribedButton.style.backgroundColor = "red";
-
-    }
-    const query = searchInput.value.trim();
-
-    fetchData(query, isAscending, isAdmin, isSubscribed);
-});
-
-
-/**
- * Enable filter function
- */
-const filterEnableButton = document.getElementById('enable-filter-button');
-
-filterEnableButton.addEventListener('click', () => {
-    filterEnable = !filterEnable;
-    if (filterEnable) {
-        filterEnableButton.textContent = 'Filter Enabled ✓';
-        filterEnableButton.style.backgroundColor = "green";
-    } else {
-        filterEnableButton.textContent = 'Filter Disabled ✗'
-        filterEnableButton.style.backgroundColor = "red";
-    }
-    const query = searchInput.value.trim();
-    fetchData(query, isAscending, isAdmin, isSubscribed);
-});
-
-prevPageButton.addEventListener("click", () => {
-    if (pageNum > 1) {
-        pageNum--;
-        const query = searchInput.value.trim();
-        fetchData(query, isAscending, isAdmin, isSubscribed);
-    }
-});
-
-nextPageButton.addEventListener("click", () => {
-    if (pageNum < totalPages) {
-        pageNum++;
-        const query = searchInput.value.trim();
-        fetchData(query, isAscending, isAdmin, isSubscribed);
-    }
-});
-fetchData('', isAscending,  isAdmin, isSubscribed).then(r => {});
-
-
-/**
- * Delete button functionality
- */
-document.addEventListener("click", async (event) => {
-    const target = event.target;
-
-    if (target.classList.contains("delete-button") || target.id === "delete-button") {
-        const userId = target.closest("tr").getAttribute("data-user-id");
-
-        try {
-            const httpClient = new HttpClient();
-            const response = await httpClient.delete(`/api/users?userId=${userId}`);
-            const json = JSON.parse(response);
-            if (json.success) {
-                alert('Delete operation successful');
-                location.reload();
-            } else {
-                console.error("Delete operation failed:", response.error);
-                alert("Delete operation failed." + response.error);
-            }
-        } catch (error) {
-            console.error("An error occurred during deletion:", error);
-            alert("An error occurred during deletion.");
-        }
-    }
-});
-
-
-/**
- * Edit button functionality
- * @type {Element}
- */
-const closeBtn = document.querySelector(".close");
-const editUserModal = document.getElementById("editUserModal");
-const editUsernameInput = document.getElementById("editUsername");
-const editFirstNameInput = document.getElementById("editFirstName");
-const editLastNameInput = document.getElementById("editLastName");
-const passwordInput = document.getElementById("editPassword")
-const editAdminSelect = document.getElementById("editStatusAdmin");
-const editSubscriptionSelect = document.getElementById("editStatusSubscription");
-document.addEventListener("click", async (event) => {
-    const target = event.target;
-
-    if (target.classList.contains("edit-button")) {
-        const userId = target.closest("tr").getAttribute("data-user-id");
-        const user = userData[userId];
-
-        currentUserId = userId;
-
-        const username = user.username;
-        const firstName = user.first_name;
-        const lastName = user.last_name;
-        const isAdmin = user.is_admin;
-        const isSubscribed = user.is_subscribed;
-
-        editUsernameInput.value = username;
-        editFirstNameInput.value = firstName;
-        editLastNameInput.value = lastName;
-
-        editAdminSelect.value = isAdmin.toString();
-        editSubscriptionSelect.value = isSubscribed.toString();
-        editUserModal.style.display = "block";
-    }
-
-    if (target.classList.contains("close")) {
-        editUserModal.style.display = "none";
-    }
-});
-
-
-closeBtn.addEventListener("click", () => {
-    editUserModal.style.display = "none";
-});
-
-window.addEventListener("click", (event) => {
-    if (event.target === editUserModal) {
-        editUserModal.style.display = "none";
-    }
-});
-
-document.getElementById("saveEditButton").addEventListener("click", async (e) => {
-    e.preventDefault();
-
-    const userId = currentUserId;
-    const username = editUsernameInput.value;
-    const first_name = editFirstNameInput.value;
-    const last_name = editLastNameInput.value;
-    const password = passwordInput.value
-    const is_admin = editAdminSelect.value === 'true'; // Convert to boolean
-    const is_subscribed = editSubscriptionSelect.value === 'true'; // Convert to boolean
-
-    const updatedUserData = {
-        userId,
-        username: username,
-        first_name: first_name,
-        last_name: last_name,
-        password: password,
-        is_admin: is_admin,
-        is_subscribed: is_subscribed,
-    };
-
-    try {
-        const httpClient = new HttpClient();
-        const response = await httpClient.put(`/api/users?userId=${userId}`, updatedUserData, false);
-        const json = JSON.parse(response);
-
-        if (json.success) {
-            alert('Edit operation successful');
-            location.reload();
-        } else {
-            console.error("Edit operation failed:", json.error);
-            alert("Edit operation failed: " + json.error);
-        }
-    } catch (error) {
-        console.error("An error occurred during editing:", error);
-        alert("An error occurred during editing.");
-    }
-});
-
-const newUserModalId = "newUserModal";
-const openUserModalButtonId = "add-user-button";
-const closeUserModalButtonId = "close-user";
-const submitUserButtonId = "newUserButton";
-
-async function onSubmitUserModal(modal) {
-    const username = modal.querySelector("#newUsername").value;
-    const first_name = modal.querySelector("#newFirstName").value;
-    const last_name = modal.querySelector("#newLastName").value;
-    const password = modal.querySelector("#newPassword").value;
-    const password_confirmation = modal.querySelector("#newPasswordConfirmation").value;
-
-    if (username === '') {
-        alert("Please enter a username.");
-        return;
-    }
-
-    if (first_name === '') {
-        alert("Please enter your first name.");
-        return;
-    }
-
-    if (last_name === '') {
-        alert("Please enter your last name.");
-        return;
-    }
-
-    if (password === '') {
-        alert("Please enter a password.");
-        return;
-    }
-
-    if (password.length < 6) {
-        alert("Password must be at least 6 characters long.");
-        return;
-    }
-
-    if (password !== password_confirmation) {
-        alert("Password do not match!")
-        return;
-    }
-
-    const data = {
-        username,
-        first_name,
-        last_name,
-        password,
-        password_confirmation
-    };
-
-    try {
-        const httpClient = new HttpClient();
-        const response = await httpClient.post('/api/auth/register', data, false);
-        const json = JSON.parse(response);
-        if (json.success) {
-            alert("Registration successful!");
-            window.location.href = "/login";
-        } else {
-            alert("Registration failed: " + json.message);
-        }
-    } catch (error) {
-        console.error("An error occurred:", error);
-        alert("An error occurred while processing your request.");
-    }
-
-    modal.style.display = "none";
-}
-
-helper.openModal(
-    newUserModalId,
-    openUserModalButtonId,
-    closeUserModalButtonId,
-    submitUserButtonId,
-    onSubmitUserModal
-);
+fetchData();
