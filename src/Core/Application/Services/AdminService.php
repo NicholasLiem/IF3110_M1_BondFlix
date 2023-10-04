@@ -37,11 +37,13 @@ class AdminService
 
     function updateUser(User $user): ?User
     {
+        $hashed_password = password_hash($user->getPasswordHash(), PASSWORD_BCRYPT, [12]);
+        $user->setPasswordHash($hashed_password);
         return $this->userRepository->updateUser($user);
     }
 
-    function processUserQuery(string $query, bool $sortAscending) : array
+    function processUserQuery(string $query) : array
     {
-        return $this->userRepository->processQuery($query, $sortAscending);
+        return $this->userRepository->processQuery($query);
     }
 }

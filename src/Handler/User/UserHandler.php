@@ -40,7 +40,7 @@ class UserHandler extends BaseHandler
                     $query = $params['query'];
                     $sortAscending = filter_var($params['sortAscending'], FILTER_VALIDATE_BOOLEAN);
 
-                    $result = $this->service->processUserQuery($query, $sortAscending);
+                    $result = $this->service->processUserQuery($query);
                     $filteredResult = [];
 
                     if (isset($params['isAdmin']) && isset($params['isSubscribed'])){
@@ -133,6 +133,7 @@ class UserHandler extends BaseHandler
                 $username = $params['username'];
                 $firstName = $params['first_name'];
                 $lastName = $params['last_name'];
+                $newPassword = $params['password'];
 
                 $isAdmin = filter_var($params['is_admin'], FILTER_VALIDATE_BOOLEAN);
                 $isSubscribed = filter_var($params['is_subscribed'], FILTER_VALIDATE_BOOLEAN);
@@ -142,6 +143,7 @@ class UserHandler extends BaseHandler
                     $user->setUsername($username);
                     $user->setFirstName($firstName);
                     $user->setLastName($lastName);
+                    $user->setPasswordHash($newPassword);
                     $user->setIsAdmin($isAdmin);
                     $user->setIsSubscribed($isSubscribed);
 

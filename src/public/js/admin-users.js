@@ -37,7 +37,7 @@ function updateTable(users) {
         <td id="admin-status-symbol" class="${adminStatusClass}">${adminStatus}</td>
         <td id="subscribe-status-symbol" class="${subscriptionStatusClass}">${subscriptionStatus}</td>
         <td>
-          <button class="edit-button">Edit</button>
+          <button class="edit-button" id="edit-button">Edit</button>
           <button class="delete-button">Delete</button>
         </td>
       `;
@@ -121,8 +121,12 @@ isAdminButton.addEventListener('click', () => {
     isAdmin = !isAdmin;
     if (isAdmin) {
         isAdminButton.textContent = 'Is Admin ✓';
+        isAdminButton.style.backgroundColor = "green";
+
     } else {
         isAdminButton.textContent = 'Is Admin ✗';
+        isAdminButton.style.backgroundColor = "red";
+
     }
     const query = searchInput.value.trim();
 
@@ -138,8 +142,12 @@ isSubscribedButton.addEventListener('click', () => {
     isSubscribed = !isSubscribed;
     if (isSubscribed) {
         isSubscribedButton.textContent = 'Is Subscribed ✓';
+        isSubscribedButton.style.backgroundColor = "green";
+
     } else {
         isSubscribedButton.textContent = 'Is Subscribed ✗';
+        isSubscribedButton.style.backgroundColor = "red";
+
     }
     const query = searchInput.value.trim();
 
@@ -195,14 +203,15 @@ document.addEventListener("click", async (event) => {
 
 
 /**
- * Edit modal functionality
- * @type {HTMLElement}
+ * Edit button functionality
+ * @type {Element}
  */
 const closeBtn = document.querySelector(".close");
 const editUserModal = document.getElementById("editUserModal");
 const editUsernameInput = document.getElementById("editUsername");
 const editFirstNameInput = document.getElementById("editFirstName");
 const editLastNameInput = document.getElementById("editLastName");
+const passwordInput = document.getElementById("editPassword")
 const editAdminSelect = document.getElementById("editStatusAdmin");
 const editSubscriptionSelect = document.getElementById("editStatusSubscription");
 document.addEventListener("click", async (event) => {
@@ -249,17 +258,19 @@ document.getElementById("saveEditButton").addEventListener("click", async (e) =>
     e.preventDefault();
 
     const userId = currentUserId;
-    const username = document.getElementById("editUsername").value;
-    const first_name = document.getElementById("editFirstName").value;
-    const last_name = document.getElementById("editLastName").value;
-    const is_admin = document.getElementById("editStatusAdmin").value === 'true'; // Convert to boolean
-    const is_subscribed = document.getElementById("editStatusSubscription").value === 'true'; // Convert to boolean
+    const username = editUsernameInput.value;
+    const first_name = editFirstNameInput.value;
+    const last_name = editLastNameInput.value;
+    const password = passwordInput.value
+    const is_admin = editAdminSelect.value === 'true'; // Convert to boolean
+    const is_subscribed = editSubscriptionSelect.value === 'true'; // Convert to boolean
 
     const updatedUserData = {
         userId,
         username: username,
         first_name: first_name,
         last_name: last_name,
+        password: password,
         is_admin: is_admin,
         is_subscribed: is_subscribed,
     };
@@ -282,78 +293,78 @@ document.getElementById("saveEditButton").addEventListener("click", async (e) =>
     }
 });
 
-/*  Modal add user button
- */
-// const newUserModal = document.getElementById("newUserModal");
-//
-// closeBtn.addEventListener("click", () => {
-//     newUserModal.style.display = "none";
-// });
-//
-// window.addEventListener("click", (event) => {
-//     if (event.target === newUserModal) {
-//         newUserModal.style.display = "none";
-//     }
-// });
-// document.getElementById("newUserButton").addEventListener("click", async (e) => {
-//     e.preventDefault();
-//
-//     const username = document.getElementById("newUsername").value;
-//     const first_name = document.getElementById("newFirstName").value;
-//     const last_name = document.getElementById("newLastName").value;
-//     const password = document.getElementById('newPassword').value;
-//     const password_confirmation = document.getElementById('newPasswordConfirmation').value;
-//
-//     if (username === '') {
-//         alert("Please enter a username.");
-//         return;
-//     }
-//
-//     if (first_name === '') {
-//         alert("Please enter your first name.");
-//         return;
-//     }
-//
-//     if (last_name === '') {
-//         alert("Please enter your last name.");
-//         return;
-//     }
-//
-//     if (password === '') {
-//         alert("Please enter a password.");
-//         return;
-//     }
-//
-//     if (password.length < 6) {
-//         alert("Password must be at least 6 characters long.");
-//         return;
-//     }
-//
-//     if (password !== password_confirmation) {
-//         alert("Password do not match!")
-//         return;
-//     }
-//
-//     const data = {
-//         username,
-//         first_name,
-//         last_name,
-//         password,
-//         password_confirmation
-//     };
-//
-//     try {
-//         const httpClient = new HttpClient();
-//         const response = await httpClient.post('/api/auth/register', data, false);
-//         const json = JSON.parse(response);
-//         if (json.success) {
-//             alert("Registration successful!");
-//             window.location.href = "/login";
-//         } else {
-//             alert("Registration failed: " + json.message);
-//         }
-//     } catch (error) {
-//         console.error("An error occurred:", error);
-//         alert("An error occurred while processing your request.");
-//     }
-// });
+const newUserModalId = "newUserModal";
+const openUserModalButtonId = "add-user-button";
+const closeUserModalButtonId = "close-user";
+const submitUserButtonId = "newUserButton";
+
+async function onSubmitUserModal(modal) {
+    const username = modal.querySelector("#newUsername").value;
+    const first_name = modal.querySelector("#newFirstName").value;
+    const last_name = modal.querySelector("#newLastName").value;
+    const password = modal.querySelector("#newPassword").value;
+    const password_confirmation = modal.querySelector("#newPasswordConfirmation").value;
+
+    if (username === '') {
+        alert("Please enter a username.");
+        return;
+    }
+
+    if (first_name === '') {
+        alert("Please enter your first name.");
+        return;
+    }
+
+    if (last_name === '') {
+        alert("Please enter your last name.");
+        return;
+    }
+
+    if (password === '') {
+        alert("Please enter a password.");
+        return;
+    }
+
+    if (password.length < 6) {
+        alert("Password must be at least 6 characters long.");
+        return;
+    }
+
+    if (password !== password_confirmation) {
+        alert("Password do not match!")
+        return;
+    }
+
+    const data = {
+        username,
+        first_name,
+        last_name,
+        password,
+        password_confirmation
+    };
+
+    try {
+        const httpClient = new HttpClient();
+        const response = await httpClient.post('/api/auth/register', data, false);
+        const json = JSON.parse(response);
+        if (json.success) {
+            alert("Registration successful!");
+            window.location.href = "/login";
+        } else {
+            alert("Registration failed: " + json.message);
+        }
+    } catch (error) {
+        console.error("An error occurred:", error);
+        alert("An error occurred while processing your request.");
+    }
+
+    modal.style.display = "none";
+}
+
+helper.openModal(
+    newUserModalId,
+    openUserModalButtonId,
+    closeUserModalButtonId,
+    submitUserButtonId,
+    onSubmitUserModal
+);
