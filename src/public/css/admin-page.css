@@ -18,6 +18,6 @@ body {
   width: auto;
   min-height: 100vh;
   height: auto;
-  background-color: #1e1e1e;
+  background: linear-gradient(to bottom right, #1e1e1e, #444444);
   overflow: auto;
 }
