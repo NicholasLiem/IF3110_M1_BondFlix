@@ -3,6 +3,7 @@ namespace Handler\User;
 
 use Exception;
 use Handler\BaseHandler;
+use Utils\ArrayMapper\ArrayMapper;
 use Utils\Http\HttpStatusCode;
 use Utils\Response\Response;
 
@@ -29,20 +30,19 @@ class UserHandler extends BaseHandler
     public function get($params = null): void
     {
         try {
+            $resultArray = [];
             if (isset($params['username'])) {
                 $username = $params['username'];
-                $user = $this->service->getUserByUsername($username);
-                if ($user) {
-                    $response = new Response(true, HttpStatusCode::OK, "User retrieved successfully", $user->toArray());
-                } else {
-                    $response = new Response(false, HttpStatusCode::NOT_FOUND, "User not found", null);
-                }
+                $singleUser = $this->service->getUserByUsername($username);
+                $resultArray[] = $singleUser->toArray();
             } else {
-                if (isset($params['query'])) {
+                if (isset($params['query']) && isset($params['sortAscending'])) {
                     $query = $params['query'];
                     $sortAscending = filter_var($params['sortAscending'], FILTER_VALIDATE_BOOLEAN);
+
                     $result = $this->service->processUserQuery($query, $sortAscending);
                     $filteredResult = [];
+
                     if (isset($params['isAdmin']) && isset($params['isSubscribed'])){
                         $isAdmin = filter_var($params['isAdmin'], FILTER_VALIDATE_BOOLEAN);
                         $isSubscribed = filter_var($params['isSubscribed'], FILTER_VALIDATE_BOOLEAN);
@@ -71,21 +71,17 @@ class UserHandler extends BaseHandler
                         });
                     }
 
-                    if (empty($filteredResult)) {
-                        $response = new Response(false, HttpStatusCode::OK, "No matching users found", null);
-                    } else {
-                        $userArrays = array_map(function ($user) {
-                            return $user->toArray();
-                        }, $filteredResult);
-                        $response = new Response(true, HttpStatusCode::OK, "Query processed successfully", $userArrays);
-                    }
+                    $resultArray = ArrayMapper::mapObjectsToArray($filteredResult);
                 } else {
                     $users = $this->service->getAllUsers();
-                    $userArrays = array_map(function ($user) {
-                        return $user->toArray();
-                    }, $users);
-                    $response = new Response(true, HttpStatusCode::OK, "Users retrieved successfully", $userArrays);
+                    $resultArray = ArrayMapper::mapObjectsToArray($users);
                 }
+            }
+
+            if (!empty($resultArray)) {
+                $response = new Response(true, HttpStatusCode::OK, "Users retrieved successfully", $resultArray);
+            } else {
+                $response = new Response(false, HttpStatusCode::NOT_FOUND, "User not found", null);
             }
 
             $response->encode_to_JSON();
