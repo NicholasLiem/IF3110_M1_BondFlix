@@ -111,7 +111,10 @@ $router->addAPI('/api/content/genre', 'GET', $contentGenreHandler, []);
 $router->addAPI('/api/content/genre', 'POST', $contentGenreHandler, []);
 $router->addAPI('/api/content/genre', 'DELETE', $contentGenreHandler, []);
 
+$router->addAPI('/api/genre', 'GET', $genreHandler, []);
 $router->addAPI('/api/genre', 'POST', $genreHandler, []);
+$router->addAPI('/api/genre', 'PUT', $genreHandler, []);
+$router->addAPI('/api/genre', 'DELETE', $genreHandler, []);
 
 $router->addAPI('/api/upload', 'GET', $uploadHandler, []);
 $router->addAPI('/api/upload', 'POST', $uploadHandler, []);
