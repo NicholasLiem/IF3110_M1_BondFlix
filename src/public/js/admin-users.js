@@ -162,12 +162,7 @@ filterEnableButton.addEventListener('click', () => {
         filterEnableButton.style.backgroundColor = "red";
     }
     const query = searchInput.value.trim();
-
-    if (filterEnable) {
-        fetchData(query, isAscending, null, null);
-    } else {
-        fetchData(query, isAscending, isAdmin, isSubscribed);
-    }
+    fetchData(query, isAscending, isAdmin, isSubscribed);
 });
 
 fetchData('', isAscending,  isAdmin, isSubscribed).then(r => {});

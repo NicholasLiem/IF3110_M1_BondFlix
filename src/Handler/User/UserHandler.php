@@ -81,12 +81,12 @@ class UserHandler extends BaseHandler
             if (!empty($resultArray)) {
                 $response = new Response(true, HttpStatusCode::OK, "Users retrieved successfully", $resultArray);
             } else {
-                $response = new Response(false, HttpStatusCode::NOT_FOUND, "User not found", null);
+                $response = new Response(false, HttpStatusCode::OK, "User not found", null);
             }
 
             $response->encode_to_JSON();
         } catch (Exception $e) {
-            $response = new Response(false, HttpStatusCode::BAD_REQUEST, "Request failed: " . $e->getMessage(), null);
+            $response = new Response(false, HttpStatusCode::NOT_FOUND, "Request failed: " . $e->getMessage(), null);
             $response->encode_to_JSON();
         }
     }
