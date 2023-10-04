@@ -41,11 +41,9 @@ class UserHandler extends BaseHandler
                 if (isset($params['query'])) {
                     $query = $params['query'];
                     $sortAscending = filter_var($params['sortAscending'], FILTER_VALIDATE_BOOLEAN);
+//                    $isAdmin = filter_var($params['isAdmin'], FILTER_VALIDATE_BOOLEAN);
+//                    $isSubscribed = filter_var($params['isSubscribed'], FILTER_VALIDATE_BOOLEAN);
                     $result = $this->service->processUserQuery($query, $sortAscending);
-
-                    /**
-                     * Extract isset($params['sortAscending'])
-                     */
 
                     if ($sortAscending) {
                         usort($result, function ($a, $b) {
@@ -56,6 +54,13 @@ class UserHandler extends BaseHandler
                             return $b->getUserId() - $a->getUserId();
                         });
                     }
+
+//                    $filteredResult = [];
+//                    foreach ($result as $user) {
+//                        if ($isAdmin && $user->getIsAdmin() && $isSubscribed && $user->getIsSubscribed()) {
+//                            $filteredResult[] = $user;
+//                        }
+//                    }
 
                     if (empty($result)) {
                         $response = new Response(false, HttpStatusCode::OK, "No matching users found", null);

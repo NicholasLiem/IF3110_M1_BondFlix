@@ -1,8 +1,8 @@
 let userData = {};
 let currentUserId = null;
 let isAscending = true;
-// let isAdmin = true;
-// let isSubscribed = true;
+let isAdmin = true;
+let isSubscribed = true;
 
 /**
  * Debounce for search
@@ -46,15 +46,32 @@ function updateTable(users) {
     userData = filteredUserData;
 }
 
+function resetTable() {
+    const tableBody = document.querySelector("table tbody");
+
+    while (tableBody.firstChild) {
+        tableBody.removeChild(tableBody.firstChild);
+    }
+
+    const placeholderRow = tableBody.insertRow();
+    placeholderRow.innerHTML = `
+        <td colspan="7">No data available</td>
+    `;
+}
+
 
 const searchInput = document.getElementById('search-input');
-async function fetchData(query, sortAscending) {
+async function fetchData(query, sortAscending, isAdmin, isSubscribed) {
     try {
         const httpClient = new HttpClient();
-        const response = await httpClient.get(`/api/users?query=${query}&sortAscending=${sortAscending}`, null, false);
+        const response = await httpClient.get(
+            `/api/users?query=${query}&sortAscending=${sortAscending}&isAdmin=${isAdmin}&isSubscribed=${isSubscribed}`,
+            null, false);
         const json = JSON.parse(response);
         if (json.success) {
             updateTable(json.data);
+        } else {
+            resetTable()
         }
     } catch (error) {
         console.error("An error occurred during fetch data:", error);
@@ -65,7 +82,7 @@ async function fetchData(query, sortAscending) {
 const debouncedFetch = helper.debounce(fetchData, 500);
 searchInput.addEventListener('input', function() {
     const query = searchInput.value.trim();
-    debouncedFetch(query, isAscending);
+    debouncedFetch(query, isAscending, isAdmin, isSubscribed);
 });
 
 
@@ -83,44 +100,44 @@ sortButton.addEventListener('click', () => {
     }
     const query = searchInput.value.trim();
 
-    fetchData(query, isAscending);
+    fetchData(query, isAscending, isAdmin, isSubscribed);
 });
 
 
-// /**
-//  * Filter feature 1 (isAdmin)
-//  */
-// const isAdminButton = document.getElementById('admin-filter-button');
-// isAdminButton.addEventListener('click', () => {
-//     isAdmin = !isAdmin;
-//     if (isAdmin) {
-//         isAdminButton.textContent = 'Is Admin ✓';
-//     } else {
-//         isAdminButton.textContent = 'Is Admin ✗';
-//     }
-//     const query = searchInput.value.trim();
-//
-//     fetchData(query, isAscending, isAdmin, isSubscribed);
-// });
-//
-//
-// /**
-//  * Filter feature 2 (isSubscribed)
-//  */
-// const isSubscribedButton = document.getElementById('sub-filter-button');
-// isSubscribedButton.addEventListener('click', () => {
-//     isSubscribed = !isSubscribed;
-//     if (isSubscribed) {
-//         isSubscribedButton.textContent = 'Is Subscribed ✓';
-//     } else {
-//         isSubscribedButton.textContent = 'Is Subscribed ✗';
-//     }
-//     const query = searchInput.value.trim();
-//
-//     fetchData(query, isAscending, isAdmin, isSubscribed);
-// });
+/**
+ * Filter feature 1 (isAdmin)
+ */
+const isAdminButton = document.getElementById('admin-filter-button');
+isAdminButton.addEventListener('click', () => {
+    isAdmin = !isAdmin;
+    if (isAdmin) {
+        isAdminButton.textContent = 'Is Admin ✓';
+    } else {
+        isAdminButton.textContent = 'Is Admin ✗';
+    }
+    const query = searchInput.value.trim();
 
-fetchData('', isAscending).then(r => {});
+    fetchData(query, isAscending, isAdmin, isSubscribed);
+});
+
+
+/**
+ * Filter feature 2 (isSubscribed)
+ */
+const isSubscribedButton = document.getElementById('sub-filter-button');
+isSubscribedButton.addEventListener('click', () => {
+    isSubscribed = !isSubscribed;
+    if (isSubscribed) {
+        isSubscribedButton.textContent = 'Is Subscribed ✓';
+    } else {
+        isSubscribedButton.textContent = 'Is Subscribed ✗';
+    }
+    const query = searchInput.value.trim();
+
+    fetchData(query, isAscending, isAdmin, isSubscribed);
+});
+
+fetchData('', isAscending,  isAdmin, isSubscribed).then(r => {});
 /**
  * Delete button functionality
  */
