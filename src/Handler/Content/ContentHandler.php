@@ -93,6 +93,13 @@ class ContentHandler extends BaseHandler {
             parse_str($putData, $_PUT);
 
             $content_id = $_PUT['content_id'];
+
+            if (is_null($this->service->getContentById($content_id))) {
+                $response = new Response(false, HttpStatusCode::BAD_REQUEST, "Content not found", null);
+                $response->encode_to_JSON();
+                return;
+            }
+
             $title = $_PUT['title'] ?? null;
             $description = $_PUT['description'] ?? null;
             $release_date = $_PUT['release_date'] ?? null;
@@ -125,6 +132,11 @@ class ContentHandler extends BaseHandler {
     protected function delete($params = null)
     {
         try {
+            if (is_null($this->service->getContentById($params['content_id']))) {
+                $response = new Response(false, HttpStatusCode::BAD_REQUEST, "Content not found", null);
+                $response->encode_to_JSON();
+                return;
+            }
             $this->service->removeContent($params['content_id']);
             $response = new Response(true, HttpStatusCode::OK, "Content deleted successfully", null);
             $response->encode_to_JSON();

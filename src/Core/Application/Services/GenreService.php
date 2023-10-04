@@ -13,15 +13,15 @@ class GenreService
     public function __construct($genreRepository) {
         $this->genreRepository = $genreRepository;
     }
-    public function getAllGenre() : void {
-        // TODO: implement
+    public function getAllGenre(): array {
+        return $this->genreRepository->getAllGenre();
     }
 
-    public function getGenreById(int $id) {
-        // TODO: implement
+    public function getGenreById(int $id): ?Genre {
+        return $this->genreRepository->getGenreById($id);
     }
-    public function removeGenre(int $_id): void {
-        // TODO: implement
+    public function removeGenre(int $id): void {
+        $this->genreRepository->deleteGenreById($id);
     }
 
     /**
@@ -31,5 +31,11 @@ class GenreService
         $newGenre = new Genre();
         $newGenre->setGenreName($genre_name);
         return $this->genreRepository->createGenre($newGenre);
+    }
+
+    public function updateGenre($genre_id, $genre_name): ?Genre {
+        $genre = $this->genreRepository->getGenreById($genre_id);
+        $genre->setGenreName($genre_name);
+        return $this->genreRepository->updateGenre($genre);
     }
 }
