@@ -259,12 +259,10 @@ class PersistentUserRepository implements UserRepository
     /**
      * @throws Exception
      */
-    public function processQuery(string $query, bool $sortAscending): array
+    public function processQuery(string $query): array
     {
         try {
             $query = '%' . $query . '%';
-
-            $orderBy = $sortAscending ? 'user_id ASC' : 'user_id DESC';
 
             $stmt = $this->db->prepare("
             SELECT user_id, 
@@ -277,11 +275,10 @@ class PersistentUserRepository implements UserRepository
             FROM users
             WHERE (username LIKE :query
                 OR first_name LIKE :query
-                OR last_name LIKE :query)
-            ORDER BY $orderBy;
+                OR last_name LIKE :query);
         ");
 
-            $stmt->bindParam(':query', $query, PDO::PARAM_STR);
+            $stmt->bindParam(':query', $query);
 
             if (!$stmt->execute()) {
                 throw new Exception("Database error while fetching user data");
