@@ -5,7 +5,7 @@ async function getContents() {
     try {
         const httpClient = new HttpClient();
         const response = await httpClient.get("/api/content", null, false);
-        const json = JSON.parse(response);
+        const json = JSON.parse(response.body);
 
         if (Array.isArray(json.data)) {
             json.data.forEach((content) => {
@@ -60,7 +60,7 @@ document.addEventListener("click", async (event) => {
             const response = await httpClient.delete(
                 `/api/content?content_id=${contentId}`
             );
-            const json = JSON.parse(response);
+            const json = JSON.parse(response.body);
             if (json.success) {
                 alert("Delete operation successful");
                 location.reload();
@@ -156,7 +156,7 @@ document
                 false
             );
 
-            const json = JSON.parse(response);
+            const json = JSON.parse(response.body);
             if (json.success) {
                 alert("Edit operation successful");
                 location.reload();

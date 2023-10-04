@@ -48,7 +48,7 @@ async function submitRegister(e) {
     try {
         const httpClient = new HttpClient();
         const response = await httpClient.post('/api/auth/register', data, false);
-        const json = JSON.parse(response);
+        const json = JSON.parse(response.body);
         if (json.success) {
             alert("Registration successful!");
             window.location.href = "/login";

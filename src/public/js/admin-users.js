@@ -1,5 +1,7 @@
+const helper = new Helper();
 const UserTable = {
     data: {},
+    currentUserId: null,
     currentPage: 1,
     totalPages: 1,
     isAscending: true,
@@ -17,6 +19,19 @@ const Elements = {
     filterEnableButton: document.getElementById('enable-filter-button'),
     prevPageButton: document.getElementById('prevPageButton'),
     nextPageButton: document.getElementById('nextPageButton'),
+    newUserModal: document.getElementById('newUserModal'),
+    openUserModalButton: document.getElementById('add-user-button'),
+    closeUserModalButton: document.getElementById('close-user'),
+    submitUserButton: document.getElementById('newUserButton'),
+    editUserModal: document.getElementById('editUserModal'),
+    editUsernameInput: document.getElementById('editUsername'),
+    editFirstNameInput: document.getElementById('editFirstName'),
+    editLastNameInput : document.getElementById('editLastName'),
+    passwordInput: document.getElementById('editPassword'),
+    editAdminSelect: document.getElementById('editStatusAdmin'),
+    editSubscriptionSelect: document.getElementById('editStatusSubscription'),
+    closeEditModalButton: document.getElementById('close-edit'),
+    saveEditButton: document.getElementById('saveEditButton')
 };
 
 const Constants = {
@@ -37,7 +52,7 @@ function updateTable(users) {
     if (users && users.length > 0) {
         users.forEach(user => {
             const row = tableBody.insertRow();
-            row.setAttribute('data-user-id', user.user_id);
+            row.setAttribute("data-user-id", user.user_id);
 
             const adminStatus = user.is_admin ? Constants.BUTTON_TEXT.ENABLED : Constants.BUTTON_TEXT.DISABLED;
             const subscriptionStatus = user.is_subscribed ? Constants.BUTTON_TEXT.ENABLED : Constants.BUTTON_TEXT.DISABLED;
@@ -88,7 +103,6 @@ async function fetchData() {
             false
         );
 
-
         const data = JSON.parse(response.body).data
         UserTable.totalPages = parseInt(response.headers['x-total-pages']);
         updateTable(data);
@@ -113,7 +127,6 @@ function initEventListeners() {
     Elements.isAdminButton.addEventListener('click', () => {
         UserTable.isAdmin = !UserTable.isAdmin;
         const buttonText = UserTable.isAdmin ? Constants.BUTTON_TEXT.ENABLED : Constants.BUTTON_TEXT.DISABLED;
-        const buttonClass = UserTable.isAdmin ? Constants.BUTTON_CLASSES.ENABLED : Constants.BUTTON_CLASSES.DISABLED;
         Elements.isAdminButton.textContent = `Is Admin ${buttonText}`;
         Elements.isAdminButton.classList.toggle('green-status', UserTable.isAdmin);
         Elements.isAdminButton.classList.toggle('red-status', !UserTable.isAdmin);
@@ -123,7 +136,6 @@ function initEventListeners() {
     Elements.isSubscribedButton.addEventListener('click', () => {
         UserTable.isSubscribed = !UserTable.isSubscribed;
         const buttonText = UserTable.isSubscribed ? Constants.BUTTON_TEXT.ENABLED : Constants.BUTTON_TEXT.DISABLED;
-        const buttonClass = UserTable.isSubscribed ? Constants.BUTTON_CLASSES.ENABLED : Constants.BUTTON_CLASSES.DISABLED;
         Elements.isSubscribedButton.textContent = `Is Subscribed ${buttonText}`;
         Elements.isSubscribedButton.classList.toggle('green-status', UserTable.isSubscribed);
         Elements.isSubscribedButton.classList.toggle('red-status', !UserTable.isSubscribed);
@@ -151,7 +163,187 @@ function initEventListeners() {
             fetchData();
         }
     });
+
+    helper.openModal(
+        Elements.newUserModal,
+        Elements.openUserModalButton,
+        Elements.closeUserModalButton,
+        Elements.submitUserButton,
+        onSubmitUserModal
+    );
+
+    Elements.closeEditModalButton.addEventListener("click", () => {
+        Elements.editUserModal.style.display = "none";
+    });
+
+    window.addEventListener("click", (event) => {
+        if (event.target === Elements.editUserModal) {
+            Elements.editUserModal.style.display = "none";
+        }
+        if (event.target === Elements.newUserModal) {
+            Elements.newUserModal.style.display = "none";
+        }
+    });
+
+    document.addEventListener("click", async (event) => {
+        const target = event.target;
+
+        if (target.classList.contains("delete-button") || target.id === "delete-button") {
+            const userId = target.closest("tr").getAttribute("data-user-id");
+
+            try {
+                const httpClient = new HttpClient();
+                const response = await httpClient.delete(`/api/users?userId=${userId}`);
+                const json = JSON.parse(response);
+                if (json.success) {
+                    alert('Delete operation successful');
+                    location.reload();
+                } else {
+                    console.error("Delete operation failed:", response.error);
+                    alert("Delete operation failed." + response.error);
+                }
+            } catch (error) {
+                console.error("An error occurred during deletion:", error);
+                alert("An error occurred during deletion.");
+            }
+        }
+    });
+
+    document.addEventListener("click", async (event) => {
+        const target = event.target;
+
+        if (target.classList.contains("edit-button")) {
+            const userId = target.closest("tr").getAttribute("data-user-id");
+            const user = UserTable.data.find(user => user.user_id === parseInt(userId));
+
+            UserTable.currentUserId = userId;
+
+            const username = user.username;
+            const firstName = user.first_name;
+            const lastName = user.last_name;
+            const isAdmin = user.is_admin;
+            const isSubscribed = user.is_subscribed;
+
+            Elements.editUsernameInput.value = username;
+            Elements.editFirstNameInput.value = firstName;
+            Elements.editLastNameInput.value = lastName;
+
+            Elements.editAdminSelect.value = isAdmin.toString();
+            Elements.editSubscriptionSelect.value = isSubscribed.toString();
+            Elements.editUserModal.style.display = "block";
+        }
+
+        if (target.classList.contains("close")) {
+            Elements.editUserModal.style.display = "none";
+        }
+    });
+
+    Elements.saveEditButton.addEventListener("click", async (e) => {
+        e.preventDefault();
+
+        const userId = UserTable.currentUserId;
+        const username = Elements.editUsernameInput.value;
+        const first_name = Elements.editFirstNameInput.value;
+        const last_name = Elements.editLastNameInput.value;
+        const password = Elements.passwordInput.value
+        const is_admin = Elements.editAdminSelect.value === 'true'; // Convert to boolean
+        const is_subscribed = Elements.editSubscriptionSelect.value === 'true'; // Convert to boolean
+
+        if (password.length < 6) {
+            alert("New password must be at least 6 characters long.");
+            return;
+        }
+
+        const updatedUserData = {
+            userId,
+            username: username,
+            first_name: first_name,
+            last_name: last_name,
+            password: password,
+            is_admin: is_admin,
+            is_subscribed: is_subscribed,
+        };
+
+        try {
+            const httpClient = new HttpClient();
+            const response = await httpClient.put(`/api/users?userId=${userId}`, updatedUserData, false);
+            const json = JSON.parse(response.body);
+            if (json.success) {
+                alert('Edit operation successful');
+                location.reload();
+            } else {
+                console.error("Edit operation failed:", json.error);
+                alert("Edit operation failed: " + json.error);
+            }
+        } catch (e) {
+        }
+    })
+
 }
+
+async function onSubmitUserModal(modal) {
+    const username = modal.querySelector("#newUsername").value;
+    const first_name = modal.querySelector("#newFirstName").value;
+    const last_name = modal.querySelector("#newLastName").value;
+    const password = modal.querySelector("#newPassword").value;
+    const password_confirmation = modal.querySelector("#newPasswordConfirmation").value;
+
+    if (username === '') {
+        alert("Please enter a username.");
+        return;
+    }
+
+    if (first_name === '') {
+        alert("Please enter your first name.");
+        return;
+    }
+
+    if (last_name === '') {
+        alert("Please enter your last name.");
+        return;
+    }
+
+    if (password === '') {
+        alert("Please enter a password.");
+        return;
+    }
+
+    if (password.length < 6) {
+        alert("Password must be at least 6 characters long.");
+        return;
+    }
+
+    if (password !== password_confirmation) {
+        alert("Password do not match!")
+        return;
+    }
+
+    const data = {
+        username,
+        first_name,
+        last_name,
+        password,
+        password_confirmation
+    };
+
+    try {
+        const httpClient = new HttpClient();
+        const response = await httpClient.post('/api/auth/register', data, false);
+        const json = JSON.parse(response.body);
+        if (json.success) {
+            alert("Registration successful!");
+            window.location.href = "/login";
+        } else {
+            alert("Registration failed: " + json.message)
+        }
+    } catch (error) {
+        console.error("An error occurred:", error);
+        alert("An error occurred while processing your request.");
+    }
+    modal.style.display = "none";
+}
+
+
 
 initEventListeners();
 

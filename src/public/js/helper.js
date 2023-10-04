@@ -13,12 +13,7 @@ class Helper {
         };
     }
 
-    openModal(modalId, openButtonId, closeButtonId, submitButtonId, onSubmit) {
-        const modal = document.getElementById(modalId);
-        const openButton = document.getElementById(openButtonId);
-        const closeButton = document.getElementById(closeButtonId);
-        const submitButton = document.getElementById(submitButtonId);
-
+    openModal(modal, openButton, closeButton, submitButton, onSubmit) {
         openButton.addEventListener("click", () => {
             modal.style.display = "block";
         });
