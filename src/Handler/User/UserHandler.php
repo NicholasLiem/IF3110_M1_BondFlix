@@ -155,7 +155,9 @@ class UserHandler extends BaseHandler
                     $user->setUsername($username);
                     $user->setFirstName($firstName);
                     $user->setLastName($lastName);
-                    $user->setPasswordHash($newPassword);
+                    if (isset($newPassword)){
+                        $user->setPasswordHash($newPassword);
+                    }
                     $user->setIsAdmin($isAdmin);
                     $user->setIsSubscribed($isSubscribed);
 

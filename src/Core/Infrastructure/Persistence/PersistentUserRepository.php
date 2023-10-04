@@ -144,25 +144,29 @@ class PersistentUserRepository implements UserRepository
     public function updateUser(User $user): User
     {
         $stmt = $this->db->prepare("
-        UPDATE users SET 
-            first_name = :first_name, 
-            last_name = :last_name, 
-            username = :new_username, 
-            password_hash = :new_password, 
-            is_admin = :is_admin, 
-            is_subscribed = :is_subscribed 
-        WHERE user_id = :user_id");
+            UPDATE users SET 
+                first_name = :first_name, 
+                last_name = :last_name, 
+                username = :new_username, 
+                is_admin = :is_admin, 
+                is_subscribed = :is_subscribed
+                " . (!empty($user->getPasswordHash()) ? ", password_hash = :new_password" : "") . "
+            WHERE user_id = :user_id
+        ");
 
         $newUsername = $user->getUsername();
-        $newPasswordHash = $user->getPasswordHash();
         $userId = $user->getUserId();
         $firstName = $user->getFirstName();
         $lastName = $user->getLastName();
         $isAdmin = $user->getIsAdmin();
         $isSubscribed = $user->getIsSubscribed();
 
+        $newPasswordHash = $user->getPasswordHash();
+        if (!empty($newPasswordHash)) {
+            $stmt->bindParam(':new_password', $newPasswordHash);
+        }
+
         $stmt->bindParam(':new_username', $newUsername);
-        $stmt->bindParam(':new_password', $newPasswordHash);
         $stmt->bindParam(':user_id', $userId);
         $stmt->bindParam(':first_name', $firstName);
         $stmt->bindParam(':last_name', $lastName);
@@ -175,6 +179,7 @@ class PersistentUserRepository implements UserRepository
 
         return $user;
     }
+
 
     /**
      * @throws Exception

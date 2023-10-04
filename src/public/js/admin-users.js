@@ -252,11 +252,6 @@ function initEventListeners() {
         const is_admin = Elements.editAdminSelect.value === 'true'; // Convert to boolean
         const is_subscribed = Elements.editSubscriptionSelect.value === 'true'; // Convert to boolean
 
-        if (password.length < 6) {
-            alert("New password must be at least 6 characters long.");
-            return;
-        }
-
         const updatedUserData = {
             userId,
             username: username,
