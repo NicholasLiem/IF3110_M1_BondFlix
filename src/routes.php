@@ -2,6 +2,7 @@
 global $routes;
 global $serviceContainer;
 
+use Handler\APINotFoundHandler;
 use Handler\Auth\LoginHandler;
 use Handler\Auth\LogoutHandler;
 use Handler\Auth\RegisterHandler;
@@ -100,7 +101,6 @@ $router->addAPI('/api/users', 'GET', $userHandler, [APIAdminCheck::getInstance()
 $router->addAPI('/api/users', 'DELETE', $userHandler, [APIAdminCheck::getInstance()]);
 $router->addAPI('/api/users', 'PUT', $userHandler, [APIAdminCheck::getInstance()]);
 
-//TODO: add middleware if needed
 $router->addAPI('/api/content', 'GET', $contentHandler, [APIAdminCheck::getInstance()]);
 $router->addAPI('/api/content', 'POST', $contentHandler, [APIAdminCheck::getInstance()]);
 $router->addAPI('/api/content', 'PUT', $contentHandler, [APIAdminCheck::getInstance()]);
@@ -135,11 +135,9 @@ $router->addAPI('/api/genre', 'DELETE', $genreHandler, [APIAdminCheck::getInstan
  */
 
 $router->setPageNotFoundHandler(function () {
-    require_once BASE_PATH . '/public/view/404.php';
+    redirect('404');
 });
 
-$router->setApiNotFoundHandler(function () {
-    require_once BASE_PATH . '/public/view/404.php';
-});
+$router->setApiNotFoundHandler(APINotFoundHandler::getInstance());
 
 $router->run();

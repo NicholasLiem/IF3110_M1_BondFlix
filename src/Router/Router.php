@@ -58,13 +58,15 @@ class Router
 
         $callback = null;
         $isApiRoute = false;
+        $methodFound = false;
         $middlewares = [];
 
         foreach ($this->handlers as $handler) {
             if (strpos($requestPath, '/api/') === 0) {
+                $isApiRoute = true;
                 if ($handler['path'] === $requestPath && $method === $handler['method']) {
                     $callback = $handler['handler'];
-                    $isApiRoute = true;
+                    $methodFound = true;
                     $middlewares = $handler['middlewares'];
                     break;
                 }
@@ -93,7 +95,11 @@ class Router
         }
 
         if ($isApiRoute) {
-            $callback->handle($method, $urlParams);
+            if ($methodFound) {
+                $callback->handle($method, $urlParams);
+            } else {
+                call_user_func_array($callback, [$urlParams]);
+            }
         } else {
             call_user_func_array($callback, [$urlParams]);
         }
