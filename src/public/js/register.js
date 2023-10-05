@@ -7,6 +7,31 @@ async function submitRegister(e) {
     const password = document.getElementById('input-password').value;
     const password_confirmation = document.getElementById('input-password-confirmation').value;
 
+    if (username === '') {
+        alert("Please enter a username.");
+        return;
+    }
+
+    if (first_name === '') {
+        alert("Please enter your first name.");
+        return;
+    }
+
+    if (last_name === '') {
+        alert("Please enter your last name.");
+        return;
+    }
+
+    if (password === '') {
+        alert("Please enter a password.");
+        return;
+    }
+
+    if (password.length < 6) {
+        alert("Password must be at least 6 characters long.");
+        return;
+    }
+
     if (password !== password_confirmation) {
         alert("Password do not match!")
         return;
@@ -23,7 +48,7 @@ async function submitRegister(e) {
     try {
         const httpClient = new HttpClient();
         const response = await httpClient.post('/api/auth/register', data, false);
-        const json = JSON.parse(response);
+        const json = JSON.parse(response.body);
         if (json.success) {
             alert("Registration successful!");
             window.location.href = "/login";

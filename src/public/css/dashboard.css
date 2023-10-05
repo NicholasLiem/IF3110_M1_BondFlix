@@ -1,46 +1,13 @@
 @import url("/public/css/lib/index/navbar.css");
 
-.navbar {
-    left: 0;
-}
-
-.navbar #menu-left {
-    display: flex;
-    gap: 30px;
-    margin-left: 32px;
-    font-size: 18px;
-    font-family: "Roboto", sans-serif;
-}
-
-.navbar #menu-right {
-    margin-right: 64px;
-    gap: 24px;
-}
-
-.navbar > div {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.navbar a {
-    text-decoration: none;
-    color: white;
-    display: inline;
-}
-
-.navbar .account-button {
-    margin: 0;
-    padding: 0;
-    border: 0;
-    width: 40px;
-    height: 40px;
-}
-
 .account-button img {
     object-fit: cover;
     width: 100%;
     height: 100%;
+}
+
+.account-button img:hover {
+    cursor: pointer;
 }
 
 .search-bar {
@@ -62,6 +29,7 @@
     padding: 8px;
     margin-top: 8px;
     border-radius: 4px;
+    display: none;
 }
 
 .account-menu ul {
@@ -88,7 +56,7 @@ body {
     background-position: center;
     background-size: cover;
     width: 100%;
-    height: 100vh;
+    height: 80vh;
     position: relative;
     padding-top: 77px;
 }
@@ -171,4 +139,35 @@ body {
 
 .btn-content svg {
     height: 40px;
+}
+
+.account-menu ul a:hover li:hover {
+    cursor: pointer;
+}
+
+.more-recommendation {
+    background-color: black;
+    height: 300px;
+    margin-top: -20px;
+    padding-left: 50px;
+}
+
+.more-recommendation h2 {
+    color: white;
+    font-family: "Roboto", sans-serif;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.recommendations-content {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.recommendations-content img {
+    width: 280px;
+    height: 140px;
+    object-fit: cover;
+    border-radius: 4px;
 }

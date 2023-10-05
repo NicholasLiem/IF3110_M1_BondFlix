@@ -9,48 +9,61 @@
     background-color: #bd0912;
 }
 
-/*.arrow-down {*/
-/*    position: absolute;*/
-/*    top: 50%;*/
-/*    right: 10px;*/
-/*    transform: translateY(-50%);*/
-/*    width: 0;*/
-/*    height: 0;*/
-/*    border-left: 5px solid transparent;*/
-/*    border-right: 5px solid transparent;*/
-/*    border-top: 5px solid #fff;*/
-/*    transition: transform 0.3s ease;*/
-/*}*/
-
-/*.sort-button.active .arrow-down {*/
-/*    transform: translateY(-50%) rotate(180deg);*/
-/*}*/
-
-/*.dropdown {*/
-/*    position: relative;*/
-/*    display: inline-block;*/
-/*}*/
-
-/*.dropdown-content {*/
-/*    display: none;*/
-/*    position: absolute;*/
-/*    background-color: #f9f9f9;*/
-/*    min-width: 160px;*/
-/*    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);*/
-/*    z-index: 1;*/
-/*}*/
-
-/*.filter-button .filter-text {*/
-/*    margin-right: 10px;*/
-/*}*/
-
-/*.filter-button.active .arrow-down {*/
-/*    transform: translateY(-50%) rotate(180deg);*/
-/*}*/
-
 h2 {
     font-family: "Roboto", sans-serif;
     font-weight: normal;
     padding-bottom: 10px;
     margin: 0;
+}
+
+#add-user-button {
+    margin-left: auto;
+}
+
+#admin-filter-button {
+    background-color: green;
+    color: white;
+}
+
+#sub-filter-button {
+    background-color: green;
+    color: white;
+}
+
+#enable-filter-button {
+    background-color: #e50914;
+    color: white;
+}
+
+.new-user-modal {
+    margin-bottom: 10px;
+    text-align: left;
+}
+
+.new-user-modal td label {
+    margin: 0;
+    padding-right: 10px;
+    font-family: "Roboto", sans-serif;
+    font-weight: normal;
+    font-size: 14px;
+}
+
+.new-user-modal input {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.pagination {
+    margin-top: auto;
+    margin-bottom: 30px;
+    margin-left: 30px;
+}
+
+.pagination button {
+    border-radius: 4px;
+    font-family: "Roboto", sans-serif;
+    padding: 8px 12px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
 }

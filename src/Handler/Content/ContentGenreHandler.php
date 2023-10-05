@@ -1,6 +1,7 @@
 <?php
 namespace Handler\Content;
 
+use Core\Application\Services\ContentService;
 use Exception;
 use Handler\BaseHandler;
 use Utils\Http\HttpStatusCode;
@@ -8,18 +9,19 @@ use Utils\Response\Response;
 
 class ContentGenreHandler extends BaseHandler {
     
-    protected static $instance;
-    protected $service;
+    protected static ContentGenreHandler $instance;
+    protected ContentService $service;
 
-    private function __construct($service)
+    private function __construct(ContentService $contentService)
     {
-        parent::__construct($service);
+        $this->service = $contentService;
     }
 
-    public static function getInstance($container): ContentGenreHandler {
+    public static function getInstance($contentService): ContentGenreHandler
+    {
         if (!isset(self::$instance)) {
             self::$instance = new static(
-                $container->resolve('contentService')
+                $contentService
             );
         }
         return self::$instance;
@@ -67,6 +69,7 @@ class ContentGenreHandler extends BaseHandler {
         try {
             $this->service->removeGenre($params['content_id'], $params['genre_id']);
             $response = new Response(true, HttpStatusCode::OK, "Genre deleted successfully", null);
+            $response->encode_to_JSON();
         } catch (Exception $e) {
             $response = new Response(false, HttpStatusCode::BAD_REQUEST, "Genre deletion failed: " . $e->getMessage(), null);
             $response->encode_to_JSON();

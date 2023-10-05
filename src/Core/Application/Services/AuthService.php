@@ -1,8 +1,8 @@
 <?php
 namespace Core\Application\Services;
 
-use Core\Domain\Entities\User;
 use Core\Application\Repositories\UserRepository;
+use Core\Domain\Entities\User;
 use Exception;
 
 class AuthService {

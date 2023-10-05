@@ -2,7 +2,8 @@
 
 namespace Core\Application\Services;
 use Core\Application\Repositories\UserRepository;
-use \Core\Domain\Entities\User;
+use Core\Domain\Entities\User;
+use Exception;
 
 /**
  * This repository will include 4 repositories at minimum:
@@ -37,9 +38,16 @@ class AdminService
 
     function updateUser(User $user): ?User
     {
+        if ($user->getPasswordHash() != null){
+            $hashed_password = password_hash($user->getPasswordHash(), PASSWORD_BCRYPT, [12]);
+            $user->setPasswordHash($hashed_password);
+        }
         return $this->userRepository->updateUser($user);
     }
 
+    /**
+     * @throws Exception
+     */
     function processUserQuery(string $query) : array
     {
         return $this->userRepository->processQuery($query);

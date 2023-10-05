@@ -1,26 +1,27 @@
 <?php
 namespace Handler\User;
 
+use Core\Application\Services\AdminService;
 use Exception;
 use Handler\BaseHandler;
+use Utils\ArrayMapper\ArrayMapper;
 use Utils\Http\HttpStatusCode;
 use Utils\Response\Response;
 
 class UserHandler extends BaseHandler
 {
-    protected static $instance;
-    protected $service;
-
-    private function __construct($service)
+    protected static UserHandler $instance;
+    protected AdminService $service;
+    private function __construct(AdminService $service)
     {
-        parent::__construct($service);
+        $this->service = $service;
     }
 
-    public static function getInstance($container): UserHandler
+    public static function getInstance(AdminService $adminService): UserHandler
     {
         if (!isset(self::$instance)) {
             self::$instance = new static(
-                $container->resolve('adminService')
+                $adminService
             );
         }
         return self::$instance;
@@ -29,39 +30,78 @@ class UserHandler extends BaseHandler
     public function get($params = null): void
     {
         try {
+            $resultArray = [];
+            $page = isset($params['page']) ? intval($params['page']) : 1;
+            $pageSize = isset($params['pageSize']) ? intval($params['pageSize']) : 10;
             if (isset($params['username'])) {
                 $username = $params['username'];
-                $user = $this->service->getUserByUsername($username);
-                if ($user) {
-                    $response = new Response(true, HttpStatusCode::OK, "User retrieved successfully", $user->toArray());
-                } else {
-                    $response = new Response(false, HttpStatusCode::NOT_FOUND, "User not found", null);
-                }
+                $singleUser = $this->service->getUserByUsername($username);
+                $resultArray[] = $singleUser->toArray();
             } else {
-                if (isset($params['query'])) {
+                if (isset($params['query']) && isset($params['sortAscending'])) {
                     $query = $params['query'];
+                    $sortAscending = filter_var($params['sortAscending'], FILTER_VALIDATE_BOOLEAN);
+
                     $result = $this->service->processUserQuery($query);
-                    if (empty($result)) {
-                        $response = new Response(false, HttpStatusCode::OK, "No matching users found", null);
+                    $filteredResult = [];
+
+                    if (isset($params['isAdmin']) && isset($params['isSubscribed'])){
+                        $isAdmin = filter_var($params['isAdmin'], FILTER_VALIDATE_BOOLEAN);
+                        $isSubscribed = filter_var($params['isSubscribed'], FILTER_VALIDATE_BOOLEAN);
+                        foreach ($result as $user) {
+                            $filterConditions = [
+                                ($user->getIsAdmin() === $isAdmin),
+                                ($user->getIsSubscribed() === $isSubscribed),
+                            ];
+                            if (array_reduce($filterConditions, function($carry, $condition) {
+                                return $carry && $condition;
+                            }, true)) {
+                                $filteredResult[] = $user;
+                            }
+                        }
                     } else {
-                        $userArrays = array_map(function ($user) {
-                            return $user->toArray();
-                        }, $result);
-                        $response = new Response(true, HttpStatusCode::OK, "Query processed successfully", $userArrays);
+                        $filteredResult = $result;
                     }
+
+                    if ($sortAscending) {
+                        usort($filteredResult, function ($a, $b) {
+                            return $a->getUserId() - $b->getUserId();
+                        });
+                    } else {
+                        usort($filteredResult, function ($a, $b) {
+                            return $b->getUserId() - $a->getUserId();
+                        });
+                    }
+                    $totalPages = ceil(count($filteredResult) / $pageSize);
+                    header("X-Total-Pages: " . $totalPages);
+                    $startIndex = ($page - 1) * $pageSize;
+                    $pagedResult = array_slice($filteredResult, $startIndex, $pageSize);
                 } else {
                     $users = $this->service->getAllUsers();
-                    $userArrays = array_map(function ($user) {
-                        return $user->toArray();
-                    }, $users);
-                    $response = new Response(true, HttpStatusCode::OK, "Users retrieved successfully", $userArrays);
-                }
-            }
-            $response->encode_to_JSON();
+                    $totalUsers = count($users);
+                    $totalPages = ceil($totalUsers / $pageSize);
+                    header("X-Total-Pages: " . $totalPages);
+                    $page = max(1, min($page, $totalPages));
 
-        } catch (Exception $e) {
-            $response = new Response(false, HttpStatusCode::BAD_REQUEST, "Request failed: " . $e->getMessage(), null);
+                    $startIndex = ($page - 1) * $pageSize;
+                    $pagedResult = array_slice($users, $startIndex, $pageSize);
+
+                }
+                $resultArray = ArrayMapper::mapObjectsToArray($pagedResult);
+            }
+
+            if (!empty($resultArray)) {
+                $response = new Response(true, HttpStatusCode::OK, "data retrieved successfully", $resultArray);
+            } else {
+                $response = new Response(false, HttpStatusCode::OK, "data not found", null);
+            }
+
             $response->encode_to_JSON();
+            return;
+        } catch (Exception $e) {
+            $response = new Response(false, HttpStatusCode::NOT_FOUND, "Request failed: " . $e->getMessage(), null);
+            $response->encode_to_JSON();
+            return;
         }
     }
 
@@ -92,9 +132,11 @@ class UserHandler extends BaseHandler
                 $response = new Response(false, HttpStatusCode::NO_CONTENT, "User(s) deletion failed, user parameter id not found", null);
             }
             $response->encode_to_JSON();
+            return;
         } catch (Exception $e) {
             $response = new Response(false, HttpStatusCode::BAD_REQUEST, "User(s) deletion failed: " . $e->getMessage(), null);
             $response->encode_to_JSON();
+            return;
         }
     }
 
@@ -107,6 +149,7 @@ class UserHandler extends BaseHandler
                 $username = $params['username'];
                 $firstName = $params['first_name'];
                 $lastName = $params['last_name'];
+                $newPassword = $params['password'];
 
                 $isAdmin = filter_var($params['is_admin'], FILTER_VALIDATE_BOOLEAN);
                 $isSubscribed = filter_var($params['is_subscribed'], FILTER_VALIDATE_BOOLEAN);
@@ -116,6 +159,9 @@ class UserHandler extends BaseHandler
                     $user->setUsername($username);
                     $user->setFirstName($firstName);
                     $user->setLastName($lastName);
+                    if (isset($newPassword)){
+                        $user->setPasswordHash($newPassword);
+                    }
                     $user->setIsAdmin($isAdmin);
                     $user->setIsSubscribed($isSubscribed);
 
@@ -134,9 +180,11 @@ class UserHandler extends BaseHandler
             }
 
             $response->encode_to_JSON();
+            return;
         } catch (Exception $e) {
             $response = new Response(false, HttpStatusCode::BAD_REQUEST, "User update failed: " . $e->getMessage(), null);
             $response->encode_to_JSON();
+            return;
         }
     }
 

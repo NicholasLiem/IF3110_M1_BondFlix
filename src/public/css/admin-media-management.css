@@ -1,7 +1,46 @@
+@import url("/public/css/lib/admin/modal.css");
+
 #media-item {
-    background-color: #E50914;
+    background-color: #e50914;
 }
 
 #media-item:hover {
     background-color: #bd0912;
 }
+
+h2 {
+    margin: 0;
+}
+
+.genre-container {
+    background-color: white;
+    padding: 30px;
+}
+
+.category-container {
+    background-color: white;
+    padding: 30px;
+}
+
+.director-container {
+    background-color: white;
+    padding: 30px;
+}
+
+.actor-container {
+    background-color: white;
+    padding: 30px;
+}
+
+.manage-table {
+    text-align: left;
+    text-decoration: none;
+}
+
+.manage-table select {
+    width: 100%;
+}
+
+/* #editActorModal {
+    display: block;
+} */

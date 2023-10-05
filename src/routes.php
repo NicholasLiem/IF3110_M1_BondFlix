@@ -1,36 +1,44 @@
 <?php
 global $routes;
-global $container;
+global $serviceContainer;
 
+use Handler\APINotFoundHandler;
 use Handler\Auth\LoginHandler;
 use Handler\Auth\LogoutHandler;
 use Handler\Auth\RegisterHandler;
-use Handler\Genre\GenreHandler;
-use Handler\User\UserHandler;
-use Middleware\Page\AdminCheck;
-use Middleware\Page\LoggedInCheck;
-use Router\Router;
-use Handler\Content\ContentHandler;
 use Handler\Content\ContentActorHandler;
 use Handler\Content\ContentCategoryHandler;
 use Handler\Content\ContentDirectorHandler;
 use Handler\Content\ContentGenreHandler;
-use Handler\Upload\UploadHandler;
+use Handler\Content\ContentHandler;
+use Handler\Genre\GenreHandler;
+use Handler\User\UserHandler;
+use Middleware\API\APIAdminCheck;
+use Middleware\Page\AdminCheck;
+use Middleware\Page\LoggedInCheck;
+use Router\Router;
+use Utils\Logger\Logger;
 
 /**
  * Registering the singleton handlers
  */
-$loginHandler = LoginHandler::getInstance($container);
-$registerHandler = RegisterHandler::getInstance($container);
-$logoutHandler = LogoutHandler::getInstance($container);
-$uploadHandler = UploadHandler::getInstance($container);
-$userHandler = UserHandler::getInstance($container);
-$contentHandler = ContentHandler::getInstance($container);
-$contentActorHandler = ContentActorHandler::getInstance($container);
-$contentCategoryHandler = ContentCategoryHandler::getInstance($container);
-$contentDirectorHandler = ContentDirectorHandler::getInstance($container);
-$contentGenreHandler = ContentGenreHandler::getInstance($container);
-$genreHandler = GenreHandler::getInstance($container);
+try {
+    $loginHandler = LoginHandler::getInstance($serviceContainer->getAuthService());
+    $registerHandler = RegisterHandler::getInstance($serviceContainer->getAuthService());
+    $logoutHandler = LogoutHandler::getInstance($serviceContainer->getAuthService());
+    $userHandler = UserHandler::getInstance($serviceContainer->getAdminService());
+    $contentHandler = ContentHandler::getInstance($serviceContainer->getContentService());
+    $contentActorHandler = ContentActorHandler::getInstance($serviceContainer->getContentService());
+    $contentCategoryHandler = ContentCategoryHandler::getInstance($serviceContainer->getContentService());
+    $contentDirectorHandler = ContentDirectorHandler::getInstance($serviceContainer->getContentService());
+    $contentGenreHandler = ContentGenreHandler::getInstance($serviceContainer->getContentService());
+    $genreHandler = GenreHandler::getInstance($serviceContainer->getGenreService());
+} catch (Exception $e) {
+    Logger::getInstance()->logMessage('Fail to load services '. $e->getMessage());
+    exit();
+}
+
+//$uploadHandler = UploadHandler::getInstance($container);
 
 /**
  * Making new router instance
@@ -47,7 +55,7 @@ $router->addPage('/', function () {
 
 $router->addPage('/login', function () {
     redirect('login');
-}, []);
+});
 
 $router->addPage('/dashboard', function () {
     redirect('dashboard');
@@ -56,6 +64,10 @@ $router->addPage('/dashboard', function () {
 $router->addPage('/register', function ($urlParams) {
     redirect('register', ['urlParams' => $urlParams]);
 });
+
+$router->addPage('/account', function () {
+    redirect('account');
+}, [LoggedInCheck::getInstance()]);
 
 $router->addPage('/admin', function () {
     redirect('admin');
@@ -81,51 +93,51 @@ $router->addPage('/admin/movies/upload', function() {
  * Registering the api routes
  */
 
-$router->addAPI('/api/auth/login', 'POST', $loginHandler, []);;
-$router->addAPI('/api/auth/register', 'POST', $registerHandler, []);;
-$router->addAPI('/api/auth/logout', 'POST', $logoutHandler, [LoggedInCheck::getInstance()]);;
+$router->addAPI('/api/auth/login', 'POST', $loginHandler);
+$router->addAPI('/api/auth/register', 'POST', $registerHandler);
+$router->addAPI('/api/auth/logout', 'POST', $logoutHandler, [LoggedInCheck::getInstance()]);
 
-$router->addAPI('/api/users', 'GET', $userHandler, [AdminCheck::getInstance()]);
-$router->addAPI('/api/users', 'DELETE', $userHandler, [AdminCheck::getInstance()]);
-$router->addAPI('/api/users', 'PUT', $userHandler, [AdminCheck::getInstance()]);
+$router->addAPI('/api/users', 'GET', $userHandler, [APIAdminCheck::getInstance()]);
+$router->addAPI('/api/users', 'DELETE', $userHandler, [APIAdminCheck::getInstance()]);
+$router->addAPI('/api/users', 'PUT', $userHandler, [APIAdminCheck::getInstance()]);
 
-//TODO: add middleware if needed
-$router->addAPI('/api/content', 'GET', $contentHandler, []);
-$router->addAPI('/api/content', 'POST', $contentHandler, []);
-$router->addAPI('/api/content', 'PUT', $contentHandler, []);
-$router->addAPI('/api/content', 'DELETE', $contentHandler, []);
+$router->addAPI('/api/content', 'GET', $contentHandler, [APIAdminCheck::getInstance()]);
+$router->addAPI('/api/content', 'POST', $contentHandler, [APIAdminCheck::getInstance()]);
+$router->addAPI('/api/content', 'PUT', $contentHandler, [APIAdminCheck::getInstance()]);
+$router->addAPI('/api/content', 'DELETE', $contentHandler, [APIAdminCheck::getInstance()]);
 
-$router->addAPI('/api/content/actor', 'GET', $contentActorHandler, []);
-$router->addAPI('/api/content/actor', 'POST', $contentActorHandler, []);
-$router->addAPI('/api/content/actor', 'DELETE', $contentActorHandler, []);
+$router->addAPI('/api/content/actor', 'GET', $contentActorHandler, [APIAdminCheck::getInstance()]);
+$router->addAPI('/api/content/actor', 'POST', $contentActorHandler, [APIAdminCheck::getInstance()]);
+$router->addAPI('/api/content/actor', 'DELETE', $contentActorHandler, [APIAdminCheck::getInstance()]);
 
-$router->addAPI('/api/content/category', 'GET', $contentCategoryHandler, []);
-$router->addAPI('/api/content/category', 'POST', $contentCategoryHandler, []);
-$router->addAPI('/api/content/category', 'DELETE', $contentCategoryHandler, []);
+$router->addAPI('/api/content/category', 'GET', $contentCategoryHandler, [APIAdminCheck::getInstance()]);
+$router->addAPI('/api/content/category', 'POST', $contentCategoryHandler, [APIAdminCheck::getInstance()]);
+$router->addAPI('/api/content/category', 'DELETE', $contentCategoryHandler, [APIAdminCheck::getInstance()]);
 
-$router->addAPI('/api/content/director', 'GET', $contentDirectorHandler, []);
-$router->addAPI('/api/content/director', 'POST', $contentDirectorHandler, []);
-$router->addAPI('/api/content/director', 'DELETE', $contentDirectorHandler, []);
+$router->addAPI('/api/content/director', 'GET', $contentDirectorHandler, [APIAdminCheck::getInstance()]);
+$router->addAPI('/api/content/director', 'POST', $contentDirectorHandler, [APIAdminCheck::getInstance()]);
+$router->addAPI('/api/content/director', 'DELETE', $contentDirectorHandler, [APIAdminCheck::getInstance()]);
 
-$router->addAPI('/api/content/genre', 'GET', $contentGenreHandler, []);
-$router->addAPI('/api/content/genre', 'POST', $contentGenreHandler, []);
-$router->addAPI('/api/content/genre', 'DELETE', $contentGenreHandler, []);
+$router->addAPI('/api/content/genre', 'GET', $contentGenreHandler, [APIAdminCheck::getInstance()]);
+$router->addAPI('/api/content/genre', 'POST', $contentGenreHandler, [APIAdminCheck::getInstance()]);
+$router->addAPI('/api/content/genre', 'DELETE', $contentGenreHandler, [APIAdminCheck::getInstance()]);
 
-$router->addAPI('/api/genre', 'POST', $genreHandler, []);
+$router->addAPI('/api/genre', 'GET', $genreHandler, [APIAdminCheck::getInstance()]);
+$router->addAPI('/api/genre', 'POST', $genreHandler, [APIAdminCheck::getInstance()]);
+$router->addAPI('/api/genre', 'PUT', $genreHandler, [APIAdminCheck::getInstance()]);
+$router->addAPI('/api/genre', 'DELETE', $genreHandler, [APIAdminCheck::getInstance()]);
 
-$router->addAPI('/api/upload', 'GET', $uploadHandler, []);
-$router->addAPI('/api/upload', 'POST', $uploadHandler, []);
+//$router->addAPI('/api/upload', 'GET', $uploadHandler, [APIAdminCheck::getInstance()]);
+//$router->addAPI('/api/upload', 'POST', $uploadHandler, [APIAdminCheck::getInstance()]);
 
 /**
  * Setting api or page fallback handler
  */
 
 $router->setPageNotFoundHandler(function () {
-    require_once BASE_PATH . '/public/view/404.php';
+    redirect('404');
 });
 
-$router->setApiNotFoundHandler(function () {
-    require_once BASE_PATH . '/public/view/404.php';
-});
+$router->setApiNotFoundHandler(APINotFoundHandler::getInstance());
 
 $router->run();

@@ -10,32 +10,18 @@ $username = $_SESSION['username'];
 <link rel="stylesheet" href="/public/css/admin-page.css">
 <link rel="stylesheet" href="/public/css/admin-table.css">
 <link rel="stylesheet" href="/public/css/admin-movies.css">
-<script src="/public/js/admin-movies.js" defer></script>
 <?php include $adminSidebarTemplate ?>
-
 <body>
     <div class="content">
         <div class="search-bar">
-            <input type="text" id="search-input" placeholder="Search...">
-            <button id="search-button" class="search-bar-button">Search</button>
-            <!--        <button id="sort-button" class="search-bar-button">-->
-            <!--            <span class="sort-text">Sort</span>-->
-            <!--            <span class="arrow-down"></span>-->
-            <!--        </button>-->
-            <!--        <div class="dropdown filter-dropdown search-bar-button">-->
-            <!--            <button id="filter-button" class="filter-button">-->
-            <!--                <span class="filter-text">Filter</span>-->
-            <!--                <span class="arrow-down"></span>-->
-            <!--            </button>-->
-            <!--            <div class="dropdown-content filter-dropdown-content">-->
-            <!--                <a href="#">Option 1</a>-->
-            <!--                <a href="#">Option 2</a>-->
-            <!--                <a href="#">Option 3</a>-->
-            <!--            </div>-->
-            <!--        </div>-->
-            <button id="refresh-button" class="search-bar-button">Refresh</button>
+            <input type="text" id="search-input" placeholder="Search by title...">
+            <button id="sort-button" class="search-bar-button">Sort Title ↑</button>
+            <button id="enable-filter-button" class="search-bar-button">Filter Disabled ✗</button>
+            <button id="add-content-button" class="search-bar-button">New Content</button>
         </div>
+
         <table class="admin-table">
+            <thead>
             <tr>
                 <th>ID</th>
                 <th>Title</th>
@@ -43,37 +29,88 @@ $username = $_SESSION['username'];
                 <th>Release Date</th>
                 <th>Content File Path</th>
                 <th>Thumbnail File Path</th>
-                <th>Action</th>
+                <th>Menu</th>
             </tr>
+            </thead>
+            <tbody>
+            </tbody>
         </table>
+
+        <div class="pagination">
+            <button id="prevPageButton">Previous</button>
+            <button id="nextPageButton">Next</button>
+        </div>
+
         <div id="editUserModal" class="modal">
             <div class="modal-content">
-                <span class="close">&times;</span>
+                <span class="close" id="close-edit">&times;</span>
                 <h2>Edit User</h2>
                 <table class="edit-user-modal">
                     <tr>
-                        <td><label for="editTitle">Title</label></td>
-                        <td><input type="text" id="editTitle" name="title" required></td>
+                        <td><label for="editUsername">Username</label></td>
+                        <td><input type="text" id="editUsername" name="username" disabled="disabled" required></td>
                     </tr>
                     <tr>
-                        <td><label for="editDescription">Description</label></td>
-                        <td><input type="text" id="editDescription" name="description" required></td>
+                        <td><label for="editFirstName">First Name</label></td>
+                        <td><input type="text" id="editFirstName" name="firstName" required></td>
                     </tr>
                     <tr>
-                        <td><label for="editReleaseDate">Release Date</label></td>
-                        <td><input type="date" id="editReleaseDate" name="releaseDate" required></td>
+                        <td><label for="editLastName">Last Name</label></td>
+                        <td><input type="text" id="editLastName" name="lastName"></td>
                     </tr>
                     <tr>
-                        <td><label for="editContentFilePath">Content File Path</label></td>
-                        <td><input type="text" id="editContentFilePath" name="conentFilePath" required></td>
+                        <td><label for="editPassword">New Password</label></td>
+                        <td><input type="password" id="editPassword" name="password"></td>
                     </tr>
                     <tr>
-                        <td><label for="editThumbnailPath">Thumbnail File Path</label></td>
-                        <td><input type="text" id="editThumbnailPath">Thumbnail Path</td>
+                        <td><label for="editStatusAdmin">Admin Status</label></td>
+                        <td><select id="editStatusAdmin" name="statusAdmin">
+                                <option value="true">Yes</option>
+                                <option value="false">No</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><label for="editStatusSubscription">Subscription Status</label></td>
+                        <td><select id="editStatusSubscription" name="statusSubscription">
+                                <option value="true">Yes</option>
+                                <option value="false">No</option>
+                            </select>
+                        </td>
                     </tr>
                 </table>
                 <button type="submit" class="submit-edit" id="saveEditButton">Save</button>
             </div>
         </div>
+        <div id="newUserModal" class="modal">
+            <div class="modal-content">
+                <span class="close" id="close-user">&times;</span>
+                <h2>New Content</h2>
+                <table class="new-user-modal">
+                    <tr>
+                        <td><label for="newUsername">Username</label></td>
+                        <td><input type="text" id="newUsername" name="username" required></td>
+                    </tr>
+                    <tr>
+                        <td><label for="newFirstName">First Name</label></td>
+                        <td><input type="text" id="newFirstName" name="firstName" required></td>
+                    </tr>
+                    <tr>
+                        <td><label for="newLastName">Last Name</label></td>
+                        <td><input type="text" id="newLastName" name="lastName"></td>
+                    </tr>
+                    <tr>
+                        <td><label for="newPassword">Password</label></td>
+                        <td><input type="password" id="newPassword" name="password"></td>
+                    </tr>
+                    <tr>
+                        <td><label for="newPasswordConfirmation">Password Confirmation</label></td>
+                        <td><input type="password" id="newPasswordConfirmation" name="passwordConfirmation"></td>
+                    </tr>
+                </table>
+                <button type="submit" class="submit-new-content" id="newContentButton">Add Content</button>
+            </div>
+        </div>
     </div>
+    <script src="/public/js/admin-movies.js"></script>
 </body>

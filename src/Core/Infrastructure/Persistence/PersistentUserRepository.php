@@ -1,8 +1,8 @@
 <?php
 namespace Core\Infrastructure\Persistence;
 
-use Core\Domain\Entities\User;
 use Core\Application\Repositories\UserRepository;
+use Core\Domain\Entities\User;
 use Exception;
 use PDO;
 use Utils\Logger\Logger;
@@ -144,25 +144,26 @@ class PersistentUserRepository implements UserRepository
     public function updateUser(User $user): User
     {
         $stmt = $this->db->prepare("
-        UPDATE users SET 
-            first_name = :first_name, 
-            last_name = :last_name, 
-            username = :new_username, 
-            password_hash = :new_password, 
-            is_admin = :is_admin, 
-            is_subscribed = :is_subscribed 
-        WHERE user_id = :user_id");
+            UPDATE users SET 
+                first_name = :first_name, 
+                last_name = :last_name, 
+                is_admin = :is_admin, 
+                is_subscribed = :is_subscribed
+                " . (!empty($user->getPasswordHash()) ? ", password_hash = :new_password" : "") . "
+            WHERE user_id = :user_id
+        ");
 
-        $newUsername = $user->getUsername();
-        $newPasswordHash = $user->getPasswordHash();
         $userId = $user->getUserId();
         $firstName = $user->getFirstName();
         $lastName = $user->getLastName();
         $isAdmin = $user->getIsAdmin();
         $isSubscribed = $user->getIsSubscribed();
 
-        $stmt->bindParam(':new_username', $newUsername);
-        $stmt->bindParam(':new_password', $newPasswordHash);
+        $newPasswordHash = $user->getPasswordHash();
+        if (!empty($newPasswordHash)) {
+            $stmt->bindParam(':new_password', $newPasswordHash);
+        }
+
         $stmt->bindParam(':user_id', $userId);
         $stmt->bindParam(':first_name', $firstName);
         $stmt->bindParam(':last_name', $lastName);
@@ -175,6 +176,7 @@ class PersistentUserRepository implements UserRepository
 
         return $user;
     }
+
 
     /**
      * @throws Exception
@@ -259,7 +261,7 @@ class PersistentUserRepository implements UserRepository
     /**
      * @throws Exception
      */
-    public function processQuery($query): array
+    public function processQuery(string $query): array
     {
         try {
             $query = '%' . $query . '%';
@@ -273,13 +275,12 @@ class PersistentUserRepository implements UserRepository
                    is_admin, 
                    is_subscribed
             FROM users
-            WHERE username LIKE :query
-            OR first_name LIKE :query
-            OR last_name LIKE :query
-            ORDER BY user_id ASC;
+            WHERE (username LIKE :query
+                OR first_name LIKE :query
+                OR last_name LIKE :query);
         ");
 
-            $stmt->bindParam(':query', $query, PDO::PARAM_STR);
+            $stmt->bindParam(':query', $query);
 
             if (!$stmt->execute()) {
                 throw new Exception("Database error while fetching user data");
@@ -303,8 +304,9 @@ class PersistentUserRepository implements UserRepository
             return $users;
         } catch (Exception $e) {
             Logger::getInstance()->logMessage('Failed to fetch users: ' . $e->getMessage());
-            throw new Exception("Failed to fetch users");
+            throw new Exception("Failed to fetch users: " . $e->getMessage());
         }
     }
+
 
 }

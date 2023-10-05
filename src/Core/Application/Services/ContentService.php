@@ -121,4 +121,9 @@ class ContentService
     {
         $this->contentRepository->deleteGenre($content_id, $genre_id);
     }
+
+    public function processContentQuery(string $query) : array
+    {
+        return $this->contentRepository->processQuery($query);
+    }
 }
