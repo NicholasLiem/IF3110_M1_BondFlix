@@ -1,42 +1,5 @@
 @import url("/public/css/lib/index/navbar.css");
 
-.navbar {
-    left: 0;
-}
-
-.navbar #menu-left {
-    display: flex;
-    gap: 30px;
-    margin-left: 32px;
-    font-size: 18px;
-    font-family: "Roboto", sans-serif;
-}
-
-.navbar #menu-right {
-    margin-right: 64px;
-    gap: 24px;
-}
-
-.navbar > div {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.navbar a {
-    text-decoration: none;
-    color: white;
-    display: inline;
-}
-
-.navbar .account-button {
-    margin: 0;
-    padding: 0;
-    border: 0;
-    width: 40px;
-    height: 40px;
-}
-
 .account-button img {
     object-fit: cover;
     width: 100%;

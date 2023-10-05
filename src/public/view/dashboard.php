@@ -21,34 +21,13 @@ include BASE_PATH . "/public/templates/header.php";
   rel="stylesheet"
 />
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Roboto:wght@700&display=swap" rel="stylesheet">
+<script src="/public/js/navbar.js" defer></script>
+<script src="/public/js/dashboard.js" defer></script>
 
 <body>
-    <nav class="navbar">
-        <div>
-            <a href="/"><img class="logo" src="/public/logo.png" alt="Bondflix logo"></a>
-            <div id="menu-left">
-                <a href="">My List</a>
-                <a href="">Movies</a>
-                <a href="">TV Shows</a>
-            </div>
-        </div>
-        <div id="menu-right">
-            <input type="text" class="search-bar" placeholder="Search a movie">
-            <button class="account-button">
-                <img src="/public/avatar.png" alt="profile picture">
-            </button>
-            <div class="account-menu">
-                <ul>
-                    <li>
-                        <a href="/account">Account</a>
-                    </li>
-                    <li>
-                        <a href="" onclick="logout()">Logout</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+    <?php
+        include BASE_PATH . '/public/templates/navbar.php'
+    ?>
     <main>
         <div>
             <div id="most-recommended">
@@ -104,5 +83,4 @@ include BASE_PATH . "/public/templates/header.php";
 
 
     <a href="logout">Logout</a> -->
-    <script src="/public/js/dashboard.js"></script>
 </body>
