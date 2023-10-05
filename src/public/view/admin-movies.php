@@ -16,8 +16,6 @@ $username = $_SESSION['username'];
         <div class="search-bar">
             <input type="text" id="search-input" placeholder="Search by title...">
             <button id="sort-button" class="search-bar-button">Sort Title ↑</button>
-            <button id="admin-filter-button" class="search-bar-button">Is Admin ✓</button>
-            <button id="sub-filter-button" class="search-bar-button">Is Subscribed ✓</button>
             <button id="enable-filter-button" class="search-bar-button">Filter Disabled ✗</button>
             <button id="add-content-button" class="search-bar-button">New Content</button>
         </div>
@@ -27,10 +25,10 @@ $username = $_SESSION['username'];
             <tr>
                 <th>ID</th>
                 <th>Title</th>
+                <th>Description</th>
                 <th>Release Date</th>
                 <th>Content File Path</th>
                 <th>Thumbnail File Path</th>
-                <th>Uploaded At</th>
                 <th>Menu</th>
             </tr>
             </thead>

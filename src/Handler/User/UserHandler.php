@@ -91,15 +91,17 @@ class UserHandler extends BaseHandler
             }
 
             if (!empty($resultArray)) {
-                $response = new Response(true, HttpStatusCode::OK, "Users retrieved successfully", $resultArray);
+                $response = new Response(true, HttpStatusCode::OK, "data retrieved successfully", $resultArray);
             } else {
-                $response = new Response(false, HttpStatusCode::OK, "User not found", null);
+                $response = new Response(false, HttpStatusCode::OK, "data not found", null);
             }
 
             $response->encode_to_JSON();
+            return;
         } catch (Exception $e) {
             $response = new Response(false, HttpStatusCode::NOT_FOUND, "Request failed: " . $e->getMessage(), null);
             $response->encode_to_JSON();
+            return;
         }
     }
 
@@ -130,9 +132,11 @@ class UserHandler extends BaseHandler
                 $response = new Response(false, HttpStatusCode::NO_CONTENT, "User(s) deletion failed, user parameter id not found", null);
             }
             $response->encode_to_JSON();
+            return;
         } catch (Exception $e) {
             $response = new Response(false, HttpStatusCode::BAD_REQUEST, "User(s) deletion failed: " . $e->getMessage(), null);
             $response->encode_to_JSON();
+            return;
         }
     }
 
@@ -176,9 +180,11 @@ class UserHandler extends BaseHandler
             }
 
             $response->encode_to_JSON();
+            return;
         } catch (Exception $e) {
             $response = new Response(false, HttpStatusCode::BAD_REQUEST, "User update failed: " . $e->getMessage(), null);
             $response->encode_to_JSON();
+            return;
         }
     }
 

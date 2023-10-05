@@ -25,7 +25,8 @@ class Content {
         string $description = '',
         string $release_date = '',
         string $content_file_path = '',
-        string $thumbnail_file_path = '')
+        string $thumbnail_file_path = ''
+    )
     {
         $this->content_id = $content_id;
         $this->title = $title;

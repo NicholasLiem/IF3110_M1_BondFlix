@@ -457,4 +457,51 @@ class PersistentContentRepository implements ContentRepository
 
         return (int) $maxContentData['max_content_id'];
     }
+
+
+    /**
+     * @throws Exception
+     */
+    public function processQuery(string $query): array
+    {
+        try {
+            $query = '%' . $query . '%';
+
+            $stmt = $this->db->prepare("
+            SELECT content_id, 
+                   title, 
+                   description, 
+                   release_date, 
+                   content_file_path, 
+                   thumbnail_file_path
+            FROM content
+            WHERE (title LIKE :query);
+        ");
+
+            $stmt->bindParam(':query', $query);
+
+            if (!$stmt->execute()) {
+                throw new Exception("Database error while fetching data");
+            }
+
+            $contents = [];
+            while ($contentData = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                $content = new Content(
+                    (int) $contentData['content_id'],
+                    $contentData['title'],
+                    $contentData['description'],
+                    $contentData['release_date'],
+                    $contentData['content_file_path'],
+                    $contentData['thumbnail_file_path'],
+                );
+
+                $contents[] = $content;
+            }
+
+            return $contents;
+        } catch (Exception $e) {
+            Logger::getInstance()->logMessage('Failed to fetch data: ' . $e->getMessage());
+            throw new Exception("Failed to fetch data: " . $e->getMessage());
+        }
+    }
 }
