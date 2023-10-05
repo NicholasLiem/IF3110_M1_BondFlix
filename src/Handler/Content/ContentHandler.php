@@ -33,7 +33,7 @@ class ContentHandler extends BaseHandler {
      * /api/content?page={p} => get content data at page p
      * /api/content?content_id={id} => get a content with a specific id
      */
-    protected function get($params = null)
+    protected function get($params = null): void
     {
         if (isset($params['content_id'])) {
             $content = $this->service->getContentById($params['content_id']);

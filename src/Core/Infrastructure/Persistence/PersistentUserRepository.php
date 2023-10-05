@@ -147,14 +147,12 @@ class PersistentUserRepository implements UserRepository
             UPDATE users SET 
                 first_name = :first_name, 
                 last_name = :last_name, 
-                username = :new_username, 
                 is_admin = :is_admin, 
                 is_subscribed = :is_subscribed
                 " . (!empty($user->getPasswordHash()) ? ", password_hash = :new_password" : "") . "
             WHERE user_id = :user_id
         ");
 
-        $newUsername = $user->getUsername();
         $userId = $user->getUserId();
         $firstName = $user->getFirstName();
         $lastName = $user->getLastName();
@@ -166,7 +164,6 @@ class PersistentUserRepository implements UserRepository
             $stmt->bindParam(':new_password', $newPasswordHash);
         }
 
-        $stmt->bindParam(':new_username', $newUsername);
         $stmt->bindParam(':user_id', $userId);
         $stmt->bindParam(':first_name', $firstName);
         $stmt->bindParam(':last_name', $lastName);
