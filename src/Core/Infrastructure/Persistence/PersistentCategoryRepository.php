@@ -103,29 +103,29 @@ class PersistentCategoryRepository implements CategoryRepository
     {
         try {
             $stmt = $this->db->prepare("
-                SELECT genre_id, genre_name
-                FROM genre
-                ORDER BY genre_id ASC;
+                SELECT category_id, category_name
+                FROM category
+                ORDER BY category_id ASC;
             ");
 
             if (!$stmt->execute()) {
-                throw new Exception("Database error while fetching genre data");
+                throw new Exception("Database error while fetching category data");
             }
 
-            $genres = [];
-            while ($genreData = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                $genre = new Genre(
-                    (int) $genreData['genre_id'],
-                    $genreData['genre_name'],
+            $categorys = [];
+            while ($categoryData = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                $category = new Category(
+                    (int) $categoryData['category_id'],
+                    $categoryData['category_name'],
                 );
 
-                $genres[] = $genre;
+                $categorys[] = $category;
             }
 
-            return $genres;
+            return $categorys;
         } catch (Exception $e) {
-            Logger::getInstance()->logMessage('Failed to fetch all genres: ' . $e->getMessage());
-            throw new Exception("Failed to fetch all genres");
+            Logger::getInstance()->logMessage('Failed to fetch all categorys: ' . $e->getMessage());
+            throw new Exception("Failed to fetch all categorys");
         }
     }
 
