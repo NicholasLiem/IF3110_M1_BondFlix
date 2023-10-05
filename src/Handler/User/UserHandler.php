@@ -1,7 +1,10 @@
 <?php
 namespace Handler\User;
 
+use Core\Application\Services\AdminService;
+use Core\Application\Services\AuthService;
 use Exception;
+use Handler\Auth\LoginHandler;
 use Handler\BaseHandler;
 use Utils\ArrayMapper\ArrayMapper;
 use Utils\Http\HttpStatusCode;
@@ -9,19 +12,18 @@ use Utils\Response\Response;
 
 class UserHandler extends BaseHandler
 {
-    protected static $instance;
-    protected $service;
-
-    private function __construct($service)
+    protected static UserHandler $instance;
+    protected AdminService $service;
+    private function __construct(AdminService $service)
     {
-        parent::__construct($service);
+        $this->service = $service;
     }
 
-    public static function getInstance($container): UserHandler
+    public static function getInstance(AdminService $adminService): UserHandler
     {
         if (!isset(self::$instance)) {
             self::$instance = new static(
-                $container->resolve('adminService')
+                $adminService
             );
         }
         return self::$instance;

@@ -1,6 +1,7 @@
 <?php
 namespace Handler\Auth;
 
+use Core\Application\Services\AuthService;
 use Exception;
 use Handler\BaseHandler;
 use Utils\Http\HttpStatusCode;
@@ -8,19 +9,18 @@ use Utils\Response\Response;
 
 class RegisterHandler extends BaseHandler
 {
-    protected static $instance;
-    protected $service;
-
-    private function __construct($service)
+    protected static RegisterHandler $instance;
+    protected AuthService $service;
+    private function __construct(AuthService $service)
     {
-        parent::__construct($service);
+        $this->service = $service;
     }
 
-    public static function getInstance($container): RegisterHandler
+    public static function getInstance(AuthService $authService): RegisterHandler
     {
         if (!isset(self::$instance)) {
             self::$instance = new static(
-                $container->resolve('authService')
+                $authService
             );
         }
         return self::$instance;

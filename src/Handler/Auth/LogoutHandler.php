@@ -2,6 +2,7 @@
 
 namespace Handler\Auth;
 
+use Core\Application\Services\AuthService;
 use Handler\BaseHandler;
 use Utils\Http\HttpStatusCode;
 use Utils\Response\Response;
@@ -9,19 +10,18 @@ use Utils\Response\Response;
 class LogoutHandler extends BaseHandler
 {
 
-    protected static $instance;
-    protected $service;
-
-    private function __construct($service)
+    protected static LogoutHandler $instance;
+    protected AuthService $service;
+    private function __construct(AuthService $service)
     {
-        parent::__construct($service);
+        $this->service = $service;
     }
 
-    public static function getInstance($container): LogoutHandler
+    public static function getInstance(AuthService $authService): LogoutHandler
     {
         if (!isset(self::$instance)) {
             self::$instance = new static(
-                $container->resolve('authService')
+                $authService
             );
         }
         return self::$instance;

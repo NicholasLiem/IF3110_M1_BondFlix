@@ -1,6 +1,6 @@
 <?php
 global $routes;
-global $container;
+global $serviceContainer;
 
 use Handler\Auth\LoginHandler;
 use Handler\Auth\LogoutHandler;
@@ -16,22 +16,28 @@ use Handler\Content\ContentActorHandler;
 use Handler\Content\ContentCategoryHandler;
 use Handler\Content\ContentDirectorHandler;
 use Handler\Content\ContentGenreHandler;
-use Handler\Upload\UploadHandler;
+use Utils\Logger\Logger;
 
 /**
  * Registering the singleton handlers
  */
-$loginHandler = LoginHandler::getInstance($container);
-$registerHandler = RegisterHandler::getInstance($container);
-$logoutHandler = LogoutHandler::getInstance($container);
-$uploadHandler = UploadHandler::getInstance($container);
-$userHandler = UserHandler::getInstance($container);
-$contentHandler = ContentHandler::getInstance($container);
-$contentActorHandler = ContentActorHandler::getInstance($container);
-$contentCategoryHandler = ContentCategoryHandler::getInstance($container);
-$contentDirectorHandler = ContentDirectorHandler::getInstance($container);
-$contentGenreHandler = ContentGenreHandler::getInstance($container);
-$genreHandler = GenreHandler::getInstance($container);
+try {
+    $loginHandler = LoginHandler::getInstance($serviceContainer->getAuthService());
+    $registerHandler = RegisterHandler::getInstance($serviceContainer->getAuthService());
+    $logoutHandler = LogoutHandler::getInstance($serviceContainer->getAuthService());
+    $userHandler = UserHandler::getInstance($serviceContainer->getAdminService());
+    $contentHandler = ContentHandler::getInstance($serviceContainer->getContentService());
+    $contentActorHandler = ContentActorHandler::getInstance($serviceContainer->getContentService());
+    $contentCategoryHandler = ContentCategoryHandler::getInstance($serviceContainer->getContentService());
+    $contentDirectorHandler = ContentDirectorHandler::getInstance($serviceContainer->getContentService());
+    $contentGenreHandler = ContentGenreHandler::getInstance($serviceContainer->getContentService());
+    $genreHandler = GenreHandler::getInstance($serviceContainer->getGenreService());
+} catch (Exception $e) {
+    Logger::getInstance()->logMessage('Fail to load services '. $e->getMessage());
+    exit();
+}
+
+//$uploadHandler = UploadHandler::getInstance($container);
 
 /**
  * Making new router instance
@@ -121,8 +127,8 @@ $router->addAPI('/api/genre', 'POST', $genreHandler, [APIAdminCheck::getInstance
 $router->addAPI('/api/genre', 'PUT', $genreHandler, [APIAdminCheck::getInstance()]);
 $router->addAPI('/api/genre', 'DELETE', $genreHandler, [APIAdminCheck::getInstance()]);
 
-$router->addAPI('/api/upload', 'GET', $uploadHandler, [APIAdminCheck::getInstance()]);
-$router->addAPI('/api/upload', 'POST', $uploadHandler, [APIAdminCheck::getInstance()]);
+//$router->addAPI('/api/upload', 'GET', $uploadHandler, [APIAdminCheck::getInstance()]);
+//$router->addAPI('/api/upload', 'POST', $uploadHandler, [APIAdminCheck::getInstance()]);
 
 /**
  * Setting api or page fallback handler

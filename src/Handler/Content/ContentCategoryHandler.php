@@ -1,6 +1,7 @@
 <?php
 namespace Handler\Content;
 
+use Core\Application\Services\ContentService;
 use Exception;
 use Handler\BaseHandler;
 use Utils\Http\HttpStatusCode;
@@ -8,18 +9,19 @@ use Utils\Response\Response;
 
 class ContentCategoryHandler extends BaseHandler {
     
-    protected static $instance;
-    protected $service;
+    protected static ContentCategoryHandler $instance;
+    protected ContentService $service;
 
-    private function __construct($service)
+    private function __construct(ContentService $contentService)
     {
-        parent::__construct($service);
+        $this->service = $contentService;
     }
 
-    public static function getInstance($container): ContentCategoryHandler {
+    public static function getInstance($contentService): ContentCategoryHandler
+    {
         if (!isset(self::$instance)) {
             self::$instance = new static(
-                $container->resolve('contentService')
+                $contentService
             );
         }
         return self::$instance;

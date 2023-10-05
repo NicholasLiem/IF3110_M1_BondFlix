@@ -1,6 +1,7 @@
 <?php
 namespace Handler\Content;
 
+use Core\Application\Services\ContentService;
 use Exception;
 use Handler\BaseHandler;
 use Utils\ArrayMapper\ArrayMapper;
@@ -11,18 +12,17 @@ use Utils\Response\Response;
 
 class ContentHandler extends BaseHandler {
     
-    protected static $instance;
-    protected $service;
-
-    private function __construct($service)
+    protected static ContentHandler $instance;
+    private function __construct(ContentService $contentService)
     {
-        parent::__construct($service);
+        $this->service = $contentService;
     }
 
-    public static function getInstance($container): ContentHandler {
+    public static function getInstance($contentService): ContentHandler
+    {
         if (!isset(self::$instance)) {
             self::$instance = new static(
-                $container->resolve('contentService')
+                $contentService
             );
         }
         return self::$instance;

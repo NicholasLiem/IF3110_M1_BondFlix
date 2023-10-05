@@ -2,6 +2,7 @@
 
 namespace Handler\Genre;
 
+use Core\Application\Services\GenreService;
 use Exception;
 use Handler\BaseHandler;
 use Utils\Http\HttpStatusCode;
@@ -9,18 +10,19 @@ use Utils\Response\Response;
 
 class GenreHandler extends BaseHandler
 {
-    protected $service;
+    protected static GenreHandler $instance;
+    protected GenreService $service;
 
-    private function __construct($service)
+    private function __construct(GenreService $service)
     {
-        parent::__construct($service);
+        $this->service = $service;
     }
 
-    public static function getInstance($container): GenreHandler
+    public static function getInstance(GenreService $genreService): GenreHandler
     {
         if (!isset(self::$instance)) {
             self::$instance = new static(
-                $container->resolve('genreService')
+                $genreService
             );
         }
         return self::$instance;
