@@ -18,6 +18,7 @@ use Middleware\Page\AdminCheck;
 use Middleware\Page\LoggedInCheck;
 use Router\Router;
 use Utils\Logger\Logger;
+use Handler\Category\CategoryHandler;
 
 /**
  * Registering the singleton handlers
@@ -33,6 +34,7 @@ try {
     $contentDirectorHandler = ContentDirectorHandler::getInstance($serviceContainer->getContentService());
     $contentGenreHandler = ContentGenreHandler::getInstance($serviceContainer->getContentService());
     $genreHandler = GenreHandler::getInstance($serviceContainer->getGenreService());
+    $categoryHandler = CategoryHandler::getInstance($serviceContainer->getCategoryService());
 } catch (Exception $e) {
     Logger::getInstance()->logMessage('Fail to load services '. $e->getMessage());
     exit();
@@ -129,6 +131,11 @@ $router->addAPI('/api/genre', 'DELETE', $genreHandler, [APIAdminCheck::getInstan
 
 //$router->addAPI('/api/upload', 'GET', $uploadHandler, [APIAdminCheck::getInstance()]);
 //$router->addAPI('/api/upload', 'POST', $uploadHandler, [APIAdminCheck::getInstance()]);
+
+$router->addAPI('/api/category', 'GET', $categoryHandler, []);
+$router->addAPI('/api/category', 'POST', $categoryHandler, []);
+$router->addAPI('/api/category', 'PUT', $categoryHandler, []);
+$router->addAPI('/api/category', 'DELETE', $categoryHandler, []);
 
 /**
  * Setting api or page fallback handler

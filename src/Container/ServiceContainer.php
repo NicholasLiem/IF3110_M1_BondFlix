@@ -3,6 +3,7 @@
 namespace Container;
 use Core\Application\Services\AdminService;
 use Core\Application\Services\AuthService;
+use Core\Application\Services\CategoryService;
 use Core\Application\Services\ContentService;
 use Core\Application\Services\GenreService;
 use Exception;
@@ -14,19 +15,22 @@ class ServiceContainer
     private AdminService $adminService;
     private ContentService $contentService;
     private GenreService $genreService;
+    private CategoryService $categoryService;
 
     /**
      * @param AuthService $authService
      * @param AdminService $adminService
      * @param ContentService $contentService
      * @param GenreService $genreService
+     * @param CategoryService $categoryService
      */
-    public function __construct(AuthService $authService, AdminService $adminService, ContentService $contentService, GenreService $genreService)
+    public function __construct(AuthService $authService, AdminService $adminService, ContentService $contentService, GenreService $genreService, CategoryService $categoryService)
     {
         $this->authService = $authService;
         $this->adminService = $adminService;
         $this->contentService = $contentService;
         $this->genreService = $genreService;
+        $this->categoryService = $categoryService;
     }
 
     /**
@@ -95,5 +99,13 @@ class ServiceContainer
     public function setGenreService(GenreService $genreService): void
     {
         $this->genreService = $genreService;
+    }
+
+    public function getCategoryService(): CategoryService {
+        return $this->categoryService;
+    }
+
+    public function setCategoryService(CategoryService $categoryService): void {
+        $this->categoryService = $categoryService;
     }
 }
