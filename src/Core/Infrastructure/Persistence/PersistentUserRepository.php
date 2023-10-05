@@ -1,8 +1,8 @@
 <?php
 namespace Core\Infrastructure\Persistence;
 
-use Core\Domain\Entities\User;
 use Core\Application\Repositories\UserRepository;
+use Core\Domain\Entities\User;
 use Exception;
 use PDO;
 use Utils\Logger\Logger;

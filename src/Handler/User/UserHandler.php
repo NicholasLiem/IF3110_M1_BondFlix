@@ -2,9 +2,7 @@
 namespace Handler\User;
 
 use Core\Application\Services\AdminService;
-use Core\Application\Services\AuthService;
 use Exception;
-use Handler\Auth\LoginHandler;
 use Handler\BaseHandler;
 use Utils\ArrayMapper\ArrayMapper;
 use Utils\Http\HttpStatusCode;

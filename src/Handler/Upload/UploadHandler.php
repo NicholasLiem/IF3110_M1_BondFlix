@@ -2,11 +2,10 @@
 
 namespace Handler\Upload;
 
-use Exception;
 use Handler\BaseHandler;
-use Utils\Uploader\ImageUploader;
 use Utils\Http\HttpStatusCode;
 use Utils\Response\Response;
+use Utils\Uploader\ImageUploader;
 
 class UploadHandler extends BaseHandler
 {

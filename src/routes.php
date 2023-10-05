@@ -6,17 +6,17 @@ use Handler\APINotFoundHandler;
 use Handler\Auth\LoginHandler;
 use Handler\Auth\LogoutHandler;
 use Handler\Auth\RegisterHandler;
+use Handler\Content\ContentActorHandler;
+use Handler\Content\ContentCategoryHandler;
+use Handler\Content\ContentDirectorHandler;
+use Handler\Content\ContentGenreHandler;
+use Handler\Content\ContentHandler;
 use Handler\Genre\GenreHandler;
 use Handler\User\UserHandler;
 use Middleware\API\APIAdminCheck;
 use Middleware\Page\AdminCheck;
 use Middleware\Page\LoggedInCheck;
 use Router\Router;
-use Handler\Content\ContentHandler;
-use Handler\Content\ContentActorHandler;
-use Handler\Content\ContentCategoryHandler;
-use Handler\Content\ContentDirectorHandler;
-use Handler\Content\ContentGenreHandler;
 use Utils\Logger\Logger;
 
 /**

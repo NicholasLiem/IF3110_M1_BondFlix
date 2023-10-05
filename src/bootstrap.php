@@ -33,10 +33,11 @@ require_once BASE_PATH . '/routes.php';
 /**
  * redirect use for redirecting pages
  * @param $path
- * @param $data
+ * @param array $data
  * @return void
  */
-function redirect($path, $data = []) {
+function redirect($path, array $data = []): void
+{
     extract($data);
 
     ob_start();

@@ -33,7 +33,8 @@ class GenreHandler extends BaseHandler
      * /api/genre
      * /api/genre?genre_id={gid} 
      */
-    public function get($params = null) {
+    public function get($params = null): void
+    {
         if (isset($params['genre_id'])) {
             $genre = $this->service->getGenreById($params['genre_id']);
             if (is_null($genre)) {
@@ -69,15 +70,15 @@ class GenreHandler extends BaseHandler
             $response = new Response(true, HttpStatusCode::OK ,"New genre successfully added", $genre->toArray());
             $response->encode_to_JSON();
 
-        } catch (Exception $e) {
-
+        } catch (Exception) {
             $response = new Response(false, HttpStatusCode::FORBIDDEN, "Invalid credentials", null);
             $response->encode_to_JSON();
 
         }
     }
 
-    public function put($params = null) {
+    public function put($params = null): void
+    {
         try {
             $putData = file_get_contents('php://input');
             parse_str($putData, $_PUT);
@@ -103,7 +104,8 @@ class GenreHandler extends BaseHandler
 
     }
 
-    public function delete($params = null) {
+    public function delete($params = null): void
+    {
         if (!isset($params['genre_id'])) {
             $response = new Response(false, HttpStatusCode::BAD_REQUEST, "Insufficient parameter: genre_id", null);
             $response->encode_to_JSON();

@@ -2,9 +2,9 @@
 
 namespace Core\Application\Services;
 
-use Exception;
 use Core\Domain\Entities\Genre;
 use Core\Infrastructure\Persistence\PersistentGenreRepository;
+use Exception;
 
 class GenreService
 {

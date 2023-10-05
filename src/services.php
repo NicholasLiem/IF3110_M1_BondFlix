@@ -2,16 +2,15 @@
 
 use Container\DatabaseContainer;
 use Container\RepositoryContainer;
+use Container\ServiceContainer;
+use Core\Application\Services\AdminService;
+use Core\Application\Services\AuthService;
 use Core\Application\Services\ContentService;
 use Core\Application\Services\GenreService;
 use Core\Infrastructure\Persistence\PersistentContentRepository;
 use Core\Infrastructure\Persistence\PersistentGenreRepository;
 use Core\Infrastructure\Persistence\PersistentUserRepository;
-use Container\ServiceContainer;
-use Core\Application\Services\AuthService;
-use Core\Application\Services\AdminService;
 use Database\Connection;
-use Utils\Logger\Logger;
 
 /**
  * @throws Exception
