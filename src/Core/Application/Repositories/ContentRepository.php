@@ -20,4 +20,5 @@ interface ContentRepository {
     public function getGenres(int $content_id): array;
     public function addGenre($content_id, $genre_id): void;
     public function deleteGenre($content_id, $genre_id) : void;
+    public function processQuery(string $query): array;
 }
