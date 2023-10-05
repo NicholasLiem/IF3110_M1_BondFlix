@@ -55,7 +55,7 @@ $router->addPage('/', function () {
 
 $router->addPage('/login', function () {
     redirect('login');
-}, []);
+});
 
 $router->addPage('/dashboard', function () {
     redirect('dashboard');
@@ -93,9 +93,9 @@ $router->addPage('/admin/movies/upload', function() {
  * Registering the api routes
  */
 
-$router->addAPI('/api/auth/login', 'POST', $loginHandler, []);;
-$router->addAPI('/api/auth/register', 'POST', $registerHandler, []);;
-$router->addAPI('/api/auth/logout', 'POST', $logoutHandler, [LoggedInCheck::getInstance()]);;
+$router->addAPI('/api/auth/login', 'POST', $loginHandler);
+$router->addAPI('/api/auth/register', 'POST', $registerHandler);
+$router->addAPI('/api/auth/logout', 'POST', $logoutHandler, [LoggedInCheck::getInstance()]);
 
 $router->addAPI('/api/users', 'GET', $userHandler, [APIAdminCheck::getInstance()]);
 $router->addAPI('/api/users', 'DELETE', $userHandler, [APIAdminCheck::getInstance()]);
