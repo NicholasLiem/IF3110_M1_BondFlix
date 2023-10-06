@@ -11,7 +11,7 @@ include BASE_PATH . "/public/templates/header.php";
 <link rel="stylesheet" href="/public/css/subscribe.css">
 <body>
 <nav class="navbar">
-    <a href="/"><img src="/public/logo.png" alt="Bonflix Logo" class="logo"></a>
+    <a href="/"><img src="/public/logo.png" alt="Bondflix Logo" class="logo"></a>
 </nav>
 <div class="centered-content">
     <div class="container">
