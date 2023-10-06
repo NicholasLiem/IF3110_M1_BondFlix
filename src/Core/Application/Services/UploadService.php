@@ -2,9 +2,9 @@
 
 namespace Core\Application\Services;
 
+use Exception;
 use Utils\FileDestroyer\FileDestroyer;
 use Utils\Uploader\ImageUploader;
-use Exception;
 use Utils\Uploader\VideoUploader;
 
 class UploadService

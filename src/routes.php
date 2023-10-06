@@ -144,10 +144,10 @@ $router->addAPI('/api/genre', 'DELETE', $genreHandler, [APIAdminCheck::getInstan
 
 $router->addAPI('/api/upload', 'POST', $uploadHandler, [APIAdminCheck::getInstance()]);
 
-$router->addAPI('/api/category', 'GET', $categoryHandler, []);
-$router->addAPI('/api/category', 'POST', $categoryHandler, []);
-$router->addAPI('/api/category', 'PUT', $categoryHandler, []);
-$router->addAPI('/api/category', 'DELETE', $categoryHandler, []);
+$router->addAPI('/api/category', 'GET', $categoryHandler);
+$router->addAPI('/api/category', 'POST', $categoryHandler);
+$router->addAPI('/api/category', 'PUT', $categoryHandler);
+$router->addAPI('/api/category', 'DELETE', $categoryHandler);
 
 $router->addAPI('/api/account/user', 'PUT', $accountHandler, [APILoggedInCheck::getInstance()]);
 

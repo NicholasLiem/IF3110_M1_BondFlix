@@ -7,7 +7,6 @@ use Exception;
 use Handler\BaseHandler;
 use Utils\Http\HttpStatusCode;
 use Utils\Response\Response;
-use Utils\Uploader\ImageUploader;
 
 class UploadHandler extends BaseHandler
 {
