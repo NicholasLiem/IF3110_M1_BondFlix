@@ -30,7 +30,6 @@
 
 .admin-table td {
     padding: 8px;
-    /*overflow-y: auto;*/
     text-align: center;
     white-space: nowrap;
     overflow: hidden;

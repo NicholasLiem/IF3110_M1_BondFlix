@@ -169,15 +169,15 @@ class ContentHandler extends BaseHandler {
      * route formats: 
      * /api/content?content_id={id} => delete a content with a specific id
      */
-    protected function delete($params = null)
+    protected function delete($params = null): void
     {
         try {
-            if (is_null($this->service->getContentById($params['content_id']))) {
+            if (is_null($this->service->getContentById($params['contentId']))) {
                 $response = new Response(false, HttpStatusCode::BAD_REQUEST, "Content not found", null);
                 $response->encode_to_JSON();
                 return;
             }
-            $this->service->removeContent($params['content_id']);
+            $this->service->removeContent($params['contentId']);
             $response = new Response(true, HttpStatusCode::OK, "Content deleted successfully", null);
             $response->encode_to_JSON();
         } catch (Exception $e) {

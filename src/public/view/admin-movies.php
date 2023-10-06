@@ -14,7 +14,7 @@ $username = $_SESSION['username'];
 <body>
     <div class="content">
         <div class="search-bar">
-            <input type="text" id="search-input" placeholder="Search by title...">
+            <input type="text" id="search-input" placeholder="Search by title">
             <button id="sort-button" class="search-bar-button">Sort Title ↑</button>
             <button id="enable-filter-button" class="search-bar-button">Filter Disabled ✗</button>
             <button id="add-content-button" class="search-bar-button">New Content</button>
@@ -38,6 +38,7 @@ $username = $_SESSION['username'];
 
         <div class="pagination">
             <button id="prevPageButton">Previous</button>
+            <button id="currentPageButton">1</button>
             <button id="nextPageButton">Next</button>
         </div>
 
@@ -60,21 +61,20 @@ $username = $_SESSION['username'];
                 <h2>Edit Movie</h2>
                 <form id="upload-form" enctype="multipart/form-data">
                     <div>
-                        <label for="title">Title</label>
+                        <label for="movie-title">Title</label>
                         <input type="text" name="title" id="movie-title" required/>
                     </div>
                     <div>
-                        <label for="description">Description</label>
+                        <label for="movie-description">Description</label>
                         <textarea
                                 name="description"
                                 id="movie-description"
                                 cols="30"
                                 rows="10"
-                                
                         ></textarea>
                     </div>
                     <div>
-                        <label for="release-date">Release Date</label>
+                        <label for="movie-release-date">Release Date</label>
                         <input
                                 type="date"
                                 name="release-date"
@@ -83,11 +83,11 @@ $username = $_SESSION['username'];
                         />
                     </div>
                     <div>
-                        <label for="thumbnail">Thumbnail</label>
+                        <label for="movie-thumbnail">Thumbnail</label>
                         <input type="file" name="thumbnail" id="movie-thumbnail" required />
                     </div>
                     <div>
-                        <label for="video">Video</label>
+                        <label for="movie-video">Video</label>
                         <input type="file" name="video" id="movie-video" required />
                     </div>
                     <button type="submit" id="submit-new-content-button">Upload</button>
