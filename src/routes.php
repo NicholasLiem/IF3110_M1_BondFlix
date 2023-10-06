@@ -93,10 +93,6 @@ $router->addPage('/admin/media/management', function () {
     redirect('admin-media-management');
 }, [LoggedInCheck::getInstance(), AdminCheck::getInstance()]);
 
-$router->addPage('/admin/movies/upload', function() {
-    redirect('admin-movies-upload');
-}, [LoggedInCheck::getInstance(), AdminCheck::getInstance()]);
-
 /**
  * Registering the api routes
  */

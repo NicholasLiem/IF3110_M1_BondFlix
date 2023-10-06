@@ -50,65 +50,48 @@ $username = $_SESSION['username'];
                         <td><label for="editUsername">Username</label></td>
                         <td><input type="text" id="editUsername" name="username" disabled="disabled" required></td>
                     </tr>
-                    <tr>
-                        <td><label for="editFirstName">First Name</label></td>
-                        <td><input type="text" id="editFirstName" name="firstName" required></td>
-                    </tr>
-                    <tr>
-                        <td><label for="editLastName">Last Name</label></td>
-                        <td><input type="text" id="editLastName" name="lastName"></td>
-                    </tr>
-                    <tr>
-                        <td><label for="editPassword">New Password</label></td>
-                        <td><input type="password" id="editPassword" name="password"></td>
-                    </tr>
-                    <tr>
-                        <td><label for="editStatusAdmin">Admin Status</label></td>
-                        <td><select id="editStatusAdmin" name="statusAdmin">
-                                <option value="true">Yes</option>
-                                <option value="false">No</option>
-                            </select>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><label for="editStatusSubscription">Subscription Status</label></td>
-                        <td><select id="editStatusSubscription" name="statusSubscription">
-                                <option value="true">Yes</option>
-                                <option value="false">No</option>
-                            </select>
-                        </td>
-                    </tr>
                 </table>
                 <button type="submit" class="submit-edit" id="saveEditButton">Save</button>
             </div>
         </div>
-        <div id="newUserModal" class="modal">
+        <div id="new-content-modal" class="modal">
             <div class="modal-content">
-                <span class="close" id="close-user">&times;</span>
-                <h2>New Content</h2>
-                <table class="new-user-modal">
-                    <tr>
-                        <td><label for="newUsername">Username</label></td>
-                        <td><input type="text" id="newUsername" name="username" required></td>
-                    </tr>
-                    <tr>
-                        <td><label for="newFirstName">First Name</label></td>
-                        <td><input type="text" id="newFirstName" name="firstName" required></td>
-                    </tr>
-                    <tr>
-                        <td><label for="newLastName">Last Name</label></td>
-                        <td><input type="text" id="newLastName" name="lastName"></td>
-                    </tr>
-                    <tr>
-                        <td><label for="newPassword">Password</label></td>
-                        <td><input type="password" id="newPassword" name="password"></td>
-                    </tr>
-                    <tr>
-                        <td><label for="newPasswordConfirmation">Password Confirmation</label></td>
-                        <td><input type="password" id="newPasswordConfirmation" name="passwordConfirmation"></td>
-                    </tr>
-                </table>
-                <button type="submit" class="submit-new-content" id="newContentButton">Add Content</button>
+                <span class="close" id="close-new-content-modal">&times;</span>
+                <h2>Edit Movie</h2>
+                <form id="upload-form" enctype="multipart/form-data">
+                    <div>
+                        <label for="title">Title</label>
+                        <input type="text" name="title" id="movie-title" required/>
+                    </div>
+                    <div>
+                        <label for="description">Description</label>
+                        <textarea
+                                name="description"
+                                id="movie-description"
+                                cols="30"
+                                rows="10"
+                                
+                        ></textarea>
+                    </div>
+                    <div>
+                        <label for="release-date">Release Date</label>
+                        <input
+                                type="date"
+                                name="release-date"
+                                id="movie-release-date"
+                                required
+                        />
+                    </div>
+                    <div>
+                        <label for="thumbnail">Thumbnail</label>
+                        <input type="file" name="thumbnail" id="movie-thumbnail" required />
+                    </div>
+                    <div>
+                        <label for="video">Video</label>
+                        <input type="file" name="video" id="movie-video" required />
+                    </div>
+                    <button type="submit" id="submit-new-content-button">Upload</button>
+                </form>
             </div>
         </div>
     </div>

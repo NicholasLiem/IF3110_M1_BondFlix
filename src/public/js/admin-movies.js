@@ -10,7 +10,6 @@ const ContentTable = {
 };
 
 const Elements = {
-
     /**
      * Search bar input and buttons
      */
@@ -31,10 +30,12 @@ const Elements = {
     /**
      * New Content Modal
      */
-    newUserModal: document.getElementById("newUserModal"),
-    openUserModalButton: document.getElementById("add-user-button"),
-    closeUserModalButton: document.getElementById("close-user"),
-    submitUserButton: document.getElementById("newUserButton"),
+    newContentModal: document.getElementById("new-content-modal"),
+    openContentModalButton: document.getElementById("add-content-button"),
+    closeNewContentModalButton: document.getElementById(
+        "close-new-content-modal"
+    ),
+    submitContentButton: document.getElementById("submit-new-content-button"),
 
     /**
      * Edit Content Modal
@@ -48,6 +49,16 @@ const Elements = {
     editSubscriptionSelect: document.getElementById("editStatusSubscription"),
     closeEditModalButton: document.getElementById("close-edit"),
     saveEditButton: document.getElementById("saveEditButton"),
+
+    /**
+     * Add Content Form
+     */
+    uploadForm: document.getElementById("upload-form"),
+    titleInput: document.getElementById("movie-title"),
+    descriptionInput: document.getElementById("movie-description"),
+    releaseDateInput: document.getElementById("movie-release-date"),
+    thumbnailInput: document.getElementById("movie-thumbnail"),
+    videoInput: document.getElementById("movie-video"),
 };
 
 const Constants = {
@@ -98,7 +109,6 @@ function handlePaginationButtons() {
     Elements.nextPageButton.disabled =
         ContentTable.currentPage === ContentTable.totalPages;
 }
-
 
 async function fetchData() {
     try {
@@ -166,6 +176,47 @@ function initEventListeners() {
         }
     });
 
+    Elements.openContentModalButton.addEventListener("click", () => {
+        Elements.newContentModal.style.display = "block";
+    });
+
+    Elements.closeNewContentModalButton.addEventListener("click", () => {
+        Elements.newContentModal.style.display = "none";
+    });
+
+    Elements.uploadForm.addEventListener("submit", async (event) => {
+        event.preventDefault();
+
+        try {
+            const httpClient = new HttpClient();
+            const videoFilePath = await uploadFile(
+                httpClient,
+                Elements.videoInput.files[0],
+                "movies"
+            );
+            const thumbnailFilePath = await uploadFile(
+                httpClient,
+                Elements.thumbnailInput.files[0],
+                "thumbnails"
+            );
+            const addContentParams = {
+                title: Elements.titleInput.value,
+                description: Elements.descriptionInput.value,
+                release_date: Elements.releaseDateInput.value,
+                content_file_path: videoFilePath,
+                thumbnail_file_path: thumbnailFilePath,
+            };
+            const addContentResponseData = await addContent(
+                httpClient,
+                addContentParams
+            );
+            console.log(addContentResponseData);
+        } catch (err) {
+            alert(err.message);
+            console.error(err);
+        }
+    });
+
     // helper.openModal(
     //     Elements.newUserModal,
     //     Elements.openUserModalButton,
@@ -186,6 +237,46 @@ function initEventListeners() {
     //         Elements.newUserModal.style.display = "none";
     //     }
     // });
+}
+
+/**
+ *
+ * @param {HttpClient} httpClient
+ * @param {*} addContentParams
+ * @returns
+ */
+async function addContent(httpClient, addContentParams) {
+    const addContentResponse = await httpClient.post(
+        "/api/content",
+        addContentParams,
+        false
+    );
+
+    const addContentResponseBody = JSON.parse(addContentResponse.body);
+    if (!addContentResponseBody.success) {
+        throw new Error(
+            "Failed to add content: " + addContentResponseBody.message
+        );
+    }
+
+    return addContentResponseBody.data;
+}
+
+async function uploadFile(httpClient, file, uploadType) {
+    const fileUploadResponse = await httpClient.uploadFile(
+        "/api/upload",
+        file,
+        false
+    );
+
+    const fileUploadResponseBody = JSON.parse(fileUploadResponse);
+    if (!fileUploadResponseBody.success) {
+        throw new Error(fileUploadResponseBody.message);
+    }
+
+    console.log(fileUploadResponseBody);
+    const uploadedFilePath = `/uploads/${uploadType}/${fileUploadResponseBody.data.file_name}`;
+    return uploadedFilePath;
 }
 
 initEventListeners();
