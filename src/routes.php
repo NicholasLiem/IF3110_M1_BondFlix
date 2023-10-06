@@ -12,6 +12,7 @@ use Handler\Content\ContentDirectorHandler;
 use Handler\Content\ContentGenreHandler;
 use Handler\Content\ContentHandler;
 use Handler\Genre\GenreHandler;
+use Handler\Upload\UploadHandler;
 use Handler\User\UserHandler;
 use Middleware\API\APIAdminCheck;
 use Middleware\Page\AdminCheck;
@@ -33,12 +34,12 @@ try {
     $contentDirectorHandler = ContentDirectorHandler::getInstance($serviceContainer->getContentService());
     $contentGenreHandler = ContentGenreHandler::getInstance($serviceContainer->getContentService());
     $genreHandler = GenreHandler::getInstance($serviceContainer->getGenreService());
+    $uploadHandler = UploadHandler::getInstance($serviceContainer->getUploadService());
 } catch (Exception $e) {
     Logger::getInstance()->logMessage('Fail to load services '. $e->getMessage());
     exit();
 }
 
-//$uploadHandler = UploadHandler::getInstance($container);
 
 /**
  * Making new router instance
@@ -128,7 +129,7 @@ $router->addAPI('/api/genre', 'PUT', $genreHandler, [APIAdminCheck::getInstance(
 $router->addAPI('/api/genre', 'DELETE', $genreHandler, [APIAdminCheck::getInstance()]);
 
 //$router->addAPI('/api/upload', 'GET', $uploadHandler, [APIAdminCheck::getInstance()]);
-//$router->addAPI('/api/upload', 'POST', $uploadHandler, [APIAdminCheck::getInstance()]);
+$router->addAPI('/api/upload', 'POST', $uploadHandler, [APIAdminCheck::getInstance()]);
 
 /**
  * Setting api or page fallback handler

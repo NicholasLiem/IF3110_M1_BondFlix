@@ -5,6 +5,7 @@ use Core\Application\Services\AdminService;
 use Core\Application\Services\AuthService;
 use Core\Application\Services\ContentService;
 use Core\Application\Services\GenreService;
+use Core\Application\Services\UploadService;
 use Exception;
 use Utils\Logger\Logger;
 
@@ -14,6 +15,7 @@ class ServiceContainer
     private AdminService $adminService;
     private ContentService $contentService;
     private GenreService $genreService;
+    private UploadService $uploadService;
 
     /**
      * @param AuthService $authService
@@ -21,12 +23,13 @@ class ServiceContainer
      * @param ContentService $contentService
      * @param GenreService $genreService
      */
-    public function __construct(AuthService $authService, AdminService $adminService, ContentService $contentService, GenreService $genreService)
+    public function __construct(AuthService $authService, AdminService $adminService, ContentService $contentService, GenreService $genreService, UploadService $uploadService)
     {
         $this->authService = $authService;
         $this->adminService = $adminService;
         $this->contentService = $contentService;
         $this->genreService = $genreService;
+        $this->uploadService= $uploadService;
     }
 
     /**
@@ -95,5 +98,22 @@ class ServiceContainer
     public function setGenreService(GenreService $genreService): void
     {
         $this->genreService = $genreService;
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function getUploadService(): UploadService
+    {
+        if (!isset($this->uploadService)){
+            Logger::getInstance()->logMessage("Failed to load UploadService service");
+            throw new Exception("Service 'UploadService' not found in the container.");
+        }
+        return $this->uploadService;
+    }
+
+    public function setUploadService(UploadService $uploadService): void
+    {
+        $this->uploadService = $uploadService;
     }
 }

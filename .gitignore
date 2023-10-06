@@ -2,4 +2,5 @@
 *.xml
 envvars
 src/.env
+src/uploads/
 src/logs/logfile.txt

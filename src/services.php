@@ -7,6 +7,7 @@ use Core\Application\Services\AdminService;
 use Core\Application\Services\AuthService;
 use Core\Application\Services\ContentService;
 use Core\Application\Services\GenreService;
+use Core\Application\Services\UploadService;
 use Core\Infrastructure\Persistence\PersistentContentRepository;
 use Core\Infrastructure\Persistence\PersistentGenreRepository;
 use Core\Infrastructure\Persistence\PersistentUserRepository;
@@ -33,6 +34,8 @@ try {
         adminService: new AdminService($userRepository),
         contentService: new ContentService($contentRepository),
         genreService: new GenreService($genreRepository),
+        uploadService: new UploadService(),
     );
 } catch (Exception $e) {
+
 }

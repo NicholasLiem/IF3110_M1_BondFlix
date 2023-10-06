@@ -1,10 +1,11 @@
 <?php
 
 namespace Utils\Uploader;
+
 use Exception;
 use Utils\GenerateRandomId;
 
-class ImageUploader implements IUploader
+class VideoUploader
 {
     public array $types;
     public string $rootDir;
@@ -12,7 +13,7 @@ class ImageUploader implements IUploader
     public function __construct()
     {
         $this->rootDir = '/uploads/';
-        $this->types = ['jpeg', 'png', 'gif'];
+        $this->types = ['mpeg', 'mp4', 'quicktime', 'x-msvideo'];
     }
 
     /**
@@ -26,21 +27,20 @@ class ImageUploader implements IUploader
             mkdir($targetDir, 0777, true);
         }
 
-
         $newFileName = (new GenerateRandomId)->generateRandomFileName($targetFile);
 
         $target_file = $targetDir . $newFileName;
-        $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
+        $videoFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
 
         if (file_exists($target_file)) {
             throw new Exception('File already exists');
         }
 
-        if ($_FILES['fileToUpload']['size'] > ImageUploader::MAX_FILE_SIZE) {
+        if ($_FILES['fileToUpload']['size'] > VideoUploader::MAX_FILE_SIZE) {
             throw new Exception('File is too big');
         }
 
-        if (!in_array($imageFileType, $this->types)) {
+        if (!in_array($videoFileType, $this->types)) {
             throw new Exception('This file type is not supported');
         }
 
