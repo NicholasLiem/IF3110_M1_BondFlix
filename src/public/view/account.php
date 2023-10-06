@@ -12,24 +12,23 @@ $last_name = $_SESSION['last_name'];
 $isAdmin = $_SESSION['is_admin'];
 $isSubscribed = $_SESSION['is_subscribed'];
 $pageTitle = 'User Account';
+$last_name_placeholder = '';
 
 if ($isSubscribed) {
     $isSubscribed = "Active";
 } else {
     $isSubscribed = "Not Active";
 }
+
+if ($last_name == null || $last_name == ''){
+    $last_name_placeholder = 'New Last Name';
+} else {
+    $last_name_placeholder = $last_name;
+}
 include BASE_PATH . "/public/templates/header.php";
 ?>
 
 <link rel="stylesheet" href="/public/css/account.css">
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link
-  href="https://fonts.googleapis.com/css2?family=Roboto&family=Roboto+Mono&display=swap"
-  rel="stylesheet"
-/>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Roboto:wght@700&display=swap" rel="stylesheet">
-<script src="/public/js/navbar.js" defer></script>
 
 <body>
     <?php
@@ -63,11 +62,11 @@ include BASE_PATH . "/public/templates/header.php";
                         </li>
                         <li>
                             <label for="first-name">First Name</label>
-                            <input type="text" id="first-name" name="first-name" class="text-input" placeholder="Current First Name">
+                            <input type="text" id="first-name" name="first-name" class="text-input" placeholder="<?php echo $first_name ?>">
                         </li>
                         <li>
                             <label for="last-name">Last Name</label>
-                            <input type="text" id="last-name" name="last-name" class="text-input" placeholder="Current Last Name">
+                            <input type="text" id="last-name" name="last-name" class="text-input" placeholder="<?php echo $last_name_placeholder ?>">
                         </li>
                         <li>
                             <label for="password">Password</label>

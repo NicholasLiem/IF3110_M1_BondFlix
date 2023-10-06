@@ -3,10 +3,8 @@
 namespace Handler\Account;
 
 use Core\Application\Services\AdminService;
-use Core\Application\Services\UploadService;
 use Exception;
 use Handler\BaseHandler;
-use Handler\User\UserHandler;
 use Utils\Http\HttpStatusCode;
 use Utils\Response\Response;
 
@@ -44,6 +42,8 @@ class AccountHandler extends BaseHandler
                     $user->setLastName($lastName);
                     if (isset($newPassword)){
                         $user->setPasswordHash($newPassword);
+                    } else {
+                        $user->setPasswordHash(null);
                     }
 
                     $result =$this->adminService->updateUser($user);

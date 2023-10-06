@@ -2,9 +2,9 @@
 
 namespace Core\Application\Services;
 
-use Exception;
 use Core\Domain\Entities\Category;
 use Core\Infrastructure\Persistence\PersistentCategoryRepository;
+use Exception;
 
 class CategoryService
 {

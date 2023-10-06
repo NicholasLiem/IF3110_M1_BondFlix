@@ -8,6 +8,7 @@ use Handler\APINotFoundHandler;
 use Handler\Auth\LoginHandler;
 use Handler\Auth\LogoutHandler;
 use Handler\Auth\RegisterHandler;
+use Handler\Category\CategoryHandler;
 use Handler\Content\ContentActorHandler;
 use Handler\Content\ContentCategoryHandler;
 use Handler\Content\ContentDirectorHandler;
@@ -20,9 +21,10 @@ use Middleware\API\APIAdminCheck;
 use Middleware\API\APILoggedInCheck;
 use Middleware\Page\AdminCheck;
 use Middleware\Page\LoggedInCheck;
+use Middleware\Page\SubscribedCheck;
 use Router\Router;
 use Utils\Logger\Logger;
-use Handler\Category\CategoryHandler;
+
 
 /**
  * Registering the singleton handlers
@@ -31,7 +33,6 @@ try {
     $loginHandler = LoginHandler::getInstance($serviceContainer->getAuthService());
     $registerHandler = RegisterHandler::getInstance($serviceContainer->getAuthService());
     $logoutHandler = LogoutHandler::getInstance($serviceContainer->getAuthService());
-    $userHandler = UserHandler::getInstance($serviceContainer->getAdminService());
     $contentHandler = ContentHandler::getInstance($serviceContainer->getContentService());
     $contentActorHandler = ContentActorHandler::getInstance($serviceContainer->getContentService());
     $contentCategoryHandler = ContentCategoryHandler::getInstance($serviceContainer->getContentService());
@@ -40,6 +41,7 @@ try {
     $genreHandler = GenreHandler::getInstance($serviceContainer->getGenreService());
     $uploadHandler = UploadHandler::getInstance($serviceContainer->getUploadService());
     $categoryHandler = CategoryHandler::getInstance($serviceContainer->getCategoryService());
+    $userHandler = UserHandler::getInstance($serviceContainer->getAdminService());
     $accountHandler = AccountHandler::getInstance($serviceContainer->getAdminService());
     $avatarHandler = AvatarHandler::getInstance($serviceContainer->getAdminService(), $serviceContainer->getUploadService());
 } catch (Exception $e) {
@@ -73,6 +75,15 @@ $router->addPage('/register', function ($urlParams) {
     redirect('register', ['urlParams' => $urlParams]);
 });
 
+$router->addPage('/subscribe', function () {
+    redirect('subscribe');
+});
+
+$router->addPage('/watch', function ($urlParams) {
+    redirect('watch', ['urlParams' => $urlParams]);
+}, [SubscribedCheck::getInstance()]);
+
+
 $router->addPage('/account', function () {
     redirect('account');
 }, [LoggedInCheck::getInstance()]);
@@ -91,10 +102,6 @@ $router->addPage('/admin/users', function () {
 
 $router->addPage('/admin/media/management', function () {
     redirect('admin-media-management');
-}, [LoggedInCheck::getInstance(), AdminCheck::getInstance()]);
-
-$router->addPage('/admin/movies/upload', function() {
-    redirect('admin-movies-upload');
 }, [LoggedInCheck::getInstance(), AdminCheck::getInstance()]);
 
 /**
@@ -137,10 +144,10 @@ $router->addAPI('/api/genre', 'DELETE', $genreHandler, [APIAdminCheck::getInstan
 
 $router->addAPI('/api/upload', 'POST', $uploadHandler, [APIAdminCheck::getInstance()]);
 
-$router->addAPI('/api/category', 'GET', $categoryHandler, []);
-$router->addAPI('/api/category', 'POST', $categoryHandler, []);
-$router->addAPI('/api/category', 'PUT', $categoryHandler, []);
-$router->addAPI('/api/category', 'DELETE', $categoryHandler, []);
+$router->addAPI('/api/category', 'GET', $categoryHandler);
+$router->addAPI('/api/category', 'POST', $categoryHandler);
+$router->addAPI('/api/category', 'PUT', $categoryHandler);
+$router->addAPI('/api/category', 'DELETE', $categoryHandler);
 
 $router->addAPI('/api/account/user', 'PUT', $accountHandler, [APILoggedInCheck::getInstance()]);
 

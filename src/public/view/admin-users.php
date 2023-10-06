@@ -38,6 +38,7 @@ $username = $_SESSION['username'];
 
         <div class="pagination">
             <button id="prevPageButton">Previous</button>
+            <button id="currentPageButton">1</button>
             <button id="nextPageButton">Next</button>
         </div>
 

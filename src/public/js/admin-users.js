@@ -32,6 +32,7 @@ const Elements = {
     editSubscriptionSelect: document.getElementById("editStatusSubscription"),
     closeEditModalButton: document.getElementById("close-edit"),
     saveEditButton: document.getElementById("saveEditButton"),
+    currentPageButton: document.getElementById("currentPageButton"),
 };
 
 const Constants = {
@@ -91,6 +92,7 @@ function updateTable(users) {
 }
 
 function handlePaginationButtons() {
+    Elements.currentPageButton.innerHTML = UserTable.currentPage;
     Elements.prevPageButton.disabled = UserTable.currentPage === 1;
     Elements.nextPageButton.disabled =
         UserTable.currentPage === UserTable.totalPages;

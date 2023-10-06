@@ -14,7 +14,7 @@ $username = $_SESSION['username'];
 <body>
     <div class="content">
         <div class="search-bar">
-            <input type="text" id="search-input" placeholder="Search by title...">
+            <input type="text" id="search-input" placeholder="Search by title">
             <button id="sort-button" class="search-bar-button">Sort Title ↑</button>
             <button id="enable-filter-button" class="search-bar-button">Filter Disabled ✗</button>
             <button id="add-content-button" class="search-bar-button">New Content</button>
@@ -27,8 +27,8 @@ $username = $_SESSION['username'];
                 <th>Title</th>
                 <th>Description</th>
                 <th>Release Date</th>
-                <th>Content File Path</th>
-                <th>Thumbnail File Path</th>
+                <th>Content File Name</th>
+                <th>Thumbnail File Name</th>
                 <th>Menu</th>
             </tr>
             </thead>
@@ -38,6 +38,7 @@ $username = $_SESSION['username'];
 
         <div class="pagination">
             <button id="prevPageButton">Previous</button>
+            <button id="currentPageButton">1</button>
             <button id="nextPageButton">Next</button>
         </div>
 
@@ -50,65 +51,50 @@ $username = $_SESSION['username'];
                         <td><label for="editUsername">Username</label></td>
                         <td><input type="text" id="editUsername" name="username" disabled="disabled" required></td>
                     </tr>
-                    <tr>
-                        <td><label for="editFirstName">First Name</label></td>
-                        <td><input type="text" id="editFirstName" name="firstName" required></td>
-                    </tr>
-                    <tr>
-                        <td><label for="editLastName">Last Name</label></td>
-                        <td><input type="text" id="editLastName" name="lastName"></td>
-                    </tr>
-                    <tr>
-                        <td><label for="editPassword">New Password</label></td>
-                        <td><input type="password" id="editPassword" name="password"></td>
-                    </tr>
-                    <tr>
-                        <td><label for="editStatusAdmin">Admin Status</label></td>
-                        <td><select id="editStatusAdmin" name="statusAdmin">
-                                <option value="true">Yes</option>
-                                <option value="false">No</option>
-                            </select>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><label for="editStatusSubscription">Subscription Status</label></td>
-                        <td><select id="editStatusSubscription" name="statusSubscription">
-                                <option value="true">Yes</option>
-                                <option value="false">No</option>
-                            </select>
-                        </td>
-                    </tr>
                 </table>
                 <button type="submit" class="submit-edit" id="saveEditButton">Save</button>
             </div>
         </div>
-        <div id="newUserModal" class="modal">
+        <div id="new-content-modal" class="modal">
             <div class="modal-content">
-                <span class="close" id="close-user">&times;</span>
+                <span class="close" id="close-new-content-modal">&times;</span>
                 <h2>New Content</h2>
-                <table class="new-user-modal">
-                    <tr>
-                        <td><label for="newUsername">Username</label></td>
-                        <td><input type="text" id="newUsername" name="username" required></td>
-                    </tr>
-                    <tr>
-                        <td><label for="newFirstName">First Name</label></td>
-                        <td><input type="text" id="newFirstName" name="firstName" required></td>
-                    </tr>
-                    <tr>
-                        <td><label for="newLastName">Last Name</label></td>
-                        <td><input type="text" id="newLastName" name="lastName"></td>
-                    </tr>
-                    <tr>
-                        <td><label for="newPassword">Password</label></td>
-                        <td><input type="password" id="newPassword" name="password"></td>
-                    </tr>
-                    <tr>
-                        <td><label for="newPasswordConfirmation">Password Confirmation</label></td>
-                        <td><input type="password" id="newPasswordConfirmation" name="passwordConfirmation"></td>
-                    </tr>
-                </table>
-                <button type="submit" class="submit-new-content" id="newContentButton">Add Content</button>
+                <form id="upload-form" enctype="multipart/form-data">
+                    <table class="new-content-modal">
+                        <tr>
+                            <td><label for="movie-title">Title</label></td>
+                            <td><input type="text" name="title" id="movie-title" required/></td>
+                        </tr>
+                        <tr>
+                            <td><label for="movie-description">Description</label></td>
+                            <td><textarea
+                                        name="description"
+                                        id="movie-description"
+                                        cols="auto"
+                                        rows="5"
+                                ></textarea></td>
+                        </tr>
+                        <tr>
+                            <td><label for="movie-release-date">Release Date</label></td>
+                            <td><input
+                                        type="date"
+                                        name="release-date"
+                                        id="movie-release-date"
+                                        required
+                                /></td>
+                        </tr>
+                        <tr>
+                            <td><label for="movie-thumbnail">Thumbnail</label></td>
+                            <td><input type="file" name="thumbnail" id="movie-thumbnail" required />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><label for="movie-video">Video</label></td>
+                            <td><input type="file" name="video" id="movie-video" required /></td>
+                        </tr>
+                    </table>
+                    <button type="submit" id="submit-new-content-button">Upload</button>
+                </form>
             </div>
         </div>
     </div>

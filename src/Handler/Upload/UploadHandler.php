@@ -7,7 +7,6 @@ use Exception;
 use Handler\BaseHandler;
 use Utils\Http\HttpStatusCode;
 use Utils\Response\Response;
-use Utils\Uploader\ImageUploader;
 
 class UploadHandler extends BaseHandler
 {
@@ -44,6 +43,7 @@ class UploadHandler extends BaseHandler
             $fileName = null;
             $statusCode = HttpStatusCode::BAD_REQUEST;
             $message = "Fail to upload file";
+            $responseData = null;
 
             if (in_array($fileType, $imageType)) {
                 $fileName = $this->uploadService->uploadThumbnail($targetFile);
@@ -54,9 +54,10 @@ class UploadHandler extends BaseHandler
             if ($fileName !== null) {
                 $statusCode = HttpStatusCode::OK;
                 $message = "File uploaded successfully: " . $fileName;
+                $responseData = ["file_name" => $fileName];
             }
 
-            $response = new Response(true, $statusCode, $message, null);
+            $response = new Response(true, $statusCode, $message, $responseData);
         } catch (Exception $e) {
             $response = new Response(false, HttpStatusCode::BAD_REQUEST, "Fail to upload file: " . $e->getMessage(), null);
         }

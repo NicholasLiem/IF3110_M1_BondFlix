@@ -14,14 +14,6 @@ include BASE_PATH . "/public/templates/header.php";
 ?>
 
 <link rel="stylesheet" href="/public/css/dashboard.css">
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link
-  href="https://fonts.googleapis.com/css2?family=Roboto&family=Roboto+Mono&display=swap"
-  rel="stylesheet"
-/>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Roboto:wght@700&display=swap" rel="stylesheet">
-<script src="/public/js/navbar.js" defer></script>
 <script src="/public/js/dashboard.js" defer></script>
 
 <body>

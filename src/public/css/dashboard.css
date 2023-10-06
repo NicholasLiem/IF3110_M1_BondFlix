@@ -80,6 +80,8 @@ body {
 }
 
 .description-card h2 {
+    margin-top: 10vh;
+    padding-top: 0;
     color: white;
     font-family: "Roboto", sans-serif;
     font-size: 60px;

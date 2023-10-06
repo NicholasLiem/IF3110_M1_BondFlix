@@ -1,8 +1,8 @@
-const accountButton = document.querySelector(".account-button");
+const navbarAccountButton = document.querySelector(".navbar-account-button");
 const accountMenu = document.querySelector(".account-menu");
 const profilePicture = document.getElementById('profile-picture-navbar')
 
-accountButton.addEventListener("click", () => {
+navbarAccountButton.addEventListener("click", () => {
     if (accountMenu.style.display === "block") {
         accountMenu.style.display = "none";
     } else {

@@ -42,7 +42,7 @@
     display: inline;
 }
 
-.navbar .account-button {
+.navbar .navbar-account-button {
     margin: 0;
     padding: 0;
     border: 0;
@@ -52,4 +52,6 @@
 
 #profile-picture-navbar {
     cursor: pointer;
+    width: 40px;
+    height: 40px;
 }

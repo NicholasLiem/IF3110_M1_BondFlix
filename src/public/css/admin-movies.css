@@ -24,43 +24,35 @@ h2 {
     margin-left: auto;
 }
 
-/*#admin-filter-button {*/
-/*    background-color: green;*/
-/*    color: white;*/
-/*}*/
-
-/*#sub-filter-button {*/
-/*    background-color: green;*/
-/*    color: white;*/
-/*}*/
-
 #enable-filter-button {
     background-color: #e50914;
     color: white;
 }
 
-/*.new-user-modal {*/
-/*    margin-bottom: 10px;*/
-/*    text-align: left;*/
-/*}*/
+.new-content-modal {
+    margin-bottom: 10px;
+    text-align: left;
+}
 
-/*.new-user-modal td label {*/
-/*    margin: 0;*/
-/*    padding-right: 10px;*/
-/*    font-family: "Roboto", sans-serif;*/
-/*    font-weight: normal;*/
-/*    font-size: 14px;*/
-/*}*/
+.new-content-modal td label {
+    margin: 0;
+    padding-right: 10px;
+    font-family: "Roboto", sans-serif;
+    font-weight: normal;
+    font-size: 14px;
+}
 
-/*.new-user-modal input {*/
-/*    width: 100%;*/
-/*    box-sizing: border-box;*/
-/*}*/
+.new-content-modal input {
+    width: auto;
+    box-sizing: border-box;
+}
 
 .pagination {
     margin-top: auto;
     margin-bottom: 30px;
     margin-left: 30px;
+    display: flex;
+    flex-direction: row;
 }
 
 .pagination button {
@@ -70,4 +62,6 @@ h2 {
     font-size: 16px;
     border: none;
     cursor: pointer;
+    height: auto;
+    margin: 5px;
 }
