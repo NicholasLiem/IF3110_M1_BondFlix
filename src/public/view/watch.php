@@ -28,13 +28,13 @@ include BASE_PATH . "/public/templates/header.php";
         <div class="stream-container">
             <div class="video-wrapper">
                 <video controls autoplay>
-                    <source src="/uploads/videos/small.mp4" type="video/mp4">
+                    <source src="/uploads/videos/651ff2e58b9f8.mp4" type="video/mp4">
                     Your browser does not support the video tag.
                 </video>
-                <div class="video-info">
-                    <h1>Title Goes Here</h1>
-                    <p>Description goes here. You can add more details about the video here.</p>
-                </div>
+            </div>
+            <div class="video-info">
+                <h1>Title Goes Here</h1>
+                <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Minus, facilis animi! Doloribus est id qui saepe, asperiores voluptatum neque ab repudiandae ad minima animi blanditiis non harum repellat quas laboriosam!</p>
             </div>
         </div>
     </div>
