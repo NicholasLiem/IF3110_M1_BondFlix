@@ -24,6 +24,16 @@ function initEventListeners()
         Elements.lastNameInput.value = '';
         Elements.passwordInput.value = '';
     })
+
+    Elements.profilePictureInput.addEventListener('change', () => {
+        if (Elements.profilePictureInput.files.length > 0) {
+            const selectedFile = Elements.profilePictureInput.files[0];
+
+            Elements.profilePicture.src = URL.createObjectURL(selectedFile);
+        } else {
+            Elements.profilePicture.src = '/public/avatar.png';
+        }
+    })
 }
 
 async function updateProfilePicture(){
@@ -37,8 +47,6 @@ async function updateProfilePicture(){
                 selectedFile,
                 false
             );
-
-            console.log(response)
             const json = JSON.parse(response);
             if (json.success) {
                 alert("Update profile picture successful!");
@@ -47,7 +55,7 @@ async function updateProfilePicture(){
                 alert("Profile picture update failed: " + json.message);
             }
         } catch (error) {
-            console.log(error)
+            console.error("An error occurred:", error);
             alert("An error occurred while processing your request.");
         }
     } else {
@@ -102,8 +110,7 @@ async function fetchAndSetProfilePicture() {
         const httpClient = new HttpClient();
         const response = await httpClient.get('/api/avatar/user', null, false);
         const json = JSON.parse(response.body);
-
-        if (json.success) {
+        if (json.success && json.data !== '' && json.data !== null) {
             Elements.profilePicture.src = '/uploads/avatars/' + json.data;
         } else {
             Elements.profilePicture.src = '/public/avatar.png';

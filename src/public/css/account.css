@@ -121,6 +121,7 @@ ul {
 }
 
 
-#username {
+#username,
+#subscription{
     border-color: #444444;
 }
