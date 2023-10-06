@@ -219,6 +219,35 @@ function initEventListeners() {
         }
     });
 
+    document.addEventListener("click", async (event) => {
+        const target = event.target;
+
+        if (
+            target.classList.contains("delete-button") ||
+            target.id === "delete-button"
+        ) {
+            const contentId = target.closest("tr").getAttribute("data-content-id");
+
+            try {
+                const httpClient = new HttpClient();
+                const response = await httpClient.delete(
+                    `/api/content?contentId=${contentId}`
+                );
+                const json = JSON.parse(response.body);
+                if (json.success) {
+                    alert("Delete operation successful");
+                    location.reload();
+                } else {
+                    console.error("Delete operation failed:", response.error);
+                    alert("Delete operation failed." + response.error);
+                }
+            } catch (error) {
+                console.error("An error occurred during deletion:", error);
+                alert("An error occurred during deletion.");
+            }
+        }
+    });
+
     // helper.openModal(
     //     Elements.newUserModal,
     //     Elements.openUserModalButton,

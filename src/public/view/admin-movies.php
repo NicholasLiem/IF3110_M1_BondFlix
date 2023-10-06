@@ -14,7 +14,7 @@ $username = $_SESSION['username'];
 <body>
     <div class="content">
         <div class="search-bar">
-            <input type="text" id="search-input" placeholder="Search by title...">
+            <input type="text" id="search-input" placeholder="Search by title">
             <button id="sort-button" class="search-bar-button">Sort Title ↑</button>
             <button id="enable-filter-button" class="search-bar-button">Filter Disabled ✗</button>
             <button id="add-content-button" class="search-bar-button">New Content</button>
