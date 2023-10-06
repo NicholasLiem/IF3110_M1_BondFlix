@@ -2,6 +2,7 @@
 
 namespace Container;
 
+use Core\Application\Repositories\CategoryRepository;
 use Core\Application\Repositories\ContentRepository;
 use Core\Application\Repositories\GenreRepository;
 use Core\Application\Repositories\UserRepository;
@@ -13,17 +14,19 @@ class RepositoryContainer
     private UserRepository $userRepository;
     private ContentRepository $contentRepository;
     private GenreRepository $genreRepository;
+    private CategoryRepository $categoryRepository;
 
     /**
      * @param UserRepository $userRepository
      * @param ContentRepository $contentRepository
      * @param GenreRepository $genreRepository
      */
-    public function __construct(UserRepository $userRepository, ContentRepository $contentRepository, GenreRepository $genreRepository)
+    public function __construct(UserRepository $userRepository, ContentRepository $contentRepository, GenreRepository $genreRepository, CategoryRepository $categoryRepository)
     {
         $this->userRepository = $userRepository;
         $this->contentRepository = $contentRepository;
         $this->genreRepository = $genreRepository;
+        $this->categoryRepository = $categoryRepository;
     }
 
     /**
@@ -81,5 +84,15 @@ class RepositoryContainer
     public function setGenreRepository(GenreRepository $genreRepository): void
     {
         $this->genreRepository = $genreRepository;
+    }
+
+    public function getCategoryRepository(): CategoryRepository 
+    {
+        return $this->categoryRepository;
+    }
+
+    public function setCategoryRepository(CategoryRepository $categoryRepository): void
+    {
+        $this->categoryRepository = $categoryRepository;
     }
 }

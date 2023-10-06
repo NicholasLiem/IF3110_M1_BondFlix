@@ -8,5 +8,6 @@ CREATE TABLE IF NOT EXISTS users (
     username VARCHAR(50) UNIQUE NOT NULL,
     password_hash VARCHAR(100) NOT NULL,
     is_admin BOOLEAN NOT NULL DEFAULT false,
-    is_subscribed BOOLEAN NOT NULL DEFAULT false
+    is_subscribed BOOLEAN NOT NULL DEFAULT false,
+    avatar_path VARCHAR(255)
 );

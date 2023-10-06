@@ -55,7 +55,13 @@ class AuthService {
 
             $_SESSION['user_id'] = $user->getUserId();
             $_SESSION['username'] = $user->getUsername();
+            $_SESSION['is_subscribed'] = $user->getIsSubscribed();
             $_SESSION['first_name'] = $user->getFirstName();
+            if (!$user->getLastName() !== null){
+                $_SESSION['last_name'] = '';
+            } else {
+                $_SESSION['last_name'] = $user->getLastName();
+            }
             $_SESSION['is_admin'] = $user->getIsAdmin();
 
             return $user;

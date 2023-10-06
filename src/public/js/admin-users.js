@@ -236,7 +236,7 @@ function initEventListeners() {
                 const response = await httpClient.delete(
                     `/api/users?userId=${userId}`
                 );
-                const json = JSON.parse(response);
+                const json = JSON.parse(response.body);
                 if (json.success) {
                     alert("Delete operation successful");
                     location.reload();
