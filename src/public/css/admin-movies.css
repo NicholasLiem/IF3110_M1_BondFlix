@@ -29,23 +29,23 @@ h2 {
     color: white;
 }
 
-/*.new-user-modal {*/
-/*    margin-bottom: 10px;*/
-/*    text-align: left;*/
-/*}*/
+.new-content-modal {
+    margin-bottom: 10px;
+    text-align: left;
+}
 
-/*.new-user-modal td label {*/
-/*    margin: 0;*/
-/*    padding-right: 10px;*/
-/*    font-family: "Roboto", sans-serif;*/
-/*    font-weight: normal;*/
-/*    font-size: 14px;*/
-/*}*/
+.new-content-modal td label {
+    margin: 0;
+    padding-right: 10px;
+    font-family: "Roboto", sans-serif;
+    font-weight: normal;
+    font-size: 14px;
+}
 
-/*.new-user-modal input {*/
-/*    width: 100%;*/
-/*    box-sizing: border-box;*/
-/*}*/
+.new-content-modal input {
+    width: auto;
+    box-sizing: border-box;
+}
 
 .pagination {
     margin-top: auto;

@@ -33,9 +33,7 @@ const Elements = {
      */
     newContentModal: document.getElementById("new-content-modal"),
     openContentModalButton: document.getElementById("add-content-button"),
-    closeNewContentModalButton: document.getElementById(
-        "close-new-content-modal"
-    ),
+    closeNewContentModalButton: document.getElementById("close-new-content-modal"),
     submitContentButton: document.getElementById("submit-new-content-button"),
 
     /**
@@ -82,13 +80,16 @@ function updateTable(contents) {
             const row = tableBody.insertRow();
             row.setAttribute("data-content-id", content.content_id);
 
+            const contentFilePath = content.content_file_path.replace("/uploads/movies/", "");
+            const thumbnailFilePath = content.thumbnail_file_path.replace("/uploads/thumbnails/", "");
+
             row.innerHTML = `
             <td>${content.content_id}</td>
             <td>${content.title}</td>
             <td>${content.description}</td>
             <td>${content.release_date}</td>
-            <td>${content.content_file_path}</td>
-            <td>${content.thumbnail_file_path}</td>
+            <td>${contentFilePath}</td>
+            <td>${thumbnailFilePath}</td>
             <td>
               <button class="edit-button">Edit</button>
               <button class="delete-button">Delete</button>
@@ -208,15 +209,22 @@ function initEventListeners() {
                 content_file_path: videoFilePath,
                 thumbnail_file_path: thumbnailFilePath,
             };
+
             const addContentResponseData = await addContent(
                 httpClient,
                 addContentParams
             );
-            console.log(addContentResponseData);
+
+            if (addContentResponseData){
+                alert("Success adding new content!")
+                window.location.reload();
+            }
         } catch (err) {
             alert(err.message);
             console.error(err);
         }
+
+
     });
 
     document.addEventListener("click", async (event) => {
@@ -248,26 +256,26 @@ function initEventListeners() {
         }
     });
 
-    // helper.openModal(
-    //     Elements.newUserModal,
-    //     Elements.openUserModalButton,
-    //     Elements.closeUserModalButton,
-    //     Elements.submitUserButton,
-    //     onSubmitUserModal
-    // );
-    //
-    // Elements.closeEditModalButton.addEventListener("click", () => {
-    //     Elements.editUserModal.style.display = "none";
-    // });
-    //
-    // window.addEventListener("click", (event) => {
-    //     if (event.target === Elements.editUserModal) {
-    //         Elements.editUserModal.style.display = "none";
-    //     }
-    //     if (event.target === Elements.newUserModal) {
-    //         Elements.newUserModal.style.display = "none";
-    //     }
-    // });
+    helper.openModal(
+        Elements.newContentModal,
+        Elements.openContentModalButton,
+        Elements.closeNewContentModalButton,
+        Elements.submitContentButton,
+        onSubmitContentModal,
+    );
+
+    Elements.closeEditModalButton.addEventListener("click", () => {
+        Elements.editUserModal.style.display = "none";
+    });
+
+    window.addEventListener("click", (event) => {
+        if (event.target === Elements.editUserModal) {
+            Elements.editUserModal.style.display = "none";
+        }
+        if (event.target === Elements.newContentModal) {
+            Elements.newContentModal.style.display = "none";
+        }
+    });
 }
 
 /**
@@ -308,6 +316,42 @@ async function uploadFile(httpClient, file, uploadType) {
     console.log(fileUploadResponseBody);
     const uploadedFilePath = `/uploads/${uploadType}/${fileUploadResponseBody.data.file_name}`;
     return uploadedFilePath;
+}
+
+async function onSubmitContentModal(modal) {
+    try {
+        const httpClient = new HttpClient();
+        const videoFilePath = await uploadFile(
+            httpClient,
+            Elements.videoInput.files[0],
+            "movies"
+        );
+        const thumbnailFilePath = await uploadFile(
+            httpClient,
+            Elements.thumbnailInput.files[0],
+            "thumbnails"
+        );
+        const addContentParams = {
+            title: Elements.titleInput.value,
+            description: Elements.descriptionInput.value,
+            release_date: Elements.releaseDateInput.value,
+            content_file_path: videoFilePath,
+            thumbnail_file_path: thumbnailFilePath,
+        };
+        const addContentResponseData = await addContent(
+            httpClient,
+            addContentParams
+        );
+
+        if (addContentResponseData){
+            alert("Success adding new content!")
+            window.location.reload();
+        }
+    } catch (err) {
+        alert(err.message);
+        console.error(err);
+    }
+    modal.style.display = "none";
 }
 
 initEventListeners();

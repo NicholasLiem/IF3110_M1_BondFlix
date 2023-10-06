@@ -27,8 +27,8 @@ $username = $_SESSION['username'];
                 <th>Title</th>
                 <th>Description</th>
                 <th>Release Date</th>
-                <th>Content File Path</th>
-                <th>Thumbnail File Path</th>
+                <th>Content File Name</th>
+                <th>Thumbnail File Name</th>
                 <th>Menu</th>
             </tr>
             </thead>
@@ -58,38 +58,41 @@ $username = $_SESSION['username'];
         <div id="new-content-modal" class="modal">
             <div class="modal-content">
                 <span class="close" id="close-new-content-modal">&times;</span>
-                <h2>Edit Movie</h2>
+                <h2>New Content</h2>
                 <form id="upload-form" enctype="multipart/form-data">
-                    <div>
-                        <label for="movie-title">Title</label>
-                        <input type="text" name="title" id="movie-title" required/>
-                    </div>
-                    <div>
-                        <label for="movie-description">Description</label>
-                        <textarea
-                                name="description"
-                                id="movie-description"
-                                cols="30"
-                                rows="10"
-                        ></textarea>
-                    </div>
-                    <div>
-                        <label for="movie-release-date">Release Date</label>
-                        <input
-                                type="date"
-                                name="release-date"
-                                id="movie-release-date"
-                                required
-                        />
-                    </div>
-                    <div>
-                        <label for="movie-thumbnail">Thumbnail</label>
-                        <input type="file" name="thumbnail" id="movie-thumbnail" required />
-                    </div>
-                    <div>
-                        <label for="movie-video">Video</label>
-                        <input type="file" name="video" id="movie-video" required />
-                    </div>
+                    <table class="new-content-modal">
+                        <tr>
+                            <td><label for="movie-title">Title</label></td>
+                            <td><input type="text" name="title" id="movie-title" required/></td>
+                        </tr>
+                        <tr>
+                            <td><label for="movie-description">Description</label></td>
+                            <td><textarea
+                                        name="description"
+                                        id="movie-description"
+                                        cols="auto"
+                                        rows="5"
+                                ></textarea></td>
+                        </tr>
+                        <tr>
+                            <td><label for="movie-release-date">Release Date</label></td>
+                            <td><input
+                                        type="date"
+                                        name="release-date"
+                                        id="movie-release-date"
+                                        required
+                                /></td>
+                        </tr>
+                        <tr>
+                            <td><label for="movie-thumbnail">Thumbnail</label></td>
+                            <td><input type="file" name="thumbnail" id="movie-thumbnail" required />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><label for="movie-video">Video</label></td>
+                            <td><input type="file" name="video" id="movie-video" required /></td>
+                        </tr>
+                    </table>
                     <button type="submit" id="submit-new-content-button">Upload</button>
                 </form>
             </div>
