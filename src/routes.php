@@ -3,6 +3,7 @@ global $routes;
 global $serviceContainer;
 
 use Handler\Account\AccountHandler;
+use Handler\Account\AvatarHandler;
 use Handler\APINotFoundHandler;
 use Handler\Auth\LoginHandler;
 use Handler\Auth\LogoutHandler;
@@ -17,7 +18,6 @@ use Handler\Upload\UploadHandler;
 use Handler\User\UserHandler;
 use Middleware\API\APIAdminCheck;
 use Middleware\API\APILoggedInCheck;
-use Middleware\API\SelfRequestCheck;
 use Middleware\Page\AdminCheck;
 use Middleware\Page\LoggedInCheck;
 use Router\Router;
@@ -41,6 +41,7 @@ try {
     $uploadHandler = UploadHandler::getInstance($serviceContainer->getUploadService());
     $categoryHandler = CategoryHandler::getInstance($serviceContainer->getCategoryService());
     $accountHandler = AccountHandler::getInstance($serviceContainer->getAdminService());
+    $avatarHandler = AvatarHandler::getInstance($serviceContainer->getAdminService(), $serviceContainer->getUploadService());
 } catch (Exception $e) {
     Logger::getInstance()->logMessage('Fail to load services '. $e->getMessage());
     exit();
@@ -142,6 +143,7 @@ $router->addAPI('/api/category', 'PUT', $categoryHandler, []);
 $router->addAPI('/api/category', 'DELETE', $categoryHandler, []);
 
 $router->addAPI('/api/account/user', 'PUT', $accountHandler, [APILoggedInCheck::getInstance()]);
+$router->addAPI('/api/avatar/user', 'POST', $avatarHandler, [APILoggedInCheck::getInstance()]);
 
 /**
  * Setting api or page fallback handler

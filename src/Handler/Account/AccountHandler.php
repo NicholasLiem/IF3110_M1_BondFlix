@@ -3,6 +3,7 @@
 namespace Handler\Account;
 
 use Core\Application\Services\AdminService;
+use Core\Application\Services\UploadService;
 use Exception;
 use Handler\BaseHandler;
 use Handler\User\UserHandler;
@@ -12,10 +13,10 @@ use Utils\Response\Response;
 class AccountHandler extends BaseHandler
 {
     protected static AccountHandler $instance;
-    protected AdminService $service;
-    private function __construct(AdminService $service)
+    protected AdminService $adminService;
+    private function __construct(AdminService $adminService)
     {
-        $this->service = $service;
+        $this->adminService = $adminService;
     }
 
     public static function getInstance(AdminService $adminService): AccountHandler
@@ -37,7 +38,7 @@ class AccountHandler extends BaseHandler
                 $lastName = $params['last_name'];
                 $newPassword = $params['password'];
 
-                $user = $this->service->getUserById($userId);
+                $user = $this->adminService->getUserById($userId);
                 if ($user !== null) {
                     $user->setFirstName($firstName);
                     $user->setLastName($lastName);
@@ -45,7 +46,7 @@ class AccountHandler extends BaseHandler
                         $user->setPasswordHash($newPassword);
                     }
 
-                    $result =$this->service->updateUser($user);
+                    $result =$this->adminService->updateUser($user);
                     if ($result) {
                         $_SESSION['first_name'] = $firstName;
                         if ($lastName === null){

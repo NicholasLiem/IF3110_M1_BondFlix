@@ -31,7 +31,7 @@ class User
         string $password_hash = '',
         bool $is_admin = false,
         bool $is_subscribed = false,
-        string $avatar_path = '/avatar/default.png'
+        string $avatar_path = 'default.png'
     )
     {
         $this->user_id = $user_id;
