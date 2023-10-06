@@ -13,7 +13,7 @@
     <div id="menu-right">
         <input type="text" class="search-bar" placeholder="Search a movie">
         <button class="account-button">
-            <img src="/public/avatar.png" alt="profile picture">
+            <img src="/public/avatar.png" id='profile-picture-navbar' alt="profile picture">
         </button>
         <div class="account-menu">
             <ul>

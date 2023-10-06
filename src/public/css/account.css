@@ -125,3 +125,9 @@ ul {
 #subscription{
     border-color: #444444;
 }
+
+#profile-picture {
+    max-width: 100px;
+    max-height: 100px;
+    cursor: pointer;
+}

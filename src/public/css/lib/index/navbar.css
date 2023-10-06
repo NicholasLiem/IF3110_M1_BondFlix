@@ -49,3 +49,7 @@
     width: 40px;
     height: 40px;
 }
+
+#profile-picture-navbar {
+    cursor: pointer;
+}
