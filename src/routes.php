@@ -8,6 +8,7 @@ use Handler\APINotFoundHandler;
 use Handler\Auth\LoginHandler;
 use Handler\Auth\LogoutHandler;
 use Handler\Auth\RegisterHandler;
+use Handler\Category\CategoryHandler;
 use Handler\Content\ContentActorHandler;
 use Handler\Content\ContentCategoryHandler;
 use Handler\Content\ContentDirectorHandler;
@@ -22,7 +23,7 @@ use Middleware\Page\AdminCheck;
 use Middleware\Page\LoggedInCheck;
 use Router\Router;
 use Utils\Logger\Logger;
-use Handler\Category\CategoryHandler;
+
 
 /**
  * Registering the singleton handlers
@@ -31,7 +32,6 @@ try {
     $loginHandler = LoginHandler::getInstance($serviceContainer->getAuthService());
     $registerHandler = RegisterHandler::getInstance($serviceContainer->getAuthService());
     $logoutHandler = LogoutHandler::getInstance($serviceContainer->getAuthService());
-    $userHandler = UserHandler::getInstance($serviceContainer->getAdminService());
     $contentHandler = ContentHandler::getInstance($serviceContainer->getContentService());
     $contentActorHandler = ContentActorHandler::getInstance($serviceContainer->getContentService());
     $contentCategoryHandler = ContentCategoryHandler::getInstance($serviceContainer->getContentService());
@@ -40,6 +40,7 @@ try {
     $genreHandler = GenreHandler::getInstance($serviceContainer->getGenreService());
     $uploadHandler = UploadHandler::getInstance($serviceContainer->getUploadService());
     $categoryHandler = CategoryHandler::getInstance($serviceContainer->getCategoryService());
+    $userHandler = UserHandler::getInstance($serviceContainer->getAdminService());
     $accountHandler = AccountHandler::getInstance($serviceContainer->getAdminService());
     $avatarHandler = AvatarHandler::getInstance($serviceContainer->getAdminService(), $serviceContainer->getUploadService());
 } catch (Exception $e) {
