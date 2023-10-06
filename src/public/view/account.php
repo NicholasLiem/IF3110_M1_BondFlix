@@ -10,8 +10,14 @@ $username = $_SESSION['username'];
 $first_name = $_SESSION['first_name'];
 $last_name = $_SESSION['last_name'];
 $isAdmin = $_SESSION['is_admin'];
-
+$isSubscribed = $_SESSION['is_subscribed'];
 $pageTitle = 'User Account';
+
+if ($isSubscribed) {
+    $isSubscribed = "Active";
+} else {
+    $isSubscribed = "Not Active";
+}
 include BASE_PATH . "/public/templates/header.php";
 ?>
 
@@ -47,6 +53,10 @@ include BASE_PATH . "/public/templates/header.php";
                         <li>
                             <label for="username">Username</label>
                             <input type="text" id="username" name="user-name" class="text-input" placeholder="<?php echo $username ?>" disabled>
+                        </li>
+                        <li>
+                            <label for="username">Subscription Status</label>
+                            <input type="text" id="username" name="user-name" class="text-input" placeholder="<?php echo $isSubscribed ?>" disabled>
                         </li>
                         <li>
                             <label for="first-name">First Name</label>
