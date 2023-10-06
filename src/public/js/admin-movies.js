@@ -26,6 +26,7 @@ const Elements = {
      */
     prevPageButton: document.getElementById("prevPageButton"),
     nextPageButton: document.getElementById("nextPageButton"),
+    currentPageButton: document.getElementById("currentPageButton"),
 
     /**
      * New Content Modal
@@ -106,6 +107,7 @@ function updateTable(contents) {
 
 function handlePaginationButtons() {
     Elements.prevPageButton.disabled = ContentTable.currentPage === 1;
+    Elements.currentPageButton.innerHTML = ContentTable.currentPage;
     Elements.nextPageButton.disabled =
         ContentTable.currentPage === ContentTable.totalPages;
 }
