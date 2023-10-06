@@ -8,36 +8,72 @@ const videoInput = document.getElementById("movie-video");
 uploadForm.addEventListener("submit", async (event) => {
     event.preventDefault();
 
-    const http = new HttpClient();
+    try {
+        const httpClient = new HttpClient();
+        const videoFilePath = await uploadFile(
+            httpClient,
+            videoInput.files[0],
+            "movies"
+        );
+        const thumbnailFilePath = await uploadFile(
+            httpClient,
+            thumbnailInput.files[0],
+            "thumbnails"
+        );
+        const addContentParams = {
+            title: titleInput.value,
+            description: descriptionInput.value,
+            release_date: releaseDateInput.value,
+            content_file_path: videoFilePath,
+            thumbnail_file_path: thumbnailFilePath,
+        };
+        const addContentResponseData = await addContent(
+            httpClient,
+            addContentParams
+        );
+        console.log(addContentResponseData);
+    } catch (err) {
+        alert(err.message);
+        console.error(err);
+    }
+});
 
-    // const videoUploadData = {
-    //     fileToUpload: videoInput.files[0],
-    // };
-
-    const videoUploadFormData = new FormData();
-    videoUploadFormData.append("fileToUpload", videoInput.files[0]);
-
-    const uploadVideoResponse = await http.post(
-        "/api/upload",
-        videoUploadFormData,
+/**
+ *
+ * @param {HttpClient} httpClient
+ * @param {*} addContentParams
+ * @returns
+ */
+async function addContent(httpClient, addContentParams) {
+    const addContentResponse = await httpClient.post(
+        "/api/content",
+        addContentParams,
         false
     );
 
-    console.log(uploadVideoResponse);
-});
+    const addContentResponseBody = JSON.parse(addContentResponse.body);
+    if (!addContentResponseBody.success) {
+        throw new Error(
+            "Failed to add content: " + addContentResponseBody.message
+        );
+    }
 
-// const uploadVideoResponseJson = JSON.parse(uploadVideoResponse);
-// const videoFilePath = "/uploads/videos/" + uploadVideoResponseJson.fileName;
+    return addContentResponseBody.data;
+}
 
-// console.log("updated video at: ", videoFilePath);
-// $title = $_POST['title'];
-// $description = $_POST['description'];
-// $release_date = $_POST['release_date'];
-// $content_file_path = $_POST['content_file_path'];
-// $thumbnail_file_path = $_POST['thumbnail_file_path'];
+async function uploadFile(httpClient, file, uploadType) {
+    const fileUploadResponse = await httpClient.uploadFile(
+        "/api/upload",
+        file,
+        false
+    );
 
-// const movieData = {
-//     title: titleInput.value,
-//     description: descriptionInput.value,
-//     release_date: releaseDateInput.value,
-// };
+    const fileUploadResponseBody = JSON.parse(fileUploadResponse);
+    if (!fileUploadResponseBody.success) {
+        throw new Error(fileUploadResponseBody.message);
+    }
+
+    console.log(fileUploadResponseBody);
+    const uploadedFilePath = `/uploads/${uploadType}/${fileUploadResponseBody.data.file_name}`;
+    return uploadedFilePath;
+}
