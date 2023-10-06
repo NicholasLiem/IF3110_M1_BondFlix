@@ -3,6 +3,7 @@
 namespace Container;
 use Core\Application\Services\AdminService;
 use Core\Application\Services\AuthService;
+use Core\Application\Services\CategoryService;
 use Core\Application\Services\ContentService;
 use Core\Application\Services\GenreService;
 use Core\Application\Services\UploadService;
@@ -16,20 +17,23 @@ class ServiceContainer
     private ContentService $contentService;
     private GenreService $genreService;
     private UploadService $uploadService;
+    private CategoryService $categoryService;
 
     /**
      * @param AuthService $authService
      * @param AdminService $adminService
      * @param ContentService $contentService
      * @param GenreService $genreService
+     * @param CategoryService $categoryService
      */
-    public function __construct(AuthService $authService, AdminService $adminService, ContentService $contentService, GenreService $genreService, UploadService $uploadService)
+    public function __construct(AuthService $authService, AdminService $adminService, ContentService $contentService, GenreService $genreService, CategoryService $categoryService, UploadService $uploadService)
     {
         $this->authService = $authService;
         $this->adminService = $adminService;
         $this->contentService = $contentService;
         $this->genreService = $genreService;
         $this->uploadService= $uploadService;
+        $this->categoryService = $categoryService;
     }
 
     /**
@@ -115,5 +119,13 @@ class ServiceContainer
     public function setUploadService(UploadService $uploadService): void
     {
         $this->uploadService = $uploadService;
+    }
+    public function getCategoryService(): CategoryService {
+        return $this->categoryService;
+    }
+
+    public function setCategoryService(CategoryService $categoryService): void {
+        $this->categoryService = $categoryService;
+
     }
 }

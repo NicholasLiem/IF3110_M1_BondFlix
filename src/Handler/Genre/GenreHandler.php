@@ -36,17 +36,17 @@ class GenreHandler extends BaseHandler
     public function get($params = null): void
     {
         if (isset($params['genre_id'])) {
-            $genre = $this->service->getGenreById($params['genre_id']);
-            if (is_null($genre)) {
+            try {
+                $genre = $this->service->getGenreById($params['genre_id']);
+                $genreArray = $genre->toArray();
+                $response = new Response(true, HttpStatusCode::OK, "Genre found successfully", $genreArray);
+                $response->encode_to_JSON();
+            } catch (\Throwable $th) {
                 $response = new Response(false, HttpStatusCode::NOT_FOUND, "Genre id not found", null);
                 $response->encode_to_JSON();
+            } finally {
                 return;
             }
-
-            $genreArray = $genre->toArray();
-            $response = new Response(true, HttpStatusCode::OK, "Genre found successfully", $genreArray);
-            $response->encode_to_JSON();
-            return;
         }
 
         $allGenres = $this->service->getAllGenre();

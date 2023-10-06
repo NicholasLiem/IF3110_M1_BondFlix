@@ -13,6 +13,7 @@ use Utils\Response\Response;
 class ContentHandler extends BaseHandler {
     
     protected static ContentHandler $instance;
+    protected ContentService $service;
     private function __construct(ContentService $contentService)
     {
         $this->service = $contentService;
@@ -71,7 +72,7 @@ class ContentHandler extends BaseHandler {
                     $startIndex = ($page - 1) * $pageSize;
                     $pagedResult = array_slice($filteredResult, $startIndex, $pageSize);
                 } else {
-                    $contents = $this->service->getAllContents();
+                    $contents = $this->service->getAllContents(null);
                     $totalContents = count($contents);
                     $totalPages = ceil($totalContents / $pageSize);
                     header("X-Total-Pages: " . $totalPages);
