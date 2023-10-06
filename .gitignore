@@ -2,5 +2,6 @@
 *.xml
 envvars
 src/.env
-src/uploads/
+src/uploads/movies/
+src/uploads/thumbnails/
 src/logs/logfile.txt

@@ -7,6 +7,8 @@ if (!isset($_SESSION['user_id'])) {
 
 $userID = $_SESSION['user_id'];
 $username = $_SESSION['username'];
+$first_name = $_SESSION['first_name'];
+$last_name = $_SESSION['last_name'];
 $isAdmin = $_SESSION['is_admin'];
 
 $pageTitle = 'User Account';
@@ -29,7 +31,8 @@ include BASE_PATH . "/public/templates/header.php";
     ?>
     <main>
         <div id="account-settings-container">
-            <div><h1>Account Settings</h1></div>
+            <div><h1>Account Settings </h1></div>
+            <div><h2>Hello, <?php echo $first_name . ' ' . $last_name ?></h2></div>
             <div id="account-settings-content">
                 <div>
                     <img src="/public/avatar.png" alt="profile-picture" id="profile-picture">
@@ -41,6 +44,10 @@ include BASE_PATH . "/public/templates/header.php";
                 </div>
                 <div>
                     <ul>
+                        <li>
+                            <label for="username">Username</label>
+                            <input type="text" id="username" name="user-name" class="text-input" placeholder="<?php echo $username ?>" disabled>
+                        </li>
                         <li>
                             <label for="first-name">First Name</label>
                             <input type="text" id="first-name" name="first-name" class="text-input" placeholder="Current First Name">
@@ -62,4 +69,5 @@ include BASE_PATH . "/public/templates/header.php";
             </div>
         </div>
     </main>
+    <script src="/public/js/account.js"></script>
 </body>
