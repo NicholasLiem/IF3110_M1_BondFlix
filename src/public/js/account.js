@@ -32,17 +32,14 @@ async function updateProfilePicture(){
         const selectedFile = Elements.profilePictureInput.files[0];
         try {
             const httpClient = new HttpClient();
+            const response = await httpClient.uploadFile(
+                '/api/avatar/user',
+                selectedFile,
+                false
+            );
 
-            // const formData = new FormData();
-            // formData.append("fileToUpload", selectedFile);
-            // const response = await httpClient.post(
-            //     '/api/avatar/user',
-            //     formData,
-            //     false
-            // );
-            // console.log(response.body)
-
-            const json = JSON.parse(response.body);
+            console.log(response)
+            const json = JSON.parse(response);
             if (json.success) {
                 alert("Update profile picture successful!");
                 window.location.reload();

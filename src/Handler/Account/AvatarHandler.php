@@ -49,6 +49,10 @@ class AvatarHandler extends BaseHandler
                 throw new Exception('User not found');
             }
 
+            if(!isset($_FILES["fileToUpload"])){
+                throw new Exception('file not found');
+            }
+
             $targetFile = basename($_FILES["fileToUpload"]["name"]);
             $fileType = $_FILES["fileToUpload"]["type"];
             $imageType = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'];
@@ -79,7 +83,7 @@ class AvatarHandler extends BaseHandler
 
             $response = new Response(true, HttpStatusCode::OK, "Update data success", null);
         } catch (Exception $e){
-            $response = new Response(false, HttpStatusCode::BAD_REQUEST, "Fail updating data: " . $e->getMessage(), null);
+            $response = new Response(false, HttpStatusCode::OK, "Fail updating data: " . $e->getMessage(), null);
         }
 
         $response->encode_to_JSON();
