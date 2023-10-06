@@ -94,7 +94,7 @@ $router->addPage('/admin/media/management', function () {
 }, [LoggedInCheck::getInstance(), AdminCheck::getInstance()]);
 
 $router->addPage('/admin/movies/upload', function() {
-    redirect('admin-movie-upload');
+    redirect('admin-movies-upload');
 }, [LoggedInCheck::getInstance(), AdminCheck::getInstance()]);
 
 /**
