@@ -11,6 +11,7 @@ class User
     private string $password_hash;
     private bool $is_admin;
     private bool $is_subscribed;
+    private string $avatar_path;
 
     /**
      * @param int $user_id
@@ -20,6 +21,7 @@ class User
      * @param string $password_hash
      * @param bool $is_admin
      * @param bool $is_subscribed
+     * @param string $avatar_path
      */
     public function __construct(
         int $user_id = -1,
@@ -28,7 +30,9 @@ class User
         string $username = '',
         string $password_hash = '',
         bool $is_admin = false,
-        bool $is_subscribed = false)
+        bool $is_subscribed = false,
+        string $avatar_path = 'default.png'
+    )
     {
         $this->user_id = $user_id;
         $this->first_name = $first_name;
@@ -37,6 +41,7 @@ class User
         $this->password_hash = $password_hash;
         $this->is_admin = $is_admin;
         $this->is_subscribed = $is_subscribed;
+        $this->avatar_path = $avatar_path;
     }
 
 
@@ -117,13 +122,21 @@ class User
             'first_name' => $this->first_name,
             'last_name' => $this->last_name,
             'username' => $this->username,
-            'password_hash' => $this->password_hash,
+//            'password_hash' => $this->password_hash,
             'is_admin' => $this->is_admin,
             'is_subscribed' => $this->is_subscribed,
+            'avatar_path' => $this->avatar_path
         ];
     }
 
+    public function getAvatarPath(): string
+    {
+        return $this->avatar_path;
+    }
 
-
+    public function setAvatarPath(string $avatar_path): void
+    {
+        $this->avatar_path = $avatar_path;
+    }
 
 }

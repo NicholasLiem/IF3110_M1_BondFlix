@@ -53,8 +53,10 @@ class Router
 
         $rawInput = file_get_contents("php://input");
 
+
+
         parse_str($rawInput, $requestData);
-        $urlParams = array_merge($_GET, $_POST, $requestData);
+        $urlParams = array_merge($_GET, $_POST, $requestData, $_FILES);
 
         $callback = null;
         $isApiRoute = false;

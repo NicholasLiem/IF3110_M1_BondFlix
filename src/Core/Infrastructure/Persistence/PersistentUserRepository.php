@@ -70,7 +70,8 @@ class PersistentUserRepository implements UserRepository
                    username, 
                    password_hash, 
                    is_admin, 
-                   is_subscribed
+                   is_subscribed,
+                   avatar_path
             FROM users 
             WHERE username = :username
         ");
@@ -94,7 +95,8 @@ class PersistentUserRepository implements UserRepository
             $userData['username'],
             $userData['password_hash'],
             (bool) $userData['is_admin'],
-            (bool) $userData['is_subscribed']
+            (bool) $userData['is_subscribed'],
+            (string) $userData['avatar_path']
         );
     }
 
@@ -110,7 +112,8 @@ class PersistentUserRepository implements UserRepository
                    username, 
                    password_hash, 
                    is_admin, 
-                   is_subscribed
+                   is_subscribed,
+                   avatar_path
             FROM users 
             WHERE user_id = :user_id
         ");
@@ -134,7 +137,8 @@ class PersistentUserRepository implements UserRepository
             $userData['username'],
             $userData['password_hash'],
             (bool) $userData['is_admin'],
-            (bool) $userData['is_subscribed']
+            (bool) $userData['is_subscribed'],
+            (string) $userData['avatar_path']
         );
     }
 
@@ -150,6 +154,7 @@ class PersistentUserRepository implements UserRepository
                 is_admin = :is_admin, 
                 is_subscribed = :is_subscribed
                 " . (!empty($user->getPasswordHash()) ? ", password_hash = :new_password" : "") . "
+                " . (!empty($user->getAvatarPath()) ? ", avatar_path = :avatar_path" : "") . "
             WHERE user_id = :user_id
         ");
 
@@ -162,6 +167,11 @@ class PersistentUserRepository implements UserRepository
         $newPasswordHash = $user->getPasswordHash();
         if (!empty($newPasswordHash)) {
             $stmt->bindParam(':new_password', $newPasswordHash);
+        }
+
+        $newAvatarPath = $user->getAvatarPath();
+        if (!empty($newAvatarPath)){
+            $stmt->bindParam(':avatar_path', $newAvatarPath);
         }
 
         $stmt->bindParam(':user_id', $userId);

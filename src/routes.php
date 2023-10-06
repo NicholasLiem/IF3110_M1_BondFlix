@@ -2,6 +2,8 @@
 global $routes;
 global $serviceContainer;
 
+use Handler\Account\AccountHandler;
+use Handler\Account\AvatarHandler;
 use Handler\APINotFoundHandler;
 use Handler\Auth\LoginHandler;
 use Handler\Auth\LogoutHandler;
@@ -12,12 +14,15 @@ use Handler\Content\ContentDirectorHandler;
 use Handler\Content\ContentGenreHandler;
 use Handler\Content\ContentHandler;
 use Handler\Genre\GenreHandler;
+use Handler\Upload\UploadHandler;
 use Handler\User\UserHandler;
 use Middleware\API\APIAdminCheck;
+use Middleware\API\APILoggedInCheck;
 use Middleware\Page\AdminCheck;
 use Middleware\Page\LoggedInCheck;
 use Router\Router;
 use Utils\Logger\Logger;
+use Handler\Category\CategoryHandler;
 
 /**
  * Registering the singleton handlers
@@ -33,12 +38,15 @@ try {
     $contentDirectorHandler = ContentDirectorHandler::getInstance($serviceContainer->getContentService());
     $contentGenreHandler = ContentGenreHandler::getInstance($serviceContainer->getContentService());
     $genreHandler = GenreHandler::getInstance($serviceContainer->getGenreService());
+    $uploadHandler = UploadHandler::getInstance($serviceContainer->getUploadService());
+    $categoryHandler = CategoryHandler::getInstance($serviceContainer->getCategoryService());
+    $accountHandler = AccountHandler::getInstance($serviceContainer->getAdminService());
+    $avatarHandler = AvatarHandler::getInstance($serviceContainer->getAdminService(), $serviceContainer->getUploadService());
 } catch (Exception $e) {
     Logger::getInstance()->logMessage('Fail to load services '. $e->getMessage());
     exit();
 }
 
-//$uploadHandler = UploadHandler::getInstance($container);
 
 /**
  * Making new router instance
@@ -86,7 +94,7 @@ $router->addPage('/admin/media/management', function () {
 }, [LoggedInCheck::getInstance(), AdminCheck::getInstance()]);
 
 $router->addPage('/admin/movies/upload', function() {
-    redirect('admin-movie-upload');
+    redirect('admin-movies-upload');
 }, [LoggedInCheck::getInstance(), AdminCheck::getInstance()]);
 
 /**
@@ -95,7 +103,7 @@ $router->addPage('/admin/movies/upload', function() {
 
 $router->addAPI('/api/auth/login', 'POST', $loginHandler);
 $router->addAPI('/api/auth/register', 'POST', $registerHandler);
-$router->addAPI('/api/auth/logout', 'POST', $logoutHandler, [LoggedInCheck::getInstance()]);
+$router->addAPI('/api/auth/logout', 'POST', $logoutHandler, [APILoggedInCheck::getInstance()]);
 
 $router->addAPI('/api/users', 'GET', $userHandler, [APIAdminCheck::getInstance()]);
 $router->addAPI('/api/users', 'DELETE', $userHandler, [APIAdminCheck::getInstance()]);
@@ -127,8 +135,18 @@ $router->addAPI('/api/genre', 'POST', $genreHandler, [APIAdminCheck::getInstance
 $router->addAPI('/api/genre', 'PUT', $genreHandler, [APIAdminCheck::getInstance()]);
 $router->addAPI('/api/genre', 'DELETE', $genreHandler, [APIAdminCheck::getInstance()]);
 
-//$router->addAPI('/api/upload', 'GET', $uploadHandler, [APIAdminCheck::getInstance()]);
-//$router->addAPI('/api/upload', 'POST', $uploadHandler, [APIAdminCheck::getInstance()]);
+$router->addAPI('/api/upload', 'POST', $uploadHandler, [APIAdminCheck::getInstance()]);
+
+$router->addAPI('/api/category', 'GET', $categoryHandler, []);
+$router->addAPI('/api/category', 'POST', $categoryHandler, []);
+$router->addAPI('/api/category', 'PUT', $categoryHandler, []);
+$router->addAPI('/api/category', 'DELETE', $categoryHandler, []);
+
+$router->addAPI('/api/account/user', 'PUT', $accountHandler, [APILoggedInCheck::getInstance()]);
+
+
+$router->addAPI('/api/avatar/user', 'POST', $avatarHandler, [APILoggedInCheck::getInstance()]);
+$router->addAPI('/api/avatar/user', 'GET', $avatarHandler, [APILoggedInCheck::getInstance()]);
 
 /**
  * Setting api or page fallback handler

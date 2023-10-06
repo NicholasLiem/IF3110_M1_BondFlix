@@ -8,7 +8,11 @@ class HttpClient {
             this.http.open(method, url, true);
 
             if (method === 'POST' || method === 'PUT') {
-                this.http.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                if (data instanceof FormData) {
+                    this.http.setRequestHeader("Content-type","multipart/form-data; boundary='--------------------------'");
+                } else {
+                    this.http.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                }
             }
 
             this.http.onload = () => {
@@ -42,8 +46,12 @@ class HttpClient {
                 reject(`Network Error`);
             };
 
-            const params= new URLSearchParams(data).toString();
-            this.http.send(params);
+            if (data instanceof FormData) {
+                this.http.send(data);
+            } else {
+                const params = new URLSearchParams(data).toString();
+                this.http.send(params);
+            }
         });
     }
 
@@ -61,5 +69,32 @@ class HttpClient {
 
     async delete(url, data, asXML) {
         return this.request('DELETE', url, data, asXML);
+    }
+
+    async uploadFile(url, file, asXML) {
+        return new Promise((resolve, reject) => {
+            const formData = new FormData();
+            formData.append("fileToUpload", file);
+
+            this.http.open("POST", url, true);
+
+            this.http.onload = () => {
+                if (!asXML) {
+                    try {
+                        resolve(this.http.responseText);
+                    } catch (e) {
+                        reject(e);
+                    }
+                } else {
+                    resolve(this.http.responseXML);
+                }
+            };
+
+            this.http.onerror = () => {
+                reject(new Error("Fetch error"));
+            };
+
+            this.http.send(formData);
+        });
     }
 }

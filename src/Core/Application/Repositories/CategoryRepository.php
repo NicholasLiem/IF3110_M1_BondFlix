@@ -10,4 +10,5 @@ interface CategoryRepository
     public function getCategoryById(int $category_id) : ?Category;
     public function updateCategory(Category $category) : ?Category;
     public function deleteCategoryById(int $category_id);
+    public function getAllCategory(): array;
 }

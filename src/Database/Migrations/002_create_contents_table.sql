@@ -8,5 +8,5 @@ CREATE TABLE IF NOT EXISTS content (
     release_date DATE NOT NULL,
     content_file_path VARCHAR(255) NOT NULL,
     thumbnail_file_path VARCHAR(255) NOT NULL,
-    uploaded_at TIMESTAMP DEFAULT NOW(),
+    uploaded_at TIMESTAMP DEFAULT NOW()
 );

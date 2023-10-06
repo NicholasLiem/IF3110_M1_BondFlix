@@ -59,8 +59,8 @@ class PersistentGenreRepository implements GenreRepository
 
             return new Genre($genre_id, $result['genre_name']);
         } catch (Exception $e) {
-            Logger::getInstance()->logMessage('Error while fetching genre by name: ' . $e->getMessage());
-            throw new Exception("Error while fetching genre by name");
+            Logger::getInstance()->logMessage('Error while fetching genre by id: ' . $e->getMessage());
+            throw new Exception("Error while fetching genre by id");
         };
     }
 

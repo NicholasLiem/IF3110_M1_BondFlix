@@ -167,6 +167,14 @@ class UserHandler extends BaseHandler
 
                     $result =$this->service->updateUser($user);
                     if ($result) {
+                        $_SESSION['username'] = $user->getUsername();
+                        $_SESSION['first_name'] = $user->getFirstName();
+                        if (!$user->getLastName() !== null){
+                            $_SESSION['last_name'] = '';
+                        } else {
+                            $_SESSION['last_name'] = $user->getLastName();
+                        }
+                        $_SESSION['is_admin'] = $user->getIsAdmin();
                         $response = new Response(true, HttpStatusCode::OK, "User update success", $user->toArray());
                     } else {
                         $response = new Response(false, HttpStatusCode::NO_CONTENT, "User update failed", null);
@@ -174,6 +182,7 @@ class UserHandler extends BaseHandler
                 } else {
                     $response = new Response(false, HttpStatusCode::NOT_FOUND, "User not found", null);
                 }
+
 
             } else {
                 $response = new Response(false, HttpStatusCode::BAD_REQUEST, "Invalid user data", null);
