@@ -1,8 +1,7 @@
 <?php
 
 if (!isset($_SESSION['user_id'])) {
-    header("Location: login");
-    exit;
+    href('/login');
 }
 
 $userID = $_SESSION['user_id'];

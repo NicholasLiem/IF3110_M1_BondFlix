@@ -175,6 +175,7 @@ class UserHandler extends BaseHandler
                             $_SESSION['last_name'] = $user->getLastName();
                         }
                         $_SESSION['is_admin'] = $user->getIsAdmin();
+                        $_SESSION['is_subscribed'] = $user->getIsSubscribed();
                         $response = new Response(true, HttpStatusCode::OK, "User update success", $user->toArray());
                     } else {
                         $response = new Response(false, HttpStatusCode::NO_CONTENT, "User update failed", null);

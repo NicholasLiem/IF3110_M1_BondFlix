@@ -21,6 +21,7 @@ use Middleware\API\APIAdminCheck;
 use Middleware\API\APILoggedInCheck;
 use Middleware\Page\AdminCheck;
 use Middleware\Page\LoggedInCheck;
+use Middleware\Page\SubscribedCheck;
 use Router\Router;
 use Utils\Logger\Logger;
 
@@ -74,9 +75,13 @@ $router->addPage('/register', function ($urlParams) {
     redirect('register', ['urlParams' => $urlParams]);
 });
 
+$router->addPage('/subscribe', function () {
+    redirect('subscribe');
+});
+
 $router->addPage('/watch', function ($urlParams) {
     redirect('watch', ['urlParams' => $urlParams]);
-});
+}, [SubscribedCheck::getInstance()]);
 
 
 $router->addPage('/account', function () {
