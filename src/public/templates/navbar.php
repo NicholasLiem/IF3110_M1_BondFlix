@@ -27,4 +27,4 @@
         </div>
     </div>
 </nav>
-<script src="/public/js/admin-sidebar.js"></script>
+<script src="/public/js/navbar.js"></script>
