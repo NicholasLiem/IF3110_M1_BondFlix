@@ -143,7 +143,10 @@ $router->addAPI('/api/category', 'PUT', $categoryHandler, []);
 $router->addAPI('/api/category', 'DELETE', $categoryHandler, []);
 
 $router->addAPI('/api/account/user', 'PUT', $accountHandler, [APILoggedInCheck::getInstance()]);
+
+
 $router->addAPI('/api/avatar/user', 'POST', $avatarHandler, [APILoggedInCheck::getInstance()]);
+$router->addAPI('/api/avatar/user', 'GET', $avatarHandler, [APILoggedInCheck::getInstance()]);
 
 /**
  * Setting api or page fallback handler

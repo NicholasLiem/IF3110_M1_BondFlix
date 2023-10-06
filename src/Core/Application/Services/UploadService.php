@@ -63,7 +63,7 @@ class UploadService
         try {
             $fileType = $_FILES["fileToUpload"]["type"];
             $uploadDir = '/avatars/';
-            $imageType = ['image/jpeg', 'image/png', 'image/gif'];
+            $imageType = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'];
 
             if (in_array($fileType, $imageType)) {
                 $imageUploader = new ImageUploader();

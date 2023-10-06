@@ -51,7 +51,7 @@ class AvatarHandler extends BaseHandler
 
             $targetFile = basename($_FILES["fileToUpload"]["name"]);
             $fileType = $_FILES["fileToUpload"]["type"];
-            $imageType = ['image/jpeg', 'image/png', 'image/gif'];
+            $imageType = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'];
 
             if (!in_array($fileType, $imageType)) {
                 throw new Exception('Invalid file type. Only image files are allowed.');
@@ -79,6 +79,31 @@ class AvatarHandler extends BaseHandler
 
             $response = new Response(true, HttpStatusCode::OK, "Update data success", null);
         } catch (Exception $e){
+            $response = new Response(false, HttpStatusCode::BAD_REQUEST, "Fail updating data: " . $e->getMessage(), null);
+        }
+
+        $response->encode_to_JSON();
+    }
+
+
+    public function get($params = null) : void
+    {
+        try {
+            if (!isset($_SESSION['user_id'])) {
+                throw new Exception('User session not found');
+            }
+
+            $user_id = $_SESSION['user_id'];
+            $user = $this->adminService->getUserById($user_id);
+
+            if (!$user) {
+                throw new Exception('User not found');
+            }
+
+            $filePath = $user->getAvatarPath();
+
+            $response = new Response(true, HttpStatusCode::OK, "get data success", $filePath);
+        } catch (Exception $e) {
             $response = new Response(false, HttpStatusCode::BAD_REQUEST, "Fail updating data: " . $e->getMessage(), null);
         }
 

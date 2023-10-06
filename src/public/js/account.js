@@ -4,7 +4,9 @@ const Elements = {
     cancelButton: document.getElementById("cancel-button"),
     firstNameInput: document.getElementById("first-name"),
     lastNameInput: document.getElementById("last-name"),
-    passwordInput: document.getElementById("password")
+    passwordInput: document.getElementById("password"),
+    profilePicture: document.getElementById("profile-picture"),
+    profilePictureInput: document.getElementById("profile-picture-input")
 };
 
 function initEventListeners()
@@ -26,6 +28,34 @@ function initEventListeners()
 
 async function updateProfilePicture(){
 
+    if (Elements.profilePictureInput.files.length > 0) {
+        const selectedFile = Elements.profilePictureInput.files[0];
+        try {
+            const httpClient = new HttpClient();
+
+            // const formData = new FormData();
+            // formData.append("fileToUpload", selectedFile);
+            // const response = await httpClient.post(
+            //     '/api/avatar/user',
+            //     formData,
+            //     false
+            // );
+            // console.log(response.body)
+
+            const json = JSON.parse(response.body);
+            if (json.success) {
+                alert("Update profile picture successful!");
+                window.location.reload();
+            } else {
+                alert("Profile picture update failed: " + json.message);
+            }
+        } catch (error) {
+            console.log(error)
+            alert("An error occurred while processing your request.");
+        }
+    } else {
+        alert("Please select an image to update your profile picture.");
+    }
 }
 
 async function updateProfile()
@@ -70,4 +100,22 @@ async function updateProfile()
     }
 }
 
+async function fetchAndSetProfilePicture() {
+    try {
+        const httpClient = new HttpClient();
+        const response = await httpClient.get('/api/avatar/user', null, false);
+        const json = JSON.parse(response.body);
+
+        if (json.success) {
+            Elements.profilePicture.src = '/uploads/avatars/' + json.data;
+        } else {
+            Elements.profilePicture.src = '/public/avatar.png';
+        }
+    } catch (error) {
+        console.error('Error fetching profile picture:', error);
+    }
+}
+
+
 initEventListeners();
+fetchAndSetProfilePicture();
