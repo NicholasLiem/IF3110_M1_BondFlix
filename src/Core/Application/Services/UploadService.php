@@ -21,7 +21,7 @@ class UploadService
         try {
             $fileType = $_FILES["fileToUpload"]["type"];
             $uploadDir = '/thumbnails/';
-            $imageType = ['image/jpeg', 'image/png', 'image/gif'];
+            $imageType = ['image/jpeg', 'image/png', 'image/gif', 'image/jpg'];
 
             if (in_array($fileType, $imageType)) {
                 $imageUploader = new ImageUploader();
@@ -42,9 +42,9 @@ class UploadService
         try {
             $fileType = $_FILES["fileToUpload"]["type"];
             $uploadDir = '/videos/';
-            $imageType = ['video/mpeg', 'video/mp4', 'video/quicktime', 'video/x-msvideo'];
+            $videoType = ['video/mpeg', 'video/mp4', 'video/quicktime', 'video/x-msvideo'];
 
-            if (in_array($fileType, $imageType)) {
+            if (in_array($fileType, $videoType)) {
                 $videoUploader = new VideoUploader();
                 return $videoUploader->upload($targetFile, $uploadDir);
             } else {

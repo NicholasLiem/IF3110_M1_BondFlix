@@ -36,8 +36,8 @@ class UploadHandler extends BaseHandler
         $targetFile = basename($_FILES["fileToUpload"]["name"]);
         $fileType = $_FILES["fileToUpload"]["type"];
 
-        $imageType = ['image/jpeg', 'image/png', 'image/gif'];
-        $videoType = ['video/mpeg', 'video/mp4'];
+        $imageType = ['image/jpeg', 'image/png', 'image/gif', 'image/jpg'];
+        $videoType = ['video/mpeg', 'video/mp4', 'video/quicktime', 'video/x-msvideo'];
 
         try {
             $fileName = null;

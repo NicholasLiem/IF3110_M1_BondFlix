@@ -12,7 +12,7 @@ class ImageUploader implements IUploader
     public function __construct()
     {
         $this->rootDir = '/uploads/';
-        $this->types = ['jpeg', 'png', 'gif'];
+        $this->types = ['jpeg', 'png', 'gif', 'jpg'];
     }
 
     /**
