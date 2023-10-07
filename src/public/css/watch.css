@@ -10,18 +10,10 @@ body {
     color: white;
 }
 
-.wrapper {
-    width: 100%;
-    position: relative;
-    overflow: hidden;
-    max-height: 100vh;
-    transition: max-height 0.5s ease;
-}
-
 .container {
     display: flex;
     flex-direction: column;
-    min-height: 100vh;
+    height: 100%;
     justify-content: center;
     align-items: flex-start;
     padding-top: 80px;
@@ -36,7 +28,6 @@ body {
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
-    height: 100vh;
 }
 
 .video-wrapper {
@@ -63,26 +54,4 @@ body {
 
 .video-info p {
     font-family: "Roboto", sans-serif;
-}
-
-.pagination
-{
-    margin-top: auto;
-    margin-bottom: 50px;
-    align-self: center;
-    justify-self: center;
-    display: flex;
-    flex-direction: row;
-}
-
-.pagination button {
-    border-radius: 4px;
-    font-family: "Roboto", sans-serif;
-    padding: 8px 12px;
-    font-size: 16px;
-    border: none;
-    cursor: pointer;
-    height: auto;
-    margin: 5px;
-    color: black
 }

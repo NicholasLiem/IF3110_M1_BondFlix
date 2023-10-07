@@ -1,3 +1,4 @@
+const helper = new Helper();
 const DashboardTable = {
     data: {},
     currentPage: 1,
@@ -7,6 +8,7 @@ const DashboardTable = {
     pageSize: 20,
     searchState: false,
 };
+
 let debounceTimer;
 
 
@@ -23,6 +25,7 @@ const Elements = {
 function handlePaginationButtons() {
     Elements.currentPageButton.innerHTML = DashboardTable.currentPage;
     Elements.prevPageButton.disabled = DashboardTable.currentPage === 1;
+    console.log(DashboardTable.totalPages, DashboardTable.currentPage)
     Elements.nextPageButton.disabled =
         DashboardTable.currentPage === DashboardTable.totalPages || DashboardTable.totalPages === 0;
 }
