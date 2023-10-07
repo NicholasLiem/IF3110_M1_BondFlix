@@ -81,7 +81,7 @@ function updateTable(contents) {
             const row = tableBody.insertRow();
             row.setAttribute("data-content-id", content.content_id);
 
-            const contentFilePath = content.content_file_path.replace("/uploads/movies/", "");
+            const contentFilePath = content.content_file_path.replace("/uploads/videos/", "");
             const thumbnailFilePath = content.thumbnail_file_path.replace("/uploads/thumbnails/", "");
 
             row.innerHTML = `
@@ -199,7 +199,7 @@ function initEventListeners() {
             const videoFilePath = await uploadFile(
                 httpClient,
                 Elements.videoInput.files[0],
-                "movies"
+                "videos"
             );
             const thumbnailFilePath = await uploadFile(
                 httpClient,
@@ -317,7 +317,6 @@ async function uploadFile(httpClient, file, uploadType) {
         throw new Error(fileUploadResponseBody.message);
     }
 
-    console.log(fileUploadResponseBody);
     const uploadedFilePath = `/uploads/${uploadType}/${fileUploadResponseBody.data.file_name}`;
     return uploadedFilePath;
 }
@@ -328,7 +327,7 @@ async function onSubmitContentModal(modal) {
         const videoFilePath = await uploadFile(
             httpClient,
             Elements.videoInput.files[0],
-            "movies"
+            "videos"
         );
         const thumbnailFilePath = await uploadFile(
             httpClient,

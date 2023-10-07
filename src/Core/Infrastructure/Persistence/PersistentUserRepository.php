@@ -237,7 +237,8 @@ class PersistentUserRepository implements UserRepository
                    username, 
                    password_hash, 
                    is_admin, 
-                   is_subscribed
+                   is_subscribed,
+                   avatar_path
             FROM users
             ORDER BY user_id ASC;
         ");
@@ -255,7 +256,8 @@ class PersistentUserRepository implements UserRepository
                     $userData['username'],
                     $userData['password_hash'],
                     (bool) $userData['is_admin'],
-                    (bool) $userData['is_subscribed']
+                    (bool) $userData['is_subscribed'],
+                    (string) $userData['avatar_path']
                 );
 
                 $users[] = $user;
@@ -283,7 +285,8 @@ class PersistentUserRepository implements UserRepository
                    username, 
                    password_hash, 
                    is_admin, 
-                   is_subscribed
+                   is_subscribed,
+                   avatar_path
             FROM users
             WHERE (username LIKE :query
                 OR first_name LIKE :query
@@ -305,7 +308,8 @@ class PersistentUserRepository implements UserRepository
                     $userData['username'],
                     $userData['password_hash'],
                     (bool) $userData['is_admin'],
-                    (bool) $userData['is_subscribed']
+                    (bool) $userData['is_subscribed'],
+                    (string) $userData['avatar_path']
                 );
 
                 $users[] = $user;
