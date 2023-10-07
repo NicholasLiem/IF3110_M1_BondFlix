@@ -15,6 +15,7 @@ use Handler\Content\ContentDirectorHandler;
 use Handler\Content\ContentGenreHandler;
 use Handler\Content\ContentHandler;
 use Handler\Genre\GenreHandler;
+use Handler\MyList\CheckContentMyListHandler;
 use Handler\MyList\MyListHandler;
 use Handler\Upload\UploadHandler;
 use Handler\User\UserHandler;
@@ -46,6 +47,7 @@ try {
     $accountHandler = AccountHandler::getInstance($serviceContainer->getAdminService());
     $avatarHandler = AvatarHandler::getInstance($serviceContainer->getAdminService(), $serviceContainer->getUploadService());
     $myListHandler = MyListHandler::getInstance($serviceContainer->getMyListService());
+    $myListCheckHandler = CheckContentMyListHandler::getInstance($serviceContainer->getMyListService());
 } catch (Exception $e) {
     Logger::getInstance()->logMessage('Fail to load services '. $e->getMessage());
     exit();
@@ -69,13 +71,17 @@ $router->addPage('/login', function () {
     redirect('login');
 });
 
+$router->addPage('/register', function ($urlParams) {
+    redirect('register', ['urlParams' => $urlParams]);
+});
+
 $router->addPage('/dashboard', function () {
     redirect('dashboard');
 }, [LoggedInCheck::getInstance()]);
 
-$router->addPage('/register', function ($urlParams) {
-    redirect('register', ['urlParams' => $urlParams]);
-});
+$router->addPage('/mylist', function () {
+    redirect('mylist');
+}, [LoggedInCheck::getInstance()]);
 
 $router->addPage('/subscribe', function () {
     redirect('subscribe');
@@ -161,6 +167,7 @@ $router->addAPI('/api/avatar/user', 'GET', $avatarHandler, [APILoggedInCheck::ge
 $router->addAPI('/api/mylist', 'GET', $myListHandler, [APILoggedInCheck::getInstance()]);
 $router->addAPI('/api/mylist', 'POST', $myListHandler, [APILoggedInCheck::getInstance()]);
 $router->addAPI('/api/mylist', 'DELETE', $myListHandler, [APILoggedInCheck::getInstance()]);
+$router->addAPI('/api/mylist/check', 'GET', $myListCheckHandler, [APILoggedInCheck::getInstance()]);
 
 /**
  * Setting api or page fallback handler

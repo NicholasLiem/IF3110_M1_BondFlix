@@ -30,7 +30,9 @@ function handlePaginationButtons() {
         DashboardTable.currentPage === DashboardTable.totalPages || DashboardTable.totalPages === 0;
 }
 function updateContents(contents) {
-    Elements.recommendationsContainer.innerHTML = '';
+    if (Elements.recommendationsContainer) {
+        Elements.recommendationsContainer.innerHTML = '';
+    }
 
     if (contents && contents.length > 0) {
         if (!DashboardTable.firstContent) {
@@ -75,7 +77,9 @@ function updateContents(contents) {
         const noResultsMessage = document.createElement('h2');
         noResultsMessage.style.fontWeight = "normal";
         noResultsMessage.textContent = 'No movies at the moment';
-        Elements.recommendationsContainer.appendChild(noResultsMessage);
+        if (Elements.recommendationsContainer){
+            Elements.recommendationsContainer.appendChild(noResultsMessage);
+        }
     }
 }
 
@@ -149,8 +153,9 @@ function addRecommendation(contentId, thumbnailPath, title) {
     recommendation.appendChild(image);
     recommendation.appendChild(titleElement);
     link.appendChild(recommendation);
-
-    Elements.recommendationsContainer.appendChild(link);
+    if (Elements.recommendationsContainer){
+        Elements.recommendationsContainer.appendChild(link);
+    }
 }
 
 initEventListeners();

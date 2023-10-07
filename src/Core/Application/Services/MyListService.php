@@ -54,4 +54,9 @@ class MyListService
     {
         return $this->myListRepository->processQuery($query, $userId);
     }
+
+    public function checkContent(int $userId, int $contentId) : bool
+    {
+        return $this->myListRepository->checkContent($userId, $contentId);
+    }
 }

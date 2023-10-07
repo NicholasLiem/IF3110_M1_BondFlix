@@ -44,11 +44,11 @@ class MyListHandler extends BaseHandler {
                     $filteredResult = $result;
                     if ($sortAscending) {
                         usort($filteredResult, function ($a, $b) {
-                            return $a->getUserId() - $b->getUserId();
+                            return $a->getContentId() - $b->getContentId();
                         });
                     } else {
                         usort($filteredResult, function ($a, $b) {
-                            return $b->getUserId() - $a->getUserId();
+                            return $b->getContentId() - $a->getContentId();
                         });
                     }
                     $totalPages = ceil(count($filteredResult) / $pageSize);
@@ -88,13 +88,19 @@ class MyListHandler extends BaseHandler {
             $userId = $params['user_id'];
             $contentId = $params['content_id'];
 
-            $this->service->addToMyList($userId, $contentId);
+            if (!$this->service->checkContent($userId, $contentId)){
+                $this->service->addToMyList($userId, $contentId);
+                $response = new Response(true, HttpStatusCode::OK, "Content added to My List successfully", null);
 
-            $response = new Response(true, HttpStatusCode::OK, "Content added to My List successfully", null);
+            } else {
+                $response = new Response(false, HttpStatusCode::BAD_REQUEST, "already in list", null);
+            }
             $response->encode_to_JSON();
+            return;
         } catch (Exception $e) {
             $response = new Response(false, HttpStatusCode::BAD_REQUEST, "Failed to add content to My List: " . $e->getMessage(), null);
             $response->encode_to_JSON();
+            return;
         }
     }
 
