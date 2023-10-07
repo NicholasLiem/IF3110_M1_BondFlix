@@ -345,16 +345,19 @@ function initEventListeners() {
                     updatedThumbnailFilePath;
             }
 
-            console.log(updateContentParams);
 
-            const updateContentResponseData = await updateContent(
-                httpClient,
-                updateContentParams
-            );
+            const confirmEdit = window.confirm("Are you sure you want to edit this content?");
 
-            if (updateContentResponseData) {
-                alert("Success updating content!");
-                window.location.reload();
+            if (confirmEdit) {
+                const updateContentResponseData = await updateContent(
+                    httpClient,
+                    updateContentParams
+                );
+
+                if (updateContentResponseData) {
+                    alert("Success updating content!");
+                    window.location.reload();
+                }
             }
         } catch (err) {
             alert(err.message);
