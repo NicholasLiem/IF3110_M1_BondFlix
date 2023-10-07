@@ -8,6 +8,7 @@ const ContentTable = {
     filterEnabled: false,
     pageSize: 10,
 };
+let debounceTimer
 
 const Elements = {
     /**
@@ -136,7 +137,10 @@ async function fetchData() {
 
 function initEventListeners() {
     Elements.searchInput.addEventListener("input", () => {
-        fetchData();
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(() => {
+            fetchData();
+        }, 500);
     });
 
     Elements.sortButton.addEventListener("click", () => {

@@ -10,6 +10,7 @@ const UserTable = {
     filterEnabled: false,
     pageSize: 10,
 };
+let debounceTimer;
 
 const Elements = {
     searchInput: document.getElementById("search-input"),
@@ -121,7 +122,10 @@ async function fetchData() {
 
 function initEventListeners() {
     Elements.searchInput.addEventListener("input", () => {
-        fetchData();
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(() => {
+            fetchData();
+        }, 500);
     });
 
     Elements.sortButton.addEventListener("click", () => {

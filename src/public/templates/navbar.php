@@ -11,7 +11,7 @@
         </div>
     </div>
     <div id="menu-right">
-        <input type="text" class="search-bar" placeholder="Search a movie">
+        <input type="text" class="search-bar" placeholder="Search a movie" id="navbar-search-input">
         <button class="navbar-account-button">
             <img src="/public/avatar.png" id='profile-picture-navbar' alt="profile picture">
         </button>
