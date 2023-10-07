@@ -16,6 +16,8 @@ body {
     height: auto;
     background-image: url("/public/assets/netflix_bg.png");
     overflow: auto;
+    position: relative;
+    flex-wrap: wrap;
 }
 
 .content::before {
