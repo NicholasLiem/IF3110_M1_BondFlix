@@ -33,6 +33,12 @@ class ContentGenreHandler extends BaseHandler {
      */
     protected function get($params = null)
     {
+        if (is_null($this->service->getContentById($params['content_id']))) {
+            $response = new Response(false, HttpStatusCode::BAD_REQUEST ,"Content id not found", null);
+            $response->encode_to_JSON();
+            return;
+        }
+        
         $genres = $this->service->getGenres($params['content_id']);
         $genresArray = [];
         foreach ($genres as $genre) {
