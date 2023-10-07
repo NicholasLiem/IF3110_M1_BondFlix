@@ -170,8 +170,8 @@ body {
 
 .more-recommendation {
     background-color: black;
-    height: 300px;
-    margin-top: 100px;
+    height: auto;
+    margin-top: 75px;
     padding-left: 50px;
 }
 
@@ -193,4 +193,32 @@ body {
     height: 140px;
     object-fit: cover;
     border-radius: 4px;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    min-height: 100vh;
+}
+
+.pagination
+{
+    margin-top: auto;
+    margin-bottom: 50px;
+    align-self: center;
+    justify-self: center;
+    display: flex;
+    flex-direction: row;
+}
+
+.pagination button {
+    border-radius: 4px;
+    font-family: "Roboto", sans-serif;
+    padding: 8px 12px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    height: auto;
+    margin: 5px;
 }

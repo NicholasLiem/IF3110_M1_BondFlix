@@ -5,7 +5,7 @@ const DashboardTable = {
     totalPages: 1,
     isAscending: true,
     filterEnabled: false,
-    pageSize: 10,
+    pageSize: 20,
     searchState: false,
 };
 
@@ -17,14 +17,17 @@ const Elements = {
     navbarSearchInput: document.getElementById('navbar-search-input'),
     mostRecommend: document.getElementById('most-recommended'),
     mostRecommendWrapper: document.getElementById('most-recommended-wrapper'),
+    prevPageButton: document.getElementById("prevPageButton"),
+    nextPageButton: document.getElementById("nextPageButton"),
+    currentPageButton: document.getElementById("currentPageButton"),
 }
 
-// function handlePaginationButtons() {
-//     Elements.currentPageButton.innerHTML = DashboardTable.currentPage;
-//     Elements.prevPageButton.disabled = DashboardTable.currentPage === 1;
-//     Elements.nextPageButton.disabled =
-//         DashboardTable.currentPage === DashboardTable.totalPages;
-// }
+function handlePaginationButtons() {
+    Elements.currentPageButton.innerHTML = DashboardTable.currentPage;
+    Elements.prevPageButton.disabled = DashboardTable.currentPage === 1;
+    Elements.nextPageButton.disabled =
+        DashboardTable.currentPage === DashboardTable.totalPages;
+}
 function updateContents(contents) {
     Elements.recommendationsContainer.innerHTML = '';
 
@@ -63,7 +66,7 @@ async function fetchData()
         const data = JSON.parse(response.body).data;
         DashboardTable.totalPages = parseInt(response.headers["x-total-pages"]);
         updateContents(data);
-        // handlePaginationButtons();
+        handlePaginationButtons();
     } catch (error) {
 
         console.log(error)
@@ -81,6 +84,20 @@ function initEventListeners()
         debounceTimer = setTimeout(() => {
             fetchData();
         }, 500);
+    });
+
+    Elements.prevPageButton.addEventListener("click", () => {
+        if (DashboardTable.currentPage > 1) {
+            DashboardTable.currentPage--;
+            fetchData();
+        }
+    });
+
+    Elements.nextPageButton.addEventListener("click", () => {
+        if (DashboardTable.currentPage < DashboardTable.totalPages) {
+            DashboardTable.currentPage++;
+            fetchData();
+        }
     });
 }
 

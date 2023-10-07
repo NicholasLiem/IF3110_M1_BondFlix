@@ -37,9 +37,9 @@ $username = $_SESSION['username'];
         </table>
 
         <div class="pagination">
-            <button id="prevPageButton">Previous</button>
+            <button id="prevPageButton">◄</button>
             <button id="currentPageButton">1</button>
-            <button id="nextPageButton">Next</button>
+            <button id="nextPageButton">►</button>
         </div>
 
         <div id="editUserModal" class="modal">
