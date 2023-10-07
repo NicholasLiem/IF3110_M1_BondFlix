@@ -25,8 +25,9 @@ const Elements = {
 function handlePaginationButtons() {
     Elements.currentPageButton.innerHTML = DashboardTable.currentPage;
     Elements.prevPageButton.disabled = DashboardTable.currentPage === 1;
+    console.log(DashboardTable.totalPages, DashboardTable.currentPage)
     Elements.nextPageButton.disabled =
-        DashboardTable.currentPage === DashboardTable.totalPages;
+        DashboardTable.currentPage === DashboardTable.totalPages || DashboardTable.totalPages === 0;
 }
 function updateContents(contents) {
     Elements.recommendationsContainer.innerHTML = '';
@@ -43,8 +44,9 @@ function updateContents(contents) {
             Elements.mostRecommendWrapper.style.maxHeight = '100vh';
         }
     } else {
-        const noResultsMessage = document.createElement('p');
-        noResultsMessage.textContent = 'No results found.';
+        const noResultsMessage = document.createElement('h2');
+        noResultsMessage.style.fontWeight = "normal";
+        noResultsMessage.textContent = 'No movies at the moment';
         Elements.recommendationsContainer.appendChild(noResultsMessage);
     }
 

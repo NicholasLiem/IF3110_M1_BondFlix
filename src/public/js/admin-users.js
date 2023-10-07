@@ -96,7 +96,7 @@ function handlePaginationButtons() {
     Elements.currentPageButton.innerHTML = UserTable.currentPage;
     Elements.prevPageButton.disabled = UserTable.currentPage === 1;
     Elements.nextPageButton.disabled =
-        UserTable.currentPage === UserTable.totalPages;
+        UserTable.currentPage === UserTable.totalPages || UserTable.totalPages === 0;
 }
 
 async function fetchData() {
