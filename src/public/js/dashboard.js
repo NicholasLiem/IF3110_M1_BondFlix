@@ -6,6 +6,7 @@ const DashboardTable = {
     isAscending: true,
     filterEnabled: false,
     pageSize: 10,
+    searchState: false,
 };
 
 let debounceTimer;
@@ -14,6 +15,8 @@ let debounceTimer;
 const Elements = {
     recommendationsContainer: document.getElementById('search-result-container'),
     navbarSearchInput: document.getElementById('navbar-search-input'),
+    mostRecommend: document.getElementById('most-recommended'),
+    mostRecommendWrapper: document.getElementById('most-recommended-wrapper'),
 }
 
 // function handlePaginationButtons() {
@@ -31,6 +34,11 @@ function updateContents(contents) {
             const thumbnailPath = content.thumbnail_file_path;
             addRecommendation(contentId, thumbnailPath);
         })
+        if (DashboardTable.searchState) {
+            Elements.mostRecommendWrapper.style.maxHeight = '0';
+        } else {
+            Elements.mostRecommendWrapper.style.maxHeight = '100vh';
+        }
     } else {
         const noResultsMessage = document.createElement('p');
         noResultsMessage.textContent = 'No results found.';
@@ -67,6 +75,8 @@ async function fetchData()
 function initEventListeners()
 {
     Elements.navbarSearchInput.addEventListener("input", () => {
+        const query = Elements.navbarSearchInput.value.trim();
+        DashboardTable.searchState = query !== '';
         clearTimeout(debounceTimer);
         debounceTimer = setTimeout(() => {
             fetchData();
