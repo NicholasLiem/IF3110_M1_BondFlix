@@ -12,7 +12,6 @@ include BASE_PATH . "/public/templates/header.php";
  */
 function showUploadModal($modalId, $modalTitle) {
     $isRequired = ($modalId === "new-content") ? "required" : "";
-
     echo <<< HTML
     <div id="$modalId-modal" class="modal">
         <div class="modal-content">
@@ -56,7 +55,7 @@ function showUploadModal($modalId, $modalTitle) {
                         <td><input type="file" name="video" class="movie-video" $isRequired /></td>
                     </tr>
                 </table>
-                <button type="submit" class="submit-$modalId-button">Upload</button>
+                <button type="submit" class="submit-$modalId-button">Save</button>
             </form>
         </div>
     </div>
@@ -71,7 +70,7 @@ function showUploadModal($modalId, $modalTitle) {
 <body>
     <div class="content">
         <div class="search-bar">
-            <input type="text" id="search-input" placeholder="Search by title">
+            <input type="text" id="search-input" placeholder="Search by title or description">
             <button id="sort-button" class="search-bar-button">Sort Title ↑</button>
             <button id="enable-filter-button" class="search-bar-button">Filter Disabled ✗</button>
             <button id="add-content-button" class="search-bar-button">New Content</button>

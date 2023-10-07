@@ -479,7 +479,7 @@ class PersistentContentRepository implements ContentRepository
                    content_file_path, 
                    thumbnail_file_path
             FROM content
-            WHERE (title LIKE :query);
+            WHERE (title LIKE :query OR description LIKE :query);
         ");
 
             $stmt->bindParam(':query', $query);
