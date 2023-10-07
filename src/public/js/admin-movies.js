@@ -240,22 +240,26 @@ function initEventListeners() {
         ) {
             const contentId = target.closest("tr").getAttribute("data-content-id");
 
-            try {
-                const httpClient = new HttpClient();
-                const response = await httpClient.delete(
-                    `/api/content?contentId=${contentId}`
-                );
-                const json = JSON.parse(response.body);
-                if (json.success) {
-                    alert("Delete operation successful");
-                    location.reload();
-                } else {
-                    console.error("Delete operation failed:", response.error);
-                    alert("Delete operation failed." + response.error);
+            const confirmDelete = window.confirm("Are you sure you want to delete this content?");
+
+            if (confirmDelete) {
+                try {
+                    const httpClient = new HttpClient();
+                    const response = await httpClient.delete(
+                        `/api/content?contentId=${contentId}`
+                    );
+                    const json = JSON.parse(response.body);
+                    if (json.success) {
+                        alert("Delete operation successful");
+                        location.reload();
+                    } else {
+                        console.error("Delete operation failed:", response.error);
+                        alert("Delete operation failed." + response.error);
+                    }
+                } catch (error) {
+                    console.error("An error occurred during deletion:", error);
+                    alert("An error occurred during deletion.");
                 }
-            } catch (error) {
-                console.error("An error occurred during deletion:", error);
-                alert("An error occurred during deletion.");
             }
         }
     });
