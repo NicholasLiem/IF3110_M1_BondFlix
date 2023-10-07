@@ -36,7 +36,9 @@ class UserHandler extends BaseHandler
             if (isset($params['username'])) {
                 $username = $params['username'];
                 $singleUser = $this->service->getUserByUsername($username);
-                $resultArray[] = $singleUser->toArray();
+                if ($singleUser){
+                    $resultArray[] = $singleUser->toArray();
+                }
             } else {
                 if (isset($params['query']) && isset($params['sortAscending'])) {
                     $query = $params['query'];
@@ -174,8 +176,6 @@ class UserHandler extends BaseHandler
                         } else {
                             $_SESSION['last_name'] = $user->getLastName();
                         }
-                        $_SESSION['is_admin'] = $user->getIsAdmin();
-                        $_SESSION['is_subscribed'] = $user->getIsSubscribed();
                         $response = new Response(true, HttpStatusCode::OK, "User update success", $user->toArray());
                     } else {
                         $response = new Response(false, HttpStatusCode::NO_CONTENT, "User update failed", null);

@@ -2,9 +2,66 @@
 $pageTitle = 'Movie Dashboard';
 $stylesheet = '/public/css/admin-movies.css';
 $script = 'admin.js';
-include BASE_PATH . "/public/templates/header.php";
 $adminSidebarTemplate = BASE_PATH . "/public/templates/admin-sidebar.php";
 $username = $_SESSION['username'];
+include BASE_PATH . "/public/templates/header.php";
+
+/**
+ * @param $modalId : "new-content" | "edit-content"
+ * @param $modalTitle : "New Content" | "Edit Content"
+ */
+function showUploadModal($modalId, $modalTitle) {
+    $isRequired = ($modalId === "new-content") ? "required" : "";
+
+    echo <<< HTML
+    <div id="$modalId-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" id="close-$modalId-modal">&times;</span>
+            <h2>$modalTitle</h2>
+            <form id="$modalId-form" enctype="multipart/form-data">
+                <table class="new-content-modal">
+                    <tr>
+                        <td><label for="movie-title">Title</label></td>
+                        <td><input type="text" name="title" class="movie-title" required/></td>
+                    </tr>
+                    <tr>
+                        <td><label for="movie-description">Description</label></td>
+                        <td>
+                            <textarea
+                                name="description"
+                                class="movie-description"
+                                cols="auto"
+                                rows="5"
+                            ></textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><label for="movie-release-date">Release Date</label></td>
+                        <td>
+                            <input
+                                type="date"
+                                name="release-date"
+                                class="movie-release-date"
+                                required
+                            />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><label for="movie-thumbnail">Thumbnail</label></td>
+                        <td><input type="file" name="thumbnail" class="movie-thumbnail" $isRequired />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><label for="movie-video">Video</label></td>
+                        <td><input type="file" name="video" class="movie-video" $isRequired /></td>
+                    </tr>
+                </table>
+                <button type="submit" class="submit-$modalId-button">Upload</button>
+            </form>
+        </div>
+    </div>
+    HTML;
+}
 ?>
 
 <link rel="stylesheet" href="/public/css/admin-page.css">
@@ -19,7 +76,6 @@ $username = $_SESSION['username'];
             <button id="enable-filter-button" class="search-bar-button">Filter Disabled ✗</button>
             <button id="add-content-button" class="search-bar-button">New Content</button>
         </div>
-
         <table class="admin-table">
             <thead>
             <tr>
@@ -35,67 +91,14 @@ $username = $_SESSION['username'];
             <tbody>
             </tbody>
         </table>
-
+        <?php 
+            showUploadModal("new-content", "New Content");
+            showUploadModal("edit-content", "Edit Content");
+        ?>
         <div class="pagination">
-            <button id="prevPageButton">Previous</button>
+            <button id="prevPageButton">◄</button>
             <button id="currentPageButton">1</button>
-            <button id="nextPageButton">Next</button>
-        </div>
-
-        <div id="editUserModal" class="modal">
-            <div class="modal-content">
-                <span class="close" id="close-edit">&times;</span>
-                <h2>Edit User</h2>
-                <table class="edit-user-modal">
-                    <tr>
-                        <td><label for="editUsername">Username</label></td>
-                        <td><input type="text" id="editUsername" name="username" disabled="disabled" required></td>
-                    </tr>
-                </table>
-                <button type="submit" class="submit-edit" id="saveEditButton">Save</button>
-            </div>
-        </div>
-        <div id="new-content-modal" class="modal">
-            <div class="modal-content">
-                <span class="close" id="close-new-content-modal">&times;</span>
-                <h2>New Content</h2>
-                <form id="upload-form" enctype="multipart/form-data">
-                    <table class="new-content-modal">
-                        <tr>
-                            <td><label for="movie-title">Title</label></td>
-                            <td><input type="text" name="title" id="movie-title" required/></td>
-                        </tr>
-                        <tr>
-                            <td><label for="movie-description">Description</label></td>
-                            <td><textarea
-                                        name="description"
-                                        id="movie-description"
-                                        cols="auto"
-                                        rows="5"
-                                ></textarea></td>
-                        </tr>
-                        <tr>
-                            <td><label for="movie-release-date">Release Date</label></td>
-                            <td><input
-                                        type="date"
-                                        name="release-date"
-                                        id="movie-release-date"
-                                        required
-                                /></td>
-                        </tr>
-                        <tr>
-                            <td><label for="movie-thumbnail">Thumbnail</label></td>
-                            <td><input type="file" name="thumbnail" id="movie-thumbnail" required />
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><label for="movie-video">Video</label></td>
-                            <td><input type="file" name="video" id="movie-video" required /></td>
-                        </tr>
-                    </table>
-                    <button type="submit" id="submit-new-content-button">Upload</button>
-                </form>
-            </div>
+            <button id="nextPageButton">►</button>
         </div>
     </div>
     <script src="/public/js/admin-movies.js"></script>

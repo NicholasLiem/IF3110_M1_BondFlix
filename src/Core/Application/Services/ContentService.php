@@ -5,6 +5,7 @@ namespace Core\Application\Services;
 use Core\Application\Repositories\ContentRepository;
 use Core\Domain\Entities\Content;
 use Exception;
+use Utils\FileDestroyer\FileDestroyer;
 
 class ContentService
 {
@@ -31,7 +32,12 @@ class ContentService
         return $this->contentRepository->createContent($content);
     }
 
-    public function removeContent($content_id): void {
+    public function removeContent($content_id, $thumbnailPath, $contentPath): void {
+        $fileDestroyer = new FileDestroyer();
+        $thumbnailPath = str_replace('/uploads/thumbnails/', '', $thumbnailPath);
+        $contentPath = str_replace('/uploads/videos/', '', $contentPath);
+        $fileDestroyer->destroy($thumbnailPath, 'thumbnails');
+        $fileDestroyer->destroy($contentPath, 'videos');
         $this->contentRepository->deleteContentById($content_id);
     }
 

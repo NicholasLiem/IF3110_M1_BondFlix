@@ -1,17 +1,6 @@
 class Helper {
     constructor() {
     }
-    debounce(func, delay) {
-        let timeoutId;
-        return function() {
-            const context = this;
-            const args = arguments;
-            clearTimeout(timeoutId);
-            timeoutId = setTimeout(() => {
-                func.apply(context, args);
-            }, delay);
-        };
-    }
 
     openModal(modal, openButton, closeButton, submitButton, onSubmit) {
         openButton.addEventListener("click", () => {
@@ -36,4 +25,10 @@ class Helper {
         }
     }
 
+    getUrlParameter(name) {
+        name = name.replace(/[[]/, '\\[').replace(/[\]]/, '\\]');
+        const regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+        const results = regex.exec(location.search);
+        return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+    }
 }
