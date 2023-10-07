@@ -20,18 +20,20 @@ $username = $_SESSION['username'];
             <h2>Manage Genre</h2>
             <table class="manage-table">
                 <tr>
-                    <th><label for="edit_genre_id">Select a Genre to Edit</label></th>
-                    <th>
-                        <select name="edit_genre_id" id="edit_genre_id">
-                            
+                    <td><label for="edit_genre_id">Select a Genre to Edit</label></td>
+                    <td>
+                        <select name="edit_genre_id" id="edit_genre_id" required>
                         </select>
-                    </th>
-                    <th><button id="edit_genre_button">Edit Genre</button></th>
+                    </td>
+                    <td><button id="edit_genre_button" type="submit">Edit Genre</button></td>
+                    <td><button id="delete_genre_button" type="submit">Delete Genre</button></td>
                 </tr>
                 <tr>
-                    <th><label for="input-genre">Add New Genre</label></th>
-                    <th><input type="text" name="genre_name" id="input-genre" required</th>
-                    <th><button id="add-genre-button">Add Genre</button></th>
+                    <form id="add-genre-form">
+                        <td><label for="input-genre">Add New Genre</label></td>
+                        <td><input type="text" name="genre_name" id="input-genre" required></td>
+                        <td><button type="submit" id="add-genre-button">Add Genre</button></td>
+                    </form>
                 </tr>
             </table>
             <div id="editGenreModal" class="modal">
@@ -48,79 +50,26 @@ $username = $_SESSION['username'];
                 </div>
             </div>
         </div>
-        <div class="category-container">
-            <h2>Manage Category</h2>
-            <table class="manage-table">
+        <div id="content-genre-container">
+            <h2>Manage content genre</h2>
+            <form id="find-content-genre">
+                <label for="content-id">content id</label>
+                <input type="text" id="content-id" required />
+                <button type="submit" id="find-content-genre">Find Genre</button>
+            </form>
+            <form id="add-new-content-genre">
+                <select name="content-new-genre-dropdown" id="content-new-genre-dropdown" required>
+                </select>
+                <button type="submit" id="add-content-genre">Add Genre</button>
+            </form>
+            <table class="admin-table" id="content-genre-table">
                 <tr>
-                    <th><label for="edit_category_id">Select a Category to Edit</label></th>
-                    <th><select name="edit_category_id" id="edit_category_id">
-                            <option value="test">test</option>
-                        </select></th>
-                    <th><button id="edit_category_button">Edit Category</button></th>
-                </tr>
-                <tr>
-                    <th><label for="category-name">Add New Category</label></th>
-                    <th><input type="text" name="category_name" id="category-name" required</th>
-                    <th><button id="add-category-button">Add Category</button></th>
-                </tr>
-            </table>
-            <div id="editCategoryModal" class="modal">
-                <div class="modal-content">
-                    <span class="close">&times;</span>
-                    <h2>Edit Category</h2>
-                    <table class="edit-category-modal">
-                        <tr>
-                            <td><label for="editCategoryName">New category name</label></td>
-                            <td><input type="text" id="editCategoryName" name="categoryName" required></td>
-                        </tr>
-                    </table>
-                    <button type="submit" class="submit-edit" id="saveEditCategoryButton">Save</button>
-                </div>
-            </div>
-        </div>
-        <div class="actor-container">
-            <h2>Manage Actor</h2>
-            <table class="manage-table">
-                <tr>
-                    <th><label for="edit_actor_id">Select an Actor to Edit</label></th>
-                    <th><select name="edit_actor_id" id="edit_actor_id">
-                            <option value="test">test</option>
-                        </select></th>
-                    <th><button id="edit_actor_button">Edit Actor </button></th>
-                </tr>
-                <tr>
-                    <th><button id="add-actor-button">Add new actor</button></th>
+                    <th>Genre ID</th>
+                    <th>Genre Name</th>
+                    <th>Delete</th>
                 </tr>
             </table>
-            <div id="editActorModal" class="modal">
-                <div class="modal-content">
-                    <span class="close">&times;</span>
-                    <h2>Edit Actor</h2>
-                    <table class="edit-actor-modal">
-                        <tr>
-                            <td><label for="editActorFirstName">Actor first name</label></td>
-                            <td><input type="text" id="editActorFirstName" name="actorFirstName" required></td>
-                        </tr>
-                        <tr>
-                            <td><label for="editActorLastName">Actor last name</label></td>
-                            <td><input type="text" id="editActorLastName" name="actorLastname"></td>
-                        </tr>
-                        <tr>
-                            <td><label for="editActorBirthDate">Actor birth date</label></td>
-                            <td><input type="date" id="editActorBirthDate" name="actorBirthDate"></td>
-                        </tr>
-                        <tr>
-                            <td><label for="editActorGender">Actor gender</label></td>
-                            <td><input type="text" id="editActorGender" name="actorGender"></td>
-                        </tr>
-                    </table>
-                    <button type="submit" id="saveEditActorButton">Save</button>
-                </div>
-            </div>
         </div>
     </div>
 </div>
-<!-- <script>
-    document.getElementById('add-new-genre-form').addEventListener('submit', addNewGenre);
-</script> -->
 </body>

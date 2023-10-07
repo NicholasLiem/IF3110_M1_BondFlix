@@ -278,7 +278,7 @@ function initEventListeners() {
 
     Elements.closeEditContentModalButton.addEventListener("click", () => {
         Elements.editContentModal.style.display = "none";
-    })
+    });
 
     document.addEventListener("click", (event) => {
         const target = event.target;
@@ -338,8 +338,9 @@ function initEventListeners() {
                     updatedThumbnailFilePath;
             }
 
-
-            const confirmEdit = window.confirm("Are you sure you want to edit this content?");
+            const confirmEdit = window.confirm(
+                "Are you sure you want to edit this content?"
+            );
 
             if (confirmEdit) {
                 const updateContentResponseData = await updateContent(
@@ -358,6 +359,10 @@ function initEventListeners() {
         } finally {
             Elements.editContentModal.style.display = "none";
         }
+    });
+
+    Elements.closeEditContentModalButton.addEventListener("click", (event) => {
+        Elements.editContentModal.style.display = "none";
     });
 }
 
