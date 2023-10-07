@@ -309,6 +309,13 @@ function initEventListeners() {
                 Elements.editContentThumbnailInput.files[0];
             let updatedVideoFilePath = null;
             let updatedThumbnailFilePath = null;
+
+            const description = Elements.editContentDescriptionInput.value;
+            if (description.length > 255) {
+                alert("Description should not exceed 255 characters.");
+                return;
+            }
+
             if (updatedVideo !== undefined) {
                 updatedVideoFilePath = await uploadFile(
                     httpClient,
@@ -424,6 +431,12 @@ async function uploadFile(httpClient, file, uploadType) {
 async function onSubmitNewContentModal(modal) {
     try {
         const httpClient = new HttpClient();
+
+        const description = Elements.newContentDescriptionInput.value;
+        if (description.length > 255) {
+            alert("Description should not exceed 255 characters.");
+            return;
+        }
         const videoFilePath = await uploadFile(
             httpClient,
             Elements.newContentVideoInput.files[0],
@@ -434,6 +447,7 @@ async function onSubmitNewContentModal(modal) {
             Elements.newContentThumbnailInput.files[0],
             "thumbnails"
         );
+
         const addContentParams = {
             title: Elements.newContentTitleInput.value,
             description: Elements.newContentDescriptionInput.value,

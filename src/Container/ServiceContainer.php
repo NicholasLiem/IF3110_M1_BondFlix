@@ -1,11 +1,13 @@
 <?php
 
 namespace Container;
+use Core\Application\Repositories\MyListRepository;
 use Core\Application\Services\AdminService;
 use Core\Application\Services\AuthService;
 use Core\Application\Services\CategoryService;
 use Core\Application\Services\ContentService;
 use Core\Application\Services\GenreService;
+use Core\Application\Services\MyListService;
 use Core\Application\Services\UploadService;
 use Exception;
 use Utils\Logger\Logger;
@@ -18,6 +20,9 @@ class ServiceContainer
     private GenreService $genreService;
     private UploadService $uploadService;
     private CategoryService $categoryService;
+    private MyListService $myListService;
+
+
 
     /**
      * @param AuthService $authService
@@ -26,7 +31,7 @@ class ServiceContainer
      * @param GenreService $genreService
      * @param CategoryService $categoryService
      */
-    public function __construct(AuthService $authService, AdminService $adminService, ContentService $contentService, GenreService $genreService, CategoryService $categoryService, UploadService $uploadService)
+    public function __construct(AuthService $authService, AdminService $adminService, ContentService $contentService, GenreService $genreService, CategoryService $categoryService, UploadService $uploadService, MyListService $myListService)
     {
         $this->authService = $authService;
         $this->adminService = $adminService;
@@ -34,6 +39,7 @@ class ServiceContainer
         $this->genreService = $genreService;
         $this->uploadService= $uploadService;
         $this->categoryService = $categoryService;
+        $this->myListService = $myListService;
     }
 
     /**
@@ -120,12 +126,37 @@ class ServiceContainer
     {
         $this->uploadService = $uploadService;
     }
+
+    /**
+     * @throws Exception
+     */
     public function getCategoryService(): CategoryService {
+        if (!isset($this->categoryService)){
+            Logger::getInstance()->logMessage("Failed to load CategoryService service");
+            throw new Exception("Service 'CategoryService' not found in the container.");
+        }
         return $this->categoryService;
     }
 
     public function setCategoryService(CategoryService $categoryService): void {
         $this->categoryService = $categoryService;
 
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function getMyListService(): MyListService
+    {
+        if (!isset($this->myListService)){
+            Logger::getInstance()->logMessage("Failed to load MyListService service");
+            throw new Exception("Service 'MyListService' not found in the container.");
+        }
+        return $this->myListService;
+    }
+
+    public function setMyListService(MyListService $myListService): void
+    {
+        $this->myListService = $myListService;
     }
 }

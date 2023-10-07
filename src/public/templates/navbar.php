@@ -5,9 +5,8 @@
     <div>
         <a href="/dashboard"><img class="logo" src="/public/logo.png" alt="Bondflix logo"></a>
         <div id="menu-left">
-            <a href="">My List</a>
-            <a href="">Movies</a>
-            <a href="">TV Shows</a>
+            <a href="/mylist">My List</a>
+            <a href="/dashboard">Movies</a>
         </div>
     </div>
     <div id="menu-right">

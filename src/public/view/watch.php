@@ -30,8 +30,16 @@ include BASE_PATH . "/public/templates/header.php";
                     </video>
                 </div>
                 <div class="video-info">
-                    <h1 id="movie-title"></h1>
+                    <div class="title-button-container">
+                            <h1 id="movie-title"></h1>
+                        <div class="button-container">
+                            <button id="add-button" class="add-delete-button"></button>
+                            <button id="delete-button" class="add-delete-button"></button>
+                        </div>
+                    </div>
+                    <p id="movie-release-date"></p>
                     <p id="movie-description"></p>
+
                 </div>
             </div>
         </div>
@@ -47,5 +55,6 @@ include BASE_PATH . "/public/templates/header.php";
         </div>
     </div>
     <script src="/public/js/dashboard.js"></script>
+    <script> const userId = <?php echo $userID ?>;</script>
     <script src="/public/js/watch.js"></script>
 </body>
