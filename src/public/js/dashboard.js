@@ -20,7 +20,7 @@ const Elements = {
     prevPageButton: document.getElementById("prevPageButton"),
     nextPageButton: document.getElementById("nextPageButton"),
     currentPageButton: document.getElementById("currentPageButton"),
-    playMainLinkButton: document.getElementById('play-btn-link')
+    playMainLinkButton: document.getElementById('play-btn-link'),
 }
 
 function handlePaginationButtons() {
@@ -55,14 +55,16 @@ function updateContents(contents) {
         if (Elements.playMainLinkButton){
             Elements.playMainLinkButton.href = `/watch?id=${contentId}`;
         }
-        addRecommendation(contentId, thumbnailPath);
+        addRecommendation(contentId, thumbnailPath, movieTitle, movieDescription);
 
 
         for (let i = 1; i < contents.length; i++) {
             const content = contents[i];
             const contentId = content.content_id;
             const thumbnailPath = content.thumbnail_file_path;
-            addRecommendation(contentId, thumbnailPath);
+            const movieTitle = content.title;
+            const movieDescription = content.description;
+            addRecommendation(contentId, thumbnailPath, movieTitle, movieDescription);
         }
         if (DashboardTable.searchState) {
             Elements.mostRecommendWrapper.style.maxHeight = '0';
@@ -75,7 +77,6 @@ function updateContents(contents) {
         noResultsMessage.textContent = 'No movies at the moment';
         Elements.recommendationsContainer.appendChild(noResultsMessage);
     }
-
 }
 
 async function fetchData()
@@ -129,16 +130,26 @@ function initEventListeners()
     });
 }
 
-function addRecommendation(contentId, thumbnailPath)
-{
+function addRecommendation(contentId, thumbnailPath, title) {
     const link = document.createElement('a');
     link.href = `/watch?id=${contentId}`;
+    link.classList.add('recommendation-link');
+
+    const recommendation = document.createElement('div');
+    recommendation.classList.add('recommendation');
 
     const image = document.createElement('img');
     image.src = thumbnailPath;
     image.alt = 'Movie Thumbnail';
 
-    link.appendChild(image);
+    const titleElement = document.createElement('h2');
+    titleElement.classList.add('recommendation-title');
+    titleElement.textContent = title;
+
+    recommendation.appendChild(image);
+    recommendation.appendChild(titleElement);
+    link.appendChild(recommendation);
+
     Elements.recommendationsContainer.appendChild(link);
 }
 

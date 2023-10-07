@@ -49,6 +49,10 @@ include BASE_PATH . "/public/templates/header.php";
         <div class="more-recommendation">
             <h2>Movies</h2>
             <div class="recommendations-content" id="search-result-container">
+                <div class="recommendation">
+                    <img src="" alt="Movie Thumbnail">
+                    <h2 class="recommendation-title"></h2>
+                </div>
             </div>
         </div>
         <div class="pagination">
