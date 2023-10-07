@@ -21,7 +21,7 @@ function showUploadModal($modalId, $modalTitle) {
                 <table class="new-content-modal">
                     <tr>
                         <td><label for="movie-title">Title</label></td>
-                        <td><input type="text" name="title" class="movie-title" required/></td>
+                        <td><input type="text" name="title" class="movie-title" id="movie-title" required/></td>
                     </tr>
                     <tr>
                         <td><label for="movie-description">Description</label></td>
@@ -31,6 +31,7 @@ function showUploadModal($modalId, $modalTitle) {
                                 class="movie-description"
                                 cols="auto"
                                 rows="5"
+                                id="movie-description"
                             ></textarea>
                         </td>
                     </tr>
@@ -41,18 +42,19 @@ function showUploadModal($modalId, $modalTitle) {
                                 type="date"
                                 name="release-date"
                                 class="movie-release-date"
+                                id="movie-release-date"
                                 required
                             />
                         </td>
                     </tr>
                     <tr>
                         <td><label for="movie-thumbnail">Thumbnail</label></td>
-                        <td><input type="file" name="thumbnail" class="movie-thumbnail" $isRequired />
+                        <td><input type="file" name="thumbnail" class="movie-thumbnail" id="movie-thumbnail" $isRequired />
                         </td>
                     </tr>
                     <tr>
                         <td><label for="movie-video">Video</label></td>
-                        <td><input type="file" name="video" class="movie-video" $isRequired /></td>
+                        <td><input type="file" name="video" class="movie-video" id="movie-video" $isRequired /></td>
                     </tr>
                 </table>
                 <button type="submit" class="submit-$modalId-button">Save</button>

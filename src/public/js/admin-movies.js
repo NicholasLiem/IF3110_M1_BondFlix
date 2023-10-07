@@ -287,6 +287,10 @@ function initEventListeners() {
         }
     });
 
+    Elements.closeEditContentModalButton.addEventListener("click", (event) => {
+        Elements.editContentModal.style.display = "none";
+    })
+
     document.addEventListener("click", (event) => {
         const target = event.target;
 
