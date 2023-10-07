@@ -18,17 +18,29 @@ include BASE_PATH . "/public/templates/header.php";
 <body>
     <div class="container">
         <?php include BASE_PATH . '/public/templates/navbar.php' ?>
-        <div class="stream-container">
-            <div class="video-wrapper">
-                <video controls autoplay id="video-element">
-                    <source src="" type="video/mp4" id="video-source">
-                    Your browser does not support the video tag.
-                </video>
+        <div class="wrapper" id="wrapper">
+            <div class="stream-container" id="stream-container">
+                <div class="video-wrapper">
+                    <video controls autoplay id="video-element" muted="muted">
+                        <source src="" type="video/mp4" id="video-source">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+                <div class="video-info">
+                    <h1 id="movie-title"></h1>
+                    <p id="movie-description"></p>
+                </div>
             </div>
-            <div class="video-info">
-                <h1 id="movie-title"></h1>
-                <p id="movie-description"></p>
+        </div>
+        <div class="more-recommendation">
+            <h2>Movies</h2>
+            <div class="recommendations-content" id="search-result-container">
             </div>
+        </div>
+        <div class="pagination">
+            <button id="prevPageButton">◄</button>
+            <button id="currentPageButton">1</button>
+            <button id="nextPageButton">►</button>
         </div>
     </div>
     <script src="/public/js/watch.js"></script>
