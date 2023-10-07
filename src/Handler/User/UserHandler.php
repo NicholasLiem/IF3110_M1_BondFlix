@@ -36,7 +36,9 @@ class UserHandler extends BaseHandler
             if (isset($params['username'])) {
                 $username = $params['username'];
                 $singleUser = $this->service->getUserByUsername($username);
-                $resultArray[] = $singleUser->toArray();
+                if ($singleUser){
+                    $resultArray[] = $singleUser->toArray();
+                }
             } else {
                 if (isset($params['query']) && isset($params['sortAscending'])) {
                     $query = $params['query'];

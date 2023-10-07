@@ -1,8 +1,8 @@
 <?php
 $pageTitle = 'User Dashboard';
-include BASE_PATH . "/public/templates/header.php";
 $adminSidebarTemplate = BASE_PATH . "/public/templates/admin-sidebar.php";
 $username = $_SESSION['username'];
+include BASE_PATH . "/public/templates/header.php";
 ?>
 
 <link rel="stylesheet" href="/public/css/admin-page.css">

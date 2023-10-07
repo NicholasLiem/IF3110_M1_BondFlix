@@ -43,7 +43,9 @@ class ContentHandler extends BaseHandler {
             $pageSize = isset($params['pageSize']) ? intval($params['pageSize']) : 10;
             if (isset($params['content_id'])) {
                 $content = $this->service->getContentById($params['content_id']);
-                $resultArray[] = $content->toArray();
+                if ($content){
+                    $resultArray[] = $content->toArray();
+                }
             } else {
                 if (isset($params['query']) && isset($params['sortAscending'])) {
                     $query = $params['query'];
