@@ -2,9 +2,9 @@
 $pageTitle = 'Movie Dashboard';
 $stylesheet = '/public/css/admin-movies.css';
 $script = 'admin.js';
-include BASE_PATH . "/public/templates/header.php";
 $adminSidebarTemplate = BASE_PATH . "/public/templates/admin-sidebar.php";
 $username = $_SESSION['username'];
+include BASE_PATH . "/public/templates/header.php";
 
 /**
  * @param $modalId : "new-content" | "edit-content"
@@ -96,9 +96,9 @@ function showUploadModal($modalId, $modalTitle) {
             showUploadModal("edit-content", "Edit Content");
         ?>
         <div class="pagination">
-            <button id="prevPageButton">Previous</button>
+            <button id="prevPageButton">◄</button>
             <button id="currentPageButton">1</button>
-            <button id="nextPageButton">Next</button>
+            <button id="nextPageButton">►</button>
         </div>
     </div>
     <script src="/public/js/admin-movies.js"></script>

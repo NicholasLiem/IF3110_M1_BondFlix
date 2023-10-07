@@ -8,6 +8,7 @@ const ContentTable = {
     filterEnabled: false,
     pageSize: 10,
 };
+let debounceTimer;
 
 const Elements = {
     /**
@@ -113,7 +114,7 @@ function updateTable(contents) {
             row.setAttribute("data-content-id", content.content_id);
 
             const contentFilePath = content.content_file_path.replace(
-                "/uploads/movies/",
+                "/uploads/videos/",
                 ""
             );
             const thumbnailFilePath = content.thumbnail_file_path.replace(
@@ -148,7 +149,8 @@ function handlePaginationButtons() {
     Elements.prevPageButton.disabled = ContentTable.currentPage === 1;
     Elements.currentPageButton.innerHTML = ContentTable.currentPage;
     Elements.nextPageButton.disabled =
-        ContentTable.currentPage === ContentTable.totalPages;
+        ContentTable.currentPage === ContentTable.totalPages ||
+        ContentTable.totalPages === 0;
 }
 
 async function fetchData() {
@@ -174,7 +176,10 @@ async function fetchData() {
 
 function initEventListeners() {
     Elements.searchInput.addEventListener("input", () => {
-        fetchData();
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(() => {
+            fetchData();
+        }, 500);
     });
 
     Elements.sortButton.addEventListener("click", () => {
@@ -236,22 +241,31 @@ function initEventListeners() {
                 .closest("tr")
                 .getAttribute("data-content-id");
 
-            try {
-                const httpClient = new HttpClient();
-                const response = await httpClient.delete(
-                    `/api/content?contentId=${contentId}`
-                );
-                const json = JSON.parse(response.body);
-                if (json.success) {
-                    alert("Delete operation successful");
-                    location.reload();
-                } else {
-                    console.error("Delete operation failed:", response.error);
-                    alert("Delete operation failed." + response.error);
+            const confirmDelete = window.confirm(
+                "Are you sure you want to delete this content?"
+            );
+
+            if (confirmDelete) {
+                try {
+                    const httpClient = new HttpClient();
+                    const response = await httpClient.delete(
+                        `/api/content?contentId=${contentId}`
+                    );
+                    const json = JSON.parse(response.body);
+                    if (json.success) {
+                        alert("Delete operation successful");
+                        location.reload();
+                    } else {
+                        console.error(
+                            "Delete operation failed:",
+                            response.error
+                        );
+                        alert("Delete operation failed." + response.error);
+                    }
+                } catch (error) {
+                    console.error("An error occurred during deletion:", error);
+                    alert("An error occurred during deletion.");
                 }
-            } catch (error) {
-                console.error("An error occurred during deletion:", error);
-                alert("An error occurred during deletion.");
             }
         }
     });
@@ -306,7 +320,7 @@ function initEventListeners() {
                 updatedVideoFilePath = await uploadFile(
                     httpClient,
                     updatedVideo,
-                    "contents"
+                    "videos"
                 );
             }
             if (updatedThumbnail !== undefined) {
@@ -403,7 +417,6 @@ async function uploadFile(httpClient, file, uploadType) {
         throw new Error(fileUploadResponseBody.message);
     }
 
-    console.log(fileUploadResponseBody);
     const uploadedFilePath = `/uploads/${uploadType}/${fileUploadResponseBody.data.file_name}`;
     return uploadedFilePath;
 }
@@ -414,7 +427,7 @@ async function onSubmitNewContentModal(modal) {
         const videoFilePath = await uploadFile(
             httpClient,
             Elements.newContentVideoInput.files[0],
-            "movies"
+            "videos"
         );
         const thumbnailFilePath = await uploadFile(
             httpClient,

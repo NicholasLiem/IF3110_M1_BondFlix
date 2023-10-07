@@ -41,10 +41,11 @@ class ContentHandler extends BaseHandler {
             $resultArray = [];
             $page = isset($params['page']) ? intval($params['page']) : 1;
             $pageSize = isset($params['pageSize']) ? intval($params['pageSize']) : 10;
-
             if (isset($params['content_id'])) {
                 $content = $this->service->getContentById($params['content_id']);
-                $resultArray[] = $content->toArray();
+                if ($content){
+                    $resultArray[] = $content->toArray();
+                }
             } else {
                 if (isset($params['query']) && isset($params['sortAscending'])) {
                     $query = $params['query'];
@@ -99,7 +100,7 @@ class ContentHandler extends BaseHandler {
         }
     }
 
-    protected function post($params = null)
+    protected function post($params = null): void
     {
         try {
             $title = $_POST['title'];
@@ -126,13 +127,10 @@ class ContentHandler extends BaseHandler {
         }
     }
 
-    protected function put($params = null)
+    protected function put($params = null): void
     {
         try {
-            $putData = file_get_contents('php://input');
-            parse_str($putData, $_PUT);
-
-            $content_id = $_PUT['content_id'];
+            $content_id = $params['content_id'];
 
             if (is_null($this->service->getContentById($content_id))) {
                 $response = new Response(false, HttpStatusCode::BAD_REQUEST, "Content not found", null);
@@ -172,12 +170,13 @@ class ContentHandler extends BaseHandler {
     protected function delete($params = null): void
     {
         try {
-            if (is_null($this->service->getContentById($params['contentId']))) {
+            $content = $this->service->getContentById($params['contentId']);
+            if (is_null($content)) {
                 $response = new Response(false, HttpStatusCode::BAD_REQUEST, "Content not found", null);
                 $response->encode_to_JSON();
                 return;
             }
-            $this->service->removeContent($params['contentId']);
+            $this->service->removeContent($params['contentId'], $content->getThumbnailFilePath(), $content->getContentFilePath());
             $response = new Response(true, HttpStatusCode::OK, "Content deleted successfully", null);
             $response->encode_to_JSON();
         } catch (Exception $e) {

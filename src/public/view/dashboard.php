@@ -12,33 +12,32 @@ $isAdmin = $_SESSION['is_admin'];
 $pageTitle = 'User Dashboard';
 include BASE_PATH . "/public/templates/header.php";
 ?>
-
 <link rel="stylesheet" href="/public/css/dashboard.css">
-<script src="/public/js/dashboard.js" defer></script>
-
 <body>
-    <?php
-        include BASE_PATH . '/public/templates/navbar.php'
-    ?>
-    <main>
-        <div>
+    <?php include BASE_PATH . '/public/templates/navbar.php' ?>
+    <div class="container">
+        <div id="most-recommended-wrapper">
             <div id="most-recommended">
                 <div class="description-card">
                     <h2>
                         Movie Title
                     </h2>
                     <p>
-                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Sit impedit ea, totam saepe quibusdam assumenda ducimus tempora aliquam! Nostrum animi quis cupiditate autem commodi placeat delectus facilis eum saepe dolor.
+                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Sit impedit ea, totam saepe quibusdam
+                        assumenda ducimus tempora aliquam! Nostrum animi quis cupiditate autem commodi placeat delectus
+                        facilis eum saepe dolor.
                     </p>
                     <div id="btns-container">
                         <button id="play-btn">
                             <div class="btn-content">
-                                <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.348a1.125 1.125 0 010 1.971l-11.54 6.347a1.125 1.125 0 01-1.667-.985V5.653z"></path>
+                                <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"
+                                     xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                          d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.348a1.125 1.125 0 010 1.971l-11.54 6.347a1.125 1.125 0 01-1.667-.985V5.653z"></path>
                                 </svg>
                                 <span>
-                                    &nbsp;Play
-                                </span>
+                                        &nbsp;Play
+                                    </span>
                             </div>
                         </button>
                         <button id="more-info-btn">
@@ -50,29 +49,24 @@ include BASE_PATH . "/public/templates/header.php";
                                     </g>
                                 </svg>
                                 <span>
-                                    &nbsp;More info
-                                </span>
+                                        &nbsp;More info
+                                    </span>
                             </div>
                         </button>
                     </div>
                 </div>
             </div>
-            <div class="more-recommendation">
-                <h2>Most Popular Movies</h2>
-                <div class="recommendations-content">
-                    <img src="/public/thumbnail1.jpg" alt="thumbnail1">
-                    <img src="/public/thumbnail2.jpg" alt="thumbnail2">
-                    <img src="/public/thumbnail3.jpg" alt="thumbnail3">
-                    <img src="/public/thumbnail4.jpg" alt="thumbnail4">
-                </div>
+        </div>
+        <div class="more-recommendation">
+            <h2>List of Movies</h2>
+            <div class="recommendations-content" id="search-result-container">
             </div>
         </div>
-    </main>
-    <!-- <h1>Welcome to the Dashboard, <?php echo htmlspecialchars($username); ?></h1>
-    <p>User ID: <?php echo htmlspecialchars($userID); ?></p>
-    <p>Username: <?php echo htmlspecialchars($username); ?></p>
-    <p>Is Admin: <?php echo $isAdmin ? 'Yes' : 'No'; ?></p>
-
-
-    <a href="logout">Logout</a> -->
+        <div class="pagination">
+            <button id="prevPageButton">◄</button>
+            <button id="currentPageButton">1</button>
+            <button id="nextPageButton">►</button>
+        </div>
+    </div>
+    <script src="/public/js/dashboard.js"></script>
 </body>

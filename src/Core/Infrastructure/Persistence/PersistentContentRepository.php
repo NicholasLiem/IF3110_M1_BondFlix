@@ -12,8 +12,6 @@ use Exception;
 use PDO;
 use Utils\Logger\Logger;
 
-//TODO: exception handling, send error message to logger
-
 class PersistentContentRepository implements ContentRepository
 {
     private PDO $db;
@@ -25,7 +23,13 @@ class PersistentContentRepository implements ContentRepository
     public function getContentById(int $content_id): ?Content
     {
         $stmt = $this->db->prepare("
-            SELECT *
+            SELECT 
+                content_id,
+                title,
+                description,
+                release_date,
+                content_file_path,
+                thumbnail_file_path
             FROM content
             WHERE content_id = :content_id
         ");

@@ -1,8 +1,8 @@
 <?php
 $pageTitle = 'User Dashboard';
-include BASE_PATH . "/public/templates/header.php";
 $adminSidebarTemplate = BASE_PATH . "/public/templates/admin-sidebar.php";
 $username = $_SESSION['username'];
+include BASE_PATH . "/public/templates/header.php";
 ?>
 
 <link rel="stylesheet" href="/public/css/admin-page.css">
@@ -37,9 +37,9 @@ $username = $_SESSION['username'];
         </table>
 
         <div class="pagination">
-            <button id="prevPageButton">Previous</button>
+            <button id="prevPageButton">◄</button>
             <button id="currentPageButton">1</button>
-            <button id="nextPageButton">Next</button>
+            <button id="nextPageButton">►</button>
         </div>
 
         <div id="editUserModal" class="modal">

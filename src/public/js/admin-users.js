@@ -10,6 +10,7 @@ const UserTable = {
     filterEnabled: false,
     pageSize: 10,
 };
+let debounceTimer;
 
 const Elements = {
     searchInput: document.getElementById("search-input"),
@@ -95,7 +96,7 @@ function handlePaginationButtons() {
     Elements.currentPageButton.innerHTML = UserTable.currentPage;
     Elements.prevPageButton.disabled = UserTable.currentPage === 1;
     Elements.nextPageButton.disabled =
-        UserTable.currentPage === UserTable.totalPages;
+        UserTable.currentPage === UserTable.totalPages || UserTable.totalPages === 0;
 }
 
 async function fetchData() {
@@ -121,7 +122,10 @@ async function fetchData() {
 
 function initEventListeners() {
     Elements.searchInput.addEventListener("input", () => {
-        fetchData();
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(() => {
+            fetchData();
+        }, 500);
     });
 
     Elements.sortButton.addEventListener("click", () => {
@@ -233,22 +237,26 @@ function initEventListeners() {
         ) {
             const userId = target.closest("tr").getAttribute("data-user-id");
 
-            try {
-                const httpClient = new HttpClient();
-                const response = await httpClient.delete(
-                    `/api/users?userId=${userId}`
-                );
-                const json = JSON.parse(response.body);
-                if (json.success) {
-                    alert("Delete operation successful");
-                    location.reload();
-                } else {
-                    console.error("Delete operation failed:", response.error);
-                    alert("Delete operation failed." + response.error);
+            const confirmDelete = window.confirm("Are you sure you want to delete this user?");
+
+            if (confirmDelete) {
+                try {
+                    const httpClient = new HttpClient();
+                    const response = await httpClient.delete(
+                        `/api/users?userId=${userId}`
+                    );
+                    const json = JSON.parse(response.body);
+                    if (json.success) {
+                        alert("Delete operation successful");
+                        location.reload();
+                    } else {
+                        console.error("Delete operation failed:", response.error);
+                        alert("Delete operation failed." + response.error);
+                    }
+                } catch (error) {
+                    console.error("An error occurred during deletion:", error);
+                    alert("An error occurred during deletion.");
                 }
-            } catch (error) {
-                console.error("An error occurred during deletion:", error);
-                alert("An error occurred during deletion.");
             }
         }
     });
@@ -295,6 +303,11 @@ function initEventListeners() {
         const is_admin = Elements.editAdminSelect.value === "true"; // Convert to boolean
         const is_subscribed = Elements.editSubscriptionSelect.value === "true"; // Convert to boolean
 
+        if (password !== '' && password.length < 6) {
+            alert("Password must be at least 6 characters long.");
+            return;
+        }
+
         const updatedUserData = {
             userId,
             username: username,
@@ -305,22 +318,30 @@ function initEventListeners() {
             is_subscribed: is_subscribed,
         };
 
-        try {
-            const httpClient = new HttpClient();
-            const response = await httpClient.put(
-                `/api/users?userId=${userId}`,
-                updatedUserData,
-                false
-            );
-            const json = JSON.parse(response.body);
-            if (json.success) {
-                alert("Edit operation successful");
-                location.reload();
-            } else {
-                console.error("Edit operation failed:", json.error);
-                alert("Edit operation failed: " + json.error);
+        const confirmEdit = window.confirm("Are you sure you want to edit this user?");
+
+        if (confirmEdit)
+        {
+            try {
+                const httpClient = new HttpClient();
+                const response = await httpClient.put(
+                    `/api/users?userId=${userId}`,
+                    updatedUserData,
+                    false
+                );
+                const json = JSON.parse(response.body);
+                if (json.success) {
+                    alert("Edit operation successful");
+                    location.reload();
+                } else {
+                    console.error("Edit operation failed:", json.error);
+                    alert("Edit operation failed: " + json.error);
+                }
+            } catch (e) {
+                console.error("Edit operation failed");
+                alert("Edit operation failed");
             }
-        } catch (e) {}
+        }
     });
 }
 
