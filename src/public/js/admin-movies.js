@@ -1,7 +1,7 @@
 const helper = new Helper();
 const ContentTable = {
     data: {},
-    currentUserId: null,
+    currentContentId: null,
     currentPage: 1,
     totalPages: 1,
     isAscending: true,
@@ -31,33 +31,65 @@ const Elements = {
     /**
      * New Content Modal
      */
+    openNewContentModalButton: document.getElementById("add-content-button"),
     newContentModal: document.getElementById("new-content-modal"),
-    openContentModalButton: document.getElementById("add-content-button"),
-    closeNewContentModalButton: document.getElementById("close-new-content-modal"),
-    submitContentButton: document.getElementById("submit-new-content-button"),
-
-    /**
-     * Edit Content Modal
-     */
-    editUserModal: document.getElementById("editUserModal"),
-    editUsernameInput: document.getElementById("editUsername"),
-    editFirstNameInput: document.getElementById("editFirstName"),
-    editLastNameInput: document.getElementById("editLastName"),
-    passwordInput: document.getElementById("editPassword"),
-    editAdminSelect: document.getElementById("editStatusAdmin"),
-    editSubscriptionSelect: document.getElementById("editStatusSubscription"),
-    closeEditModalButton: document.getElementById("close-edit"),
-    saveEditButton: document.getElementById("saveEditButton"),
+    closeNewContentModalButton: document.getElementById(
+        "close-new-content-modal"
+    ),
+    submitNewContentButton: document.querySelector(
+        ".submit-new-content-button"
+    ),
 
     /**
      * Add Content Form
      */
-    uploadForm: document.getElementById("upload-form"),
-    titleInput: document.getElementById("movie-title"),
-    descriptionInput: document.getElementById("movie-description"),
-    releaseDateInput: document.getElementById("movie-release-date"),
-    thumbnailInput: document.getElementById("movie-thumbnail"),
-    videoInput: document.getElementById("movie-video"),
+    newContentForm: document.getElementById("new-content-form"),
+    newContentTitleInput: document.querySelector(
+        "#new-content-form .movie-title"
+    ),
+    newContentDescriptionInput: document.querySelector(
+        "#new-content-form .movie-description"
+    ),
+    newContentReleaseDateInput: document.querySelector(
+        "#new-content-form .movie-release-date"
+    ),
+    newContentThumbnailInput: document.querySelector(
+        "#new-content-form .movie-thumbnail"
+    ),
+    newContentVideoInput: document.querySelector(
+        "#new-content-form .movie-video"
+    ),
+
+    /**
+     * Edit Content Modal
+     */
+    editContentModal: document.getElementById("edit-content-modal"),
+    closeEditContentModalButton: document.getElementById(
+        "close-edit-content-modal"
+    ),
+    submitEditContentButton: document.querySelector(
+        ".submit-edit-content-button"
+    ),
+
+    /**
+     * Edit Content Form
+     */
+    editContentForm: document.getElementById("edit-content-form"),
+    editContentTitleInput: document.querySelector(
+        "#edit-content-form .movie-title"
+    ),
+    editContentDescriptionInput: document.querySelector(
+        "#edit-content-form .movie-description"
+    ),
+    editContentReleaseDateInput: document.querySelector(
+        "#edit-content-form .movie-release-date"
+    ),
+    editContentThumbnailInput: document.querySelector(
+        "#edit-content-form .movie-thumbnail"
+    ),
+    editContentVideoInput: document.querySelector(
+        "#edit-content-form .movie-video"
+    ),
 };
 
 const Constants = {
@@ -80,8 +112,14 @@ function updateTable(contents) {
             const row = tableBody.insertRow();
             row.setAttribute("data-content-id", content.content_id);
 
-            const contentFilePath = content.content_file_path.replace("/uploads/movies/", "");
-            const thumbnailFilePath = content.thumbnail_file_path.replace("/uploads/thumbnails/", "");
+            const contentFilePath = content.content_file_path.replace(
+                "/uploads/movies/",
+                ""
+            );
+            const thumbnailFilePath = content.thumbnail_file_path.replace(
+                "/uploads/thumbnails/",
+                ""
+            );
 
             row.innerHTML = `
             <td>${content.content_id}</td>
@@ -179,52 +217,12 @@ function initEventListeners() {
         }
     });
 
-    Elements.openContentModalButton.addEventListener("click", () => {
+    Elements.openNewContentModalButton.addEventListener("click", () => {
         Elements.newContentModal.style.display = "block";
     });
 
     Elements.closeNewContentModalButton.addEventListener("click", () => {
         Elements.newContentModal.style.display = "none";
-    });
-
-    Elements.uploadForm.addEventListener("submit", async (event) => {
-        event.preventDefault();
-
-        try {
-            const httpClient = new HttpClient();
-            const videoFilePath = await uploadFile(
-                httpClient,
-                Elements.videoInput.files[0],
-                "movies"
-            );
-            const thumbnailFilePath = await uploadFile(
-                httpClient,
-                Elements.thumbnailInput.files[0],
-                "thumbnails"
-            );
-            const addContentParams = {
-                title: Elements.titleInput.value,
-                description: Elements.descriptionInput.value,
-                release_date: Elements.releaseDateInput.value,
-                content_file_path: videoFilePath,
-                thumbnail_file_path: thumbnailFilePath,
-            };
-
-            const addContentResponseData = await addContent(
-                httpClient,
-                addContentParams
-            );
-
-            if (addContentResponseData){
-                alert("Success adding new content!")
-                window.location.reload();
-            }
-        } catch (err) {
-            alert(err.message);
-            console.error(err);
-        }
-
-
     });
 
     document.addEventListener("click", async (event) => {
@@ -234,7 +232,9 @@ function initEventListeners() {
             target.classList.contains("delete-button") ||
             target.id === "delete-button"
         ) {
-            const contentId = target.closest("tr").getAttribute("data-content-id");
+            const contentId = target
+                .closest("tr")
+                .getAttribute("data-content-id");
 
             try {
                 const httpClient = new HttpClient();
@@ -258,22 +258,95 @@ function initEventListeners() {
 
     helper.openModal(
         Elements.newContentModal,
-        Elements.openContentModalButton,
+        Elements.openNewContentModalButton,
         Elements.closeNewContentModalButton,
-        Elements.submitContentButton,
-        onSubmitContentModal,
+        Elements.submitNewContentButton,
+        onSubmitNewContentModal
     );
 
-    Elements.closeEditModalButton.addEventListener("click", () => {
-        Elements.editUserModal.style.display = "none";
-    });
-
     window.addEventListener("click", (event) => {
-        if (event.target === Elements.editUserModal) {
-            Elements.editUserModal.style.display = "none";
+        if (event.target === Elements.editContentModal) {
+            Elements.editContentModal.style.display = "none";
         }
         if (event.target === Elements.newContentModal) {
             Elements.newContentModal.style.display = "none";
+        }
+    });
+
+    document.addEventListener("click", (event) => {
+        const target = event.target;
+
+        if (target.classList.contains("edit-button")) {
+            const contentId = target
+                .closest("tr")
+                .getAttribute("data-content-id");
+            const content = ContentTable.data.find(
+                (content) => content.content_id === parseInt(contentId)
+            );
+
+            ContentTable.currentContentId = contentId;
+
+            Elements.editContentTitleInput.value = content.title;
+            Elements.editContentDescriptionInput.value = content.description;
+            Elements.editContentReleaseDateInput.value = content.release_date;
+
+            Elements.editContentModal.style.display = "block";
+        }
+    });
+
+    Elements.editContentForm.addEventListener("submit", async (event) => {
+        try {
+            const httpClient = new HttpClient();
+            const updatedVideo = Elements.editContentVideoInput.files[0];
+            const updatedThumbnail =
+                Elements.editContentThumbnailInput.files[0];
+            let updatedVideoFilePath = null;
+            let updatedThumbnailFilePath = null;
+            if (updatedVideo !== undefined) {
+                updatedVideoFilePath = await uploadFile(
+                    httpClient,
+                    updatedVideo,
+                    "contents"
+                );
+            }
+            if (updatedThumbnail !== undefined) {
+                updatedThumbnailFilePath = await uploadFile(
+                    httpClient,
+                    updatedThumbnail,
+                    "thumbnails"
+                );
+            }
+            const updateContentParams = {
+                content_id: ContentTable.currentContentId,
+                title: Elements.editContentTitleInput.value,
+                description: Elements.editContentDescriptionInput.value,
+                release_date: Elements.editContentReleaseDateInput.value,
+            };
+
+            if (updatedVideoFilePath !== null) {
+                updateContentParams["content_file_path"] = updatedVideoFilePath;
+            }
+            if (updatedThumbnailFilePath !== null) {
+                updateContentParams["thumbnail_file_path"] =
+                    updatedThumbnailFilePath;
+            }
+
+            console.log(updateContentParams);
+
+            const updateContentResponseData = await updateContent(
+                httpClient,
+                updateContentParams
+            );
+
+            if (updateContentResponseData) {
+                alert("Success updating content!");
+                window.location.reload();
+            }
+        } catch (err) {
+            alert(err.message);
+            console.error(err);
+        } finally {
+            Elements.editContentModal.style.display = "none";
         }
     });
 }
@@ -301,6 +374,23 @@ async function addContent(httpClient, addContentParams) {
     return addContentResponseBody.data;
 }
 
+async function updateContent(httpClient, updateContentParams) {
+    const updateContentResponse = await httpClient.put(
+        "/api/content",
+        updateContentParams,
+        false
+    );
+
+    const updateContentResponseBody = JSON.parse(updateContentResponse.body);
+    if (!updateContentResponseBody.success) {
+        throw new Error(
+            "Failed to update content: " + updateContentResponseBody.message
+        );
+    }
+
+    return updateContentResponseBody.data;
+}
+
 async function uploadFile(httpClient, file, uploadType) {
     const fileUploadResponse = await httpClient.uploadFile(
         "/api/upload",
@@ -318,23 +408,23 @@ async function uploadFile(httpClient, file, uploadType) {
     return uploadedFilePath;
 }
 
-async function onSubmitContentModal(modal) {
+async function onSubmitNewContentModal(modal) {
     try {
         const httpClient = new HttpClient();
         const videoFilePath = await uploadFile(
             httpClient,
-            Elements.videoInput.files[0],
+            Elements.newContentVideoInput.files[0],
             "movies"
         );
         const thumbnailFilePath = await uploadFile(
             httpClient,
-            Elements.thumbnailInput.files[0],
+            Elements.newContentThumbnailInput.files[0],
             "thumbnails"
         );
         const addContentParams = {
-            title: Elements.titleInput.value,
-            description: Elements.descriptionInput.value,
-            release_date: Elements.releaseDateInput.value,
+            title: Elements.newContentTitleInput.value,
+            description: Elements.newContentDescriptionInput.value,
+            release_date: Elements.newContentReleaseDateInput.value,
             content_file_path: videoFilePath,
             thumbnail_file_path: thumbnailFilePath,
         };
@@ -343,15 +433,16 @@ async function onSubmitContentModal(modal) {
             addContentParams
         );
 
-        if (addContentResponseData){
-            alert("Success adding new content!")
+        if (addContentResponseData) {
+            alert("Success adding new content!");
             window.location.reload();
         }
     } catch (err) {
         alert(err.message);
         console.error(err);
+    } finally {
+        modal.style.display = "none";
     }
-    modal.style.display = "none";
 }
 
 initEventListeners();
