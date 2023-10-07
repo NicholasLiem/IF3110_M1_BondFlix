@@ -1,6 +1,7 @@
 const helper = new Helper();
 const DashboardTable = {
     data: {},
+    firstContent: null,
     currentPage: 1,
     totalPages: 1,
     isAscending: true,
@@ -19,6 +20,7 @@ const Elements = {
     prevPageButton: document.getElementById("prevPageButton"),
     nextPageButton: document.getElementById("nextPageButton"),
     currentPageButton: document.getElementById("currentPageButton"),
+    playMainLinkButton: document.getElementById('play-btn-link')
 }
 
 function handlePaginationButtons() {
@@ -31,11 +33,37 @@ function updateContents(contents) {
     Elements.recommendationsContainer.innerHTML = '';
 
     if (contents && contents.length > 0) {
-        contents.forEach((content) => {
+        if (!DashboardTable.firstContent) {
+            DashboardTable.firstContent = contents[0];
+        }
+        const firstContent = DashboardTable.firstContent;
+        const contentId = firstContent.content_id;
+        const thumbnailPath = firstContent.thumbnail_file_path;
+        const movieTitle = firstContent.title;
+        const movieDescription = firstContent.description;
+
+        if (Elements.mostRecommend){
+            Elements.mostRecommend.style.backgroundImage = `url('${thumbnailPath}')`;
+        }
+
+        if (document.querySelector('.description-card')){
+            const descriptionCard =document.querySelector('.description-card');
+            descriptionCard.querySelector('h2').textContent = movieTitle;
+            descriptionCard.querySelector('p').textContent = movieDescription;
+        }
+
+        if (Elements.playMainLinkButton){
+            Elements.playMainLinkButton.href = `/watch?id=${contentId}`;
+        }
+        addRecommendation(contentId, thumbnailPath);
+
+
+        for (let i = 1; i < contents.length; i++) {
+            const content = contents[i];
             const contentId = content.content_id;
             const thumbnailPath = content.thumbnail_file_path;
             addRecommendation(contentId, thumbnailPath);
-        })
+        }
         if (DashboardTable.searchState) {
             Elements.mostRecommendWrapper.style.maxHeight = '0';
         } else {

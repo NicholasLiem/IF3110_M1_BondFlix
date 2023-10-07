@@ -93,17 +93,6 @@ const Elements = {
     ),
 };
 
-const Constants = {
-    BUTTON_TEXT: {
-        ENABLED: "✓",
-        DISABLED: "✗",
-    },
-    BUTTON_CLASSES: {
-        ENABLED: "green-status",
-        DISABLED: "red-status",
-    },
-};
-
 function updateTable(contents) {
     const tableBody = document.querySelector("table tbody");
     tableBody.innerHTML = "";
@@ -287,7 +276,7 @@ function initEventListeners() {
         }
     });
 
-    Elements.closeEditContentModalButton.addEventListener("click", (event) => {
+    Elements.closeEditContentModalButton.addEventListener("click", () => {
         Elements.editContentModal.style.display = "none";
     })
 
@@ -312,7 +301,7 @@ function initEventListeners() {
         }
     });
 
-    Elements.editContentForm.addEventListener("submit", async (event) => {
+    Elements.editContentForm.addEventListener("submit", async () => {
         try {
             const httpClient = new HttpClient();
             const updatedVideo = Elements.editContentVideoInput.files[0];
@@ -424,8 +413,7 @@ async function uploadFile(httpClient, file, uploadType) {
         throw new Error(fileUploadResponseBody.message);
     }
 
-    const uploadedFilePath = `/uploads/${uploadType}/${fileUploadResponseBody.data.file_name}`;
-    return uploadedFilePath;
+    return `/uploads/${uploadType}/${fileUploadResponseBody.data.file_name}`;
 }
 
 async function onSubmitNewContentModal(modal) {
