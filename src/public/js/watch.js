@@ -1,13 +1,11 @@
-const helper = new Helper();
-
-const Elements = {
+const VideoElements = {
     videoSource: document.getElementById('video-source'),
     videoElement: document.getElementById('video-element'),
     title: document.getElementById('movie-title'),
     description: document.getElementById('movie-description')
 }
 
-async function fetchData() {
+async function fetchVideoData() {
     try {
         const httpClient = new HttpClient();
         const contentId = helper.getUrlParameter('id');
@@ -33,18 +31,18 @@ async function fetchData() {
 }
 
 function updateSource(videoPath) {
-    const videoElement = Elements.videoElement;
+    const videoElement = VideoElements.videoElement;
     if (videoElement) {
         videoElement.pause();
-        Elements.videoSource.src = videoPath;
+        VideoElements.videoSource.src = videoPath;
         videoElement.load();
         videoElement.play();
     }
 }
 
 function updateTitleAndDescription(title, description) {
-    const titleElement = Elements.title;
-    const descriptionElement = Elements.description;
+    const titleElement = VideoElements.title;
+    const descriptionElement = VideoElements.description;
 
     if (titleElement && descriptionElement) {
         titleElement.innerHTML = title;
@@ -53,4 +51,4 @@ function updateTitleAndDescription(title, description) {
 }
 
 
-fetchData();
+fetchVideoData();
