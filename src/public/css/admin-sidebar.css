@@ -1,68 +1,69 @@
 .admin-sidebar {
-  position: fixed;
-  display: flex;
-  flex-direction: column;
-  background-color: black;
-  width: 200px;
-  height: 100vh;
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    background-color: black;
+    width: 200px;
+    height: 100vh;
+    z-index: 2;
 }
 
 .admin-sidebar .logo-img {
-  height: 40px;
-  width: auto;
+    height: 40px;
+    width: auto;
 }
 
 .admin-sidebar ul {
-  display: flex;
-  height: 100%;
-  flex-direction: column;
-  padding: 5px 25px;
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+    padding: 5px 25px;
 }
 
 .admin-sidebar li {
-  list-style: none;
-  margin: 8px;
+    list-style: none;
+    margin: 8px;
 }
 
 .admin-sidebar a {
-  color: white;
-  text-decoration: none;
-  font-family: "Roboto", sans-serif;
-  font-size: 16px;
+    color: white;
+    text-decoration: none;
+    font-family: "Roboto", sans-serif;
+    font-size: 16px;
 }
 
 .admin-sidebar .sidebar-item {
-  background-color: transparent;
-  padding: 5px;
-  border-radius: 4px;
-  transition: background-color 0.3s ease;
+    background-color: transparent;
+    padding: 5px;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
 }
 
 .admin-sidebar .sidebar-item:hover {
-  background-color: #E50914;
-  cursor: pointer;
+    background-color: #e50914;
+    cursor: pointer;
 }
 
 .admin-sidebar ul li:last-child {
-  margin-top: auto;
+    margin-top: auto;
 }
 
 .admin-sidebar ul li:last-child a {
-  color: red;
-  font-weight: bold;
+    color: red;
+    font-weight: bold;
 }
 
 .admin-sidebar ul li:last-child a:hover {
-  background-color: transparent;
-  color: #fff;
+    background-color: transparent;
+    color: #fff;
 }
 
 h3 {
-  font-weight: normal;
-  font-family: "Roboto", "sans-serif";
-  text-align: center;
-  font-size: 16px;
-  color: #fff;
-  padding: 0;
-  margin: 0;
+    font-weight: normal;
+    font-family: "Roboto", "sans-serif";
+    text-align: center;
+    font-size: 16px;
+    color: #fff;
+    padding: 0;
+    margin: 0;
 }
