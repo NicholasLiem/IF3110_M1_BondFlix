@@ -138,11 +138,11 @@ class ContentHandler extends BaseHandler {
                 return;
             }
 
-            $title = $_PUT['title'] ?? null;
-            $description = $_PUT['description'] ?? null;
-            $release_date = $_PUT['release_date'] ?? null;
-            $content_file_path = $_PUT['content_file_path'] ?? null;
-            $thumbnail_file_path = $_PUT['thumbnail_file_path'] ?? null;
+            $title = $params['title'] ?? null;
+            $description = $params['description'] ?? null;
+            $release_date = $params['release_date'] ?? null;
+            $content_file_path = $params['content_file_path'] ?? null;
+            $thumbnail_file_path = $params['thumbnail_file_path'] ?? null;
 
             $content = $this->service->updateContent(
                 $content_id,
