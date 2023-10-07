@@ -5,6 +5,7 @@ namespace Container;
 use Core\Application\Repositories\CategoryRepository;
 use Core\Application\Repositories\ContentRepository;
 use Core\Application\Repositories\GenreRepository;
+use Core\Application\Repositories\MyListRepository;
 use Core\Application\Repositories\UserRepository;
 use Exception;
 use Utils\Logger\Logger;
@@ -15,18 +16,22 @@ class RepositoryContainer
     private ContentRepository $contentRepository;
     private GenreRepository $genreRepository;
     private CategoryRepository $categoryRepository;
+    private MyListRepository $myListRepository;
+
+
 
     /**
      * @param UserRepository $userRepository
      * @param ContentRepository $contentRepository
      * @param GenreRepository $genreRepository
      */
-    public function __construct(UserRepository $userRepository, ContentRepository $contentRepository, GenreRepository $genreRepository, CategoryRepository $categoryRepository)
+    public function __construct(UserRepository $userRepository, ContentRepository $contentRepository, GenreRepository $genreRepository, CategoryRepository $categoryRepository, MyListRepository $myListRepository)
     {
         $this->userRepository = $userRepository;
         $this->contentRepository = $contentRepository;
         $this->genreRepository = $genreRepository;
         $this->categoryRepository = $categoryRepository;
+        $this->myListRepository = $myListRepository;
     }
 
     /**
@@ -86,13 +91,37 @@ class RepositoryContainer
         $this->genreRepository = $genreRepository;
     }
 
-    public function getCategoryRepository(): CategoryRepository 
+    /**
+     * @throws Exception
+     */
+    public function getCategoryRepository(): CategoryRepository
     {
+        if (!isset($this->categoryRepository)) {
+            Logger::getInstance()->logMessage("Failed to load CategoryRepository repository");
+            throw new Exception("Repository 'CategoryRepository' not found in the container.");
+        }
         return $this->categoryRepository;
     }
 
     public function setCategoryRepository(CategoryRepository $categoryRepository): void
     {
         $this->categoryRepository = $categoryRepository;
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function getMyListRepository(): MyListRepository
+    {
+        if (!isset($this->myListRepository)) {
+            Logger::getInstance()->logMessage("Failed to load MyListRepository repository");
+            throw new Exception("Repository 'MyListRepository' not found in the container.");
+        }
+        return $this->myListRepository;
+    }
+
+    public function setMyListRepository(MyListRepository $myListRepository): void
+    {
+        $this->myListRepository = $myListRepository;
     }
 }

@@ -68,7 +68,7 @@ body {
 }
 
 #most-recommended {
-    background-image: url(/public/assets/up-movie.jpg);
+    background-color: black;
     background-position: center;
     background-size: cover;
     width: 100%;

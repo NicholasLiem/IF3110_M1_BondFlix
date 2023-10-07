@@ -2,7 +2,8 @@ const VideoElements = {
     videoSource: document.getElementById('video-source'),
     videoElement: document.getElementById('video-element'),
     title: document.getElementById('movie-title'),
-    description: document.getElementById('movie-description')
+    description: document.getElementById('movie-description'),
+    releaseDate: document.getElementById('movie-release-date')
 }
 
 async function fetchVideoData() {
@@ -18,7 +19,8 @@ async function fetchVideoData() {
             const contentFilePath = data.data[0].content_file_path;
             const movieTitle = data.data[0].title;
             const movieDescription = data.data[0].description;
-            updateTitleAndDescription(movieTitle, movieDescription);
+            const movieReleaseDate = data.data[0].release_date;
+            updateTitleAndDescription(movieTitle, movieDescription, movieReleaseDate);
             updateSource(contentFilePath);
         } else {
             window.location.href = '/404';
@@ -39,13 +41,15 @@ function updateSource(videoPath) {
     }
 }
 
-function updateTitleAndDescription(title, description) {
+function updateTitleAndDescription(title, description, releaseDate) {
     const titleElement = VideoElements.title;
     const descriptionElement = VideoElements.description;
+    const releaseDateElement = VideoElements.releaseDate;
 
-    if (titleElement && descriptionElement) {
+    if (titleElement && descriptionElement && releaseDateElement) {
         titleElement.innerHTML = title;
         descriptionElement.textContent = description;
+        releaseDateElement.textContent = "Released at " + releaseDate;
     }
 }
 

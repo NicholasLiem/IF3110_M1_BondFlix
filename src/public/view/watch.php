@@ -31,6 +31,7 @@ include BASE_PATH . "/public/templates/header.php";
                 </div>
                 <div class="video-info">
                     <h1 id="movie-title"></h1>
+                    <p id="movie-release-date"></p>
                     <p id="movie-description"></p>
                 </div>
             </div>
