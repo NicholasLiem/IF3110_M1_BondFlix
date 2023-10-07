@@ -12,7 +12,6 @@ include BASE_PATH . "/public/templates/header.php";
  */
 function showUploadModal($modalId, $modalTitle) {
     $isRequired = ($modalId === "new-content") ? "required" : "";
-
     echo <<< HTML
     <div id="$modalId-modal" class="modal">
         <div class="modal-content">
@@ -22,7 +21,7 @@ function showUploadModal($modalId, $modalTitle) {
                 <table class="new-content-modal">
                     <tr>
                         <td><label for="movie-title">Title</label></td>
-                        <td><input type="text" name="title" class="movie-title" required/></td>
+                        <td><input type="text" name="title" class="movie-title" id="movie-title" required/></td>
                     </tr>
                     <tr>
                         <td><label for="movie-description">Description</label></td>
@@ -32,6 +31,7 @@ function showUploadModal($modalId, $modalTitle) {
                                 class="movie-description"
                                 cols="auto"
                                 rows="5"
+                                id="movie-description"
                             ></textarea>
                         </td>
                     </tr>
@@ -42,21 +42,22 @@ function showUploadModal($modalId, $modalTitle) {
                                 type="date"
                                 name="release-date"
                                 class="movie-release-date"
+                                id="movie-release-date"
                                 required
                             />
                         </td>
                     </tr>
                     <tr>
                         <td><label for="movie-thumbnail">Thumbnail</label></td>
-                        <td><input type="file" name="thumbnail" class="movie-thumbnail" $isRequired />
+                        <td><input type="file" name="thumbnail" class="movie-thumbnail" id="movie-thumbnail" $isRequired />
                         </td>
                     </tr>
                     <tr>
                         <td><label for="movie-video">Video</label></td>
-                        <td><input type="file" name="video" class="movie-video" $isRequired /></td>
+                        <td><input type="file" name="video" class="movie-video" id="movie-video" $isRequired /></td>
                     </tr>
                 </table>
-                <button type="submit" class="submit-$modalId-button">Upload</button>
+                <button type="submit" class="submit-$modalId-button">Save</button>
             </form>
         </div>
     </div>
@@ -71,7 +72,7 @@ function showUploadModal($modalId, $modalTitle) {
 <body>
     <div class="content">
         <div class="search-bar">
-            <input type="text" id="search-input" placeholder="Search by title">
+            <input type="text" id="search-input" placeholder="Search by title or description">
             <button id="sort-button" class="search-bar-button">Sort Title ↑</button>
             <button id="enable-filter-button" class="search-bar-button">Filter Disabled ✗</button>
             <button id="add-content-button" class="search-bar-button">New Content</button>

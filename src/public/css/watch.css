@@ -10,24 +10,16 @@ body {
     color: white;
 }
 
-.container {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    justify-content: center;
-    align-items: flex-start;
-    padding-top: 80px;
-}
-
 .stream-container {
+    padding-top: 110px;
     text-align: center;
     width: 100%;
     flex-grow: 1;
-    padding-top: 30px;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
+    height: 100vh;
 }
 
 .video-wrapper {
@@ -54,4 +46,49 @@ body {
 
 .video-info p {
     font-family: "Roboto", sans-serif;
+}
+
+.pagination button {
+    color: black;
+}
+
+#movie-title {
+    padding: 0;
+    margin: 0;
+}
+
+#movie-release-date {
+    font-size: 12px;
+    padding: 0;
+    margin-top: 0;
+}
+
+
+
+.title-button-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    flex-grow: 1;
+}
+
+.add-delete-button {
+    padding: 10px 20px;
+    background-color: black;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.add-delete-button:hover {
+    background-color: #0056b3;
+}
+
+.button-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }

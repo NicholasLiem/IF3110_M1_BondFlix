@@ -1,6 +1,7 @@
 const helper = new Helper();
 const DashboardTable = {
     data: {},
+    firstContent: null,
     currentPage: 1,
     totalPages: 1,
     isAscending: true,
@@ -8,7 +9,6 @@ const DashboardTable = {
     pageSize: 20,
     searchState: false,
 };
-
 let debounceTimer;
 
 
@@ -20,24 +20,54 @@ const Elements = {
     prevPageButton: document.getElementById("prevPageButton"),
     nextPageButton: document.getElementById("nextPageButton"),
     currentPageButton: document.getElementById("currentPageButton"),
+    playMainLinkButton: document.getElementById('play-btn-link'),
 }
 
 function handlePaginationButtons() {
     Elements.currentPageButton.innerHTML = DashboardTable.currentPage;
     Elements.prevPageButton.disabled = DashboardTable.currentPage === 1;
-    console.log(DashboardTable.totalPages, DashboardTable.currentPage)
     Elements.nextPageButton.disabled =
         DashboardTable.currentPage === DashboardTable.totalPages || DashboardTable.totalPages === 0;
 }
 function updateContents(contents) {
-    Elements.recommendationsContainer.innerHTML = '';
+    if (Elements.recommendationsContainer) {
+        Elements.recommendationsContainer.innerHTML = '';
+    }
 
     if (contents && contents.length > 0) {
-        contents.forEach((content) => {
+        if (!DashboardTable.firstContent) {
+            DashboardTable.firstContent = contents[0];
+        }
+        const firstContent = DashboardTable.firstContent;
+        const contentId = firstContent.content_id;
+        const thumbnailPath = firstContent.thumbnail_file_path;
+        const movieTitle = firstContent.title;
+        const movieDescription = firstContent.description;
+
+        if (Elements.mostRecommend){
+            Elements.mostRecommend.style.backgroundImage = `url('${thumbnailPath}')`;
+        }
+
+        if (document.querySelector('.description-card')){
+            const descriptionCard =document.querySelector('.description-card');
+            descriptionCard.querySelector('h2').textContent = movieTitle;
+            descriptionCard.querySelector('p').textContent = movieDescription;
+        }
+
+        if (Elements.playMainLinkButton){
+            Elements.playMainLinkButton.href = `/watch?id=${contentId}`;
+        }
+        addRecommendation(contentId, thumbnailPath, movieTitle, movieDescription);
+
+
+        for (let i = 1; i < contents.length; i++) {
+            const content = contents[i];
             const contentId = content.content_id;
             const thumbnailPath = content.thumbnail_file_path;
-            addRecommendation(contentId, thumbnailPath);
-        })
+            const movieTitle = content.title;
+            const movieDescription = content.description;
+            addRecommendation(contentId, thumbnailPath, movieTitle, movieDescription);
+        }
         if (DashboardTable.searchState) {
             Elements.mostRecommendWrapper.style.maxHeight = '0';
         } else {
@@ -47,9 +77,10 @@ function updateContents(contents) {
         const noResultsMessage = document.createElement('h2');
         noResultsMessage.style.fontWeight = "normal";
         noResultsMessage.textContent = 'No movies at the moment';
-        Elements.recommendationsContainer.appendChild(noResultsMessage);
+        if (Elements.recommendationsContainer){
+            Elements.recommendationsContainer.appendChild(noResultsMessage);
+        }
     }
-
 }
 
 async function fetchData()
@@ -103,17 +134,28 @@ function initEventListeners()
     });
 }
 
-function addRecommendation(contentId, thumbnailPath)
-{
+function addRecommendation(contentId, thumbnailPath, title) {
     const link = document.createElement('a');
     link.href = `/watch?id=${contentId}`;
+    link.classList.add('recommendation-link');
+
+    const recommendation = document.createElement('div');
+    recommendation.classList.add('recommendation');
 
     const image = document.createElement('img');
     image.src = thumbnailPath;
     image.alt = 'Movie Thumbnail';
 
-    link.appendChild(image);
-    Elements.recommendationsContainer.appendChild(link);
+    const titleElement = document.createElement('h2');
+    titleElement.classList.add('recommendation-title');
+    titleElement.textContent = title;
+
+    recommendation.appendChild(image);
+    recommendation.appendChild(titleElement);
+    link.appendChild(recommendation);
+    if (Elements.recommendationsContainer){
+        Elements.recommendationsContainer.appendChild(link);
+    }
 }
 
 initEventListeners();
