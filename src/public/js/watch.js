@@ -13,12 +13,11 @@ async function fetchVideoData() {
 
         const response = await httpClient.get(url, null, false);
         const data = JSON.parse(response.body);
-
-        const contentFilePath = data.data[0].content_file_path;
-        const movieTitle = data.data[0].title;
-        const movieDescription = data.data[0].description;
-
+        
         if (data.success === true) {
+            const contentFilePath = data.data[0].content_file_path;
+            const movieTitle = data.data[0].title;
+            const movieDescription = data.data[0].description;
             updateTitleAndDescription(movieTitle, movieDescription);
             updateSource(contentFilePath);
         } else {

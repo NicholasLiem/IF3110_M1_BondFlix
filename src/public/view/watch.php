@@ -4,6 +4,10 @@ if (!isset($_SESSION['user_id'])) {
     href('/login');
 }
 
+if (!isset($urlParams['id'])){
+    href('/404');
+}
+
 $userID = $_SESSION['user_id'];
 $username = $_SESSION['username'];
 $isAdmin = $_SESSION['is_admin'];
