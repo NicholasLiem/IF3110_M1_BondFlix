@@ -42,62 +42,59 @@ class ContentHandler extends BaseHandler {
     protected function get($params = null): void
     {
         try {
-            $resultArray = [];
             $page = isset($params['page']) ? intval($params['page']) : 1;
             $pageSize = isset($params['pageSize']) ? intval($params['pageSize']) : 10;
-            if (isset($params['content_id'])) {
-                $content = $this->service->getContentById($params['content_id']);
-                if ($content) {
-                    $resultArray[] = $content->toArray();
+
+            if (isset($params['query']) && isset($params['sortAscending'])) {
+                $query = $params['query'];
+                $sortAscending = filter_var($params['sortAscending'], FILTER_VALIDATE_BOOLEAN);
+
+                $result = $this->service->processContentQuery($query);
+
+                $filteredResult = $result;
+
+                if (isset($params["genre_id"])) {
+                    $genre_id = filter_var($params["genre_id"], FILTER_VALIDATE_INT);
+                    if ($genre_id) {
+                        $content_ids = $this->genreService->getAllContentIdFromGenreId($genre_id);
+                        $filteredResult = array_filter($filteredResult, function ($item) use ($content_ids) {
+                            return in_array($item->getContentId(), $content_ids);
+                        });
+                    }
+                }
+
+                if (isset($params['released_before'])) {
+                    $released_before = $params['released_before'];
+                    if (!empty($released_before)) {
+                        $filteredResult = array_filter($filteredResult, function ($item) use ($released_before) {
+                            return strtotime($item->getReleaseDate()) <= strtotime($released_before);
+                        });
+                    }
+                }
+
+                if ($sortAscending) {
+                    usort($filteredResult, function ($a, $b) {
+                        return strcmp($a->getTitle(), $b->getTitle());
+                    });
+                } else {
+                    usort($filteredResult, function ($a, $b) {
+                        return strcmp($b->getTitle(), $a->getTitle());
+                    });
                 }
             } else {
                 $result = $this->service->getAllContents(null);
                 $filteredResult = $result;
-
-                if (isset($params['query']) && isset($params['sortAscending'])) {
-                    $query = $params['query'];
-                    $sortAscending = filter_var($params['sortAscending'], FILTER_VALIDATE_BOOLEAN);
-
-                    if (isset($params["genre_id"])) {
-                        $genre_id = filter_var($params["genre_id"], FILTER_VALIDATE_INT);
-                        if ($genre_id) {
-                            $content_ids = $this->genreService->getAllContentIdFromGenreId($genre_id);
-                            $filteredResult = array_filter($filteredResult, function ($item) use ($content_ids) {
-                                return in_array($item->getContentId(), $content_ids);
-                            });
-                        }
-                    }
-
-                    if (isset($params['released_before'])) {
-                        $released_before = $params['released_before'];
-                        if (!empty($released_before)) {
-                            $filteredResult = array_filter($filteredResult, function ($item) use ($released_before) {
-                                return strtotime($item->getReleaseDate()) <= strtotime($released_before);
-                            });
-                        }
-                    }
-
-                    if ($sortAscending) {
-                        usort($filteredResult, function ($a, $b) {
-                            return strcmp($a->getTitle(), $b->getTitle());
-                        });
-                    } else {
-                        usort($filteredResult, function ($a, $b) {
-                            return strcmp($b->getTitle(), $a->getTitle());
-                        });
-                    }
-                }
-
-                $totalContents = count($filteredResult);
-                $totalPages = ceil($totalContents / $pageSize);
-                header("X-Total-Pages: " . $totalPages);
-                $page = max(1, min($page, $totalPages));
-
-                $startIndex = ($page - 1) * $pageSize;
-                $pagedResult = array_slice($filteredResult, $startIndex, $pageSize);
-
-                $resultArray = ArrayMapper::mapObjectsToArray($pagedResult);
             }
+
+            $totalContents = count($filteredResult);
+            $totalPages = ceil($totalContents / $pageSize);
+            header("X-Total-Pages: " . $totalPages);
+            $page = max(1, min($page, $totalPages));
+
+            $startIndex = ($page - 1) * $pageSize;
+            $pagedResult = array_slice($filteredResult, $startIndex, $pageSize);
+
+            $resultArray = ArrayMapper::mapObjectsToArray($pagedResult);
 
             if (!empty($resultArray)) {
                 $response = new Response(true, HttpStatusCode::OK, "data retrieved successfully", $resultArray);
@@ -112,6 +109,8 @@ class ContentHandler extends BaseHandler {
             return;
         }
     }
+
+
 
 
     protected function post($params = null): void

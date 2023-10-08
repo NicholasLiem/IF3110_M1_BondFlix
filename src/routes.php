@@ -124,20 +124,20 @@ $router->addAPI('/api/users', 'GET', $userHandler, [APIAdminCheck::getInstance()
 $router->addAPI('/api/users', 'DELETE', $userHandler, [APIAdminCheck::getInstance()]);
 $router->addAPI('/api/users', 'PUT', $userHandler, [APIAdminCheck::getInstance()]);
 
-$router->addAPI('/api/content', 'GET', $contentHandler, [APIAdminCheck::getInstance()]);
+$router->addAPI('/api/content', 'GET', $contentHandler, [LoggedInCheck::getInstance()]);
 $router->addAPI('/api/content', 'POST', $contentHandler, [APIAdminCheck::getInstance()]);
 $router->addAPI('/api/content', 'PUT', $contentHandler, [APIAdminCheck::getInstance()]);
 $router->addAPI('/api/content', 'DELETE', $contentHandler, [APIAdminCheck::getInstance()]);
 
-$router->addAPI('/api/content/actor', 'GET', $contentActorHandler, [APIAdminCheck::getInstance()]);
+$router->addAPI('/api/content/actor', 'GET', $contentActorHandler, [LoggedInCheck::getInstance()]);
 $router->addAPI('/api/content/actor', 'POST', $contentActorHandler, [APIAdminCheck::getInstance()]);
 $router->addAPI('/api/content/actor', 'DELETE', $contentActorHandler, [APIAdminCheck::getInstance()]);
 
-$router->addAPI('/api/content/category', 'GET', $contentCategoryHandler, [APIAdminCheck::getInstance()]);
+$router->addAPI('/api/content/category', 'GET', $contentCategoryHandler, [LoggedInCheck::getInstance()]);
 $router->addAPI('/api/content/category', 'POST', $contentCategoryHandler, [APIAdminCheck::getInstance()]);
 $router->addAPI('/api/content/category', 'DELETE', $contentCategoryHandler, [APIAdminCheck::getInstance()]);
 
-$router->addAPI('/api/content/director', 'GET', $contentDirectorHandler, [APIAdminCheck::getInstance()]);
+$router->addAPI('/api/content/director', 'GET', $contentDirectorHandler, [LoggedInCheck::getInstance()]);
 $router->addAPI('/api/content/director', 'POST', $contentDirectorHandler, [APIAdminCheck::getInstance()]);
 $router->addAPI('/api/content/director', 'DELETE', $contentDirectorHandler, [APIAdminCheck::getInstance()]);
 
@@ -152,13 +152,12 @@ $router->addAPI('/api/genre', 'DELETE', $genreHandler, [APIAdminCheck::getInstan
 
 $router->addAPI('/api/upload', 'POST', $uploadHandler, [APIAdminCheck::getInstance()]);
 
-$router->addAPI('/api/category', 'GET', $categoryHandler);
+$router->addAPI('/api/category', 'GET', $categoryHandler, [LoggedInCheck::getInstance()]);
 $router->addAPI('/api/category', 'POST', $categoryHandler, [APIAdminCheck::getInstance()]);
 $router->addAPI('/api/category', 'PUT', $categoryHandler, [APIAdminCheck::getInstance()]);
 $router->addAPI('/api/category', 'DELETE', $categoryHandler, [APIAdminCheck::getInstance()]);
 
 $router->addAPI('/api/account/user', 'PUT', $accountHandler, [APILoggedInCheck::getInstance()]);
-
 
 $router->addAPI('/api/avatar/user', 'POST', $avatarHandler, [APILoggedInCheck::getInstance()]);
 $router->addAPI('/api/avatar/user', 'GET', $avatarHandler, [APILoggedInCheck::getInstance()]);

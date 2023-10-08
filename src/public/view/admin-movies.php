@@ -74,7 +74,7 @@ function showUploadModal($modalId, $modalTitle) {
         <div class="search-bar">
             <input type="text" id="search-input" placeholder="Search by title or description">
             <button id="sort-button" class="search-bar-button">Sort Title ↑</button>
-            <button id="enable-filter-button" class="search-bar-button">Filter Disabled ✗</button>
+            <button id="enable-filter-button" class="search-bar-button" style="display: none">Filter Disabled ✗</button>
             <button id="add-content-button" class="search-bar-button">New Content</button>
         </div>
         <table class="admin-table">

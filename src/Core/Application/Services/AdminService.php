@@ -38,7 +38,7 @@ class AdminService
 
     function updateUser(User $user): ?User
     {
-        if ($user->getPasswordHash() != null){
+        if ($user->getPasswordHash() !== ''){
             $hashed_password = password_hash($user->getPasswordHash(), PASSWORD_BCRYPT, [12]);
             $user->setPasswordHash($hashed_password);
         }
