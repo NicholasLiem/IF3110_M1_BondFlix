@@ -27,8 +27,12 @@
 
 .navbar #menu-right {
     margin-right: 64px;
+    height: auto;
+    display: flex;
     gap: 24px;
+    align-items: center;
 }
+
 
 .navbar > div {
     display: flex;
@@ -54,4 +58,87 @@
     cursor: pointer;
     width: 40px;
     height: 40px;
+}
+
+.navbar .search-bar {
+    height: 40px;
+    border-radius: 4px;
+}
+
+.filter-container {
+    display: flex;
+    align-items: center;
+}
+
+.filter-container label {
+    margin-right: 10px;
+    color: white;
+    font-size: 16px;
+}
+
+.filter-container input[type="date"] {
+    background-color: black;
+    padding: 5px;
+    box-sizing: border-box;
+    border-radius: 4px;
+    outline: none;
+    border-color: white;
+    color: white;
+}
+
+.filter-container button {
+    background-color: black;
+    outline: none;
+    color: white;
+    border: 1px solid white;
+    border-radius: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.filter-container button:hover {
+    background-color: white;
+    color: black;
+}
+
+.filter-container {
+    display: flex;
+    align-items: center;
+}
+
+.filter-container select,
+.filter-container input[type="date"],
+.filter-container button{
+    height: 40px;
+    margin-right: 10px;
+}
+
+.navbar #genre-dropdown {
+    height: 40px;
+    border-radius: 4px;
+    outline: none;
+    padding: 4px;
+    background-color: black;
+    color: white;
+    border-color: white;
+}
+
+.filter-container input[type="date"]:hover::after {
+    content: attr(title);
+    background-color: #333;
+    color: white;
+    padding: 5px;
+    border-radius: 5px;
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+}
+
+.filter-container input[type="date"]:hover::after {
+    opacity: 1;
 }

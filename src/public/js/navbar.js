@@ -27,6 +27,16 @@ async function logout() {
     }
 }
 
+function updateGenres(genres){
+    const genreDropdown = document.getElementById('genre-dropdown');
+    genreDropdown.innerHTML = '';
+    for (const genre of genres) {
+        const option = document.createElement('option');
+        option.value = genre.genre_id;
+        option.textContent = genre.genre_name;
+        genreDropdown.appendChild(option);
+    }
+}
 async function fetchAndSetProfilePicture() {
     try {
         const httpClient = new HttpClient();
@@ -42,4 +52,18 @@ async function fetchAndSetProfilePicture() {
     }
 }
 
+async function fetchGenres(){
+    try {
+        const httpClient = new HttpClient();
+        const response = await httpClient.get('/api/content/genre', null, false);
+        const json = JSON.parse(response.body);
+        if (json.success){
+            updateGenres(json.data);
+        }
+    } catch (error) {
+        console.error('Error fetching profile picture:', error);
+    }
+}
+
 fetchAndSetProfilePicture();
+fetchGenres();

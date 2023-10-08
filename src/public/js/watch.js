@@ -1,4 +1,5 @@
 let inMyList = false;
+let contentGenres = {};
 let contentId ;
 
 const VideoElements = {
@@ -9,6 +10,7 @@ const VideoElements = {
     releaseDate: document.getElementById('movie-release-date'),
     addButton: document.getElementById('add-button'),
     deleteButton: document.getElementById('delete-button'),
+    genreContainer: document.getElementById('genre-container'),
 }
 
 async function fetchVideoData() {
@@ -60,6 +62,24 @@ function updateTitleAndDescription(title, description, releaseDate) {
     }
 }
 
+function updateGenres() {
+    const genreContainer = VideoElements.genreContainer;
+    if (genreContainer) {
+        genreContainer.innerHTML = '';
+
+        for (const genreId in contentGenres) {
+            const genreName = contentGenres[genreId];
+            const genreElement = document.createElement('p');
+            genreElement.classList.add('genre');
+            genreElement.innerText = genreName;
+            if (genreContainer.children.length > 0) {
+                genreElement.style.marginLeft = '5px';
+            }
+            genreContainer.appendChild(genreElement);
+        }
+    }
+}
+
 async function checkIfInMyList(contentId) {
     try {
         const httpClient = new HttpClient();
@@ -73,6 +93,23 @@ async function checkIfInMyList(contentId) {
     }
 }
 
+async function checkGenre(contentId) {
+    try {
+        const httpClient = new HttpClient();
+        const url = `/api/content/genre?content_id=${contentId}`;
+        const response = await httpClient.get(url, null, false);
+        const data = JSON.parse(response.body);
+        if (data.success){
+            data.data.forEach((genre) => {
+                contentGenres[genre.genre_id] = genre.genre_name;
+            });
+            updateGenres();
+        }
+    } catch (error) {
+        console.error("An error occurred while checking if in my list:", error);
+        return false;
+    }
+}
 function showAddOrDeleteButton() {
     if (inMyList) {
         VideoElements.addButton.style.display = 'none';
@@ -128,4 +165,6 @@ VideoElements.deleteButton.addEventListener('click', async () => {
     }
 });
 
+
 fetchVideoData();
+checkGenre(contentId);

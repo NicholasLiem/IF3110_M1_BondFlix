@@ -11,6 +11,12 @@
     </div>
     <div id="menu-right">
         <input type="text" class="search-bar" placeholder="Search a movie" id="navbar-search-input">
+        <div class="filter-container">
+            <select id="genre-dropdown">
+            </select>
+            <input type="date" id="release-date-filter" title="Release Date">
+            <button class="filter-button" >Filter</button>
+        </div>
         <button class="navbar-account-button">
             <img src="/public/avatar.png" id='profile-picture-navbar' alt="profile picture">
         </button>
