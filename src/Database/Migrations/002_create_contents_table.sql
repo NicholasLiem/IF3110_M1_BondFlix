@@ -4,7 +4,7 @@
 CREATE TABLE IF NOT EXISTS content (
     content_id SERIAL PRIMARY KEY,
     title VARCHAR(255) NOT NULL UNIQUE,
-    description VARCHAR(255),
+    description VARCHAR(1023),
     release_date DATE NOT NULL,
     content_file_path VARCHAR(255) NOT NULL,
     thumbnail_file_path VARCHAR(255) NOT NULL,

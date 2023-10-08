@@ -161,21 +161,22 @@ class UserHandler extends BaseHandler
                     $user->setUsername($username);
                     $user->setFirstName($firstName);
                     $user->setLastName($lastName);
-                    if (isset($newPassword)){
+                    if (isset($newPassword) || $newPassword !== null){
                         $user->setPasswordHash($newPassword);
+                    } else {
+                        $user->setPasswordHash('');
                     }
                     $user->setIsAdmin($isAdmin);
                     $user->setIsSubscribed($isSubscribed);
-
                     $result =$this->service->updateUser($user);
                     if ($result) {
-                        $_SESSION['username'] = $user->getUsername();
-                        $_SESSION['first_name'] = $user->getFirstName();
-                        if (!$user->getLastName() !== null){
-                            $_SESSION['last_name'] = '';
-                        } else {
-                            $_SESSION['last_name'] = $user->getLastName();
-                        }
+//                        $_SESSION['username'] = $user->getUsername();
+//                        $_SESSION['first_name'] = $user->getFirstName();
+//                        if (!$user->getLastName() !== null){
+//                            $_SESSION['last_name'] = '';
+//                        } else {
+//                            $_SESSION['last_name'] = $user->getLastName();
+//                        }
                         $response = new Response(true, HttpStatusCode::OK, "User update success", $user->toArray());
                     } else {
                         $response = new Response(false, HttpStatusCode::NO_CONTENT, "User update failed", null);

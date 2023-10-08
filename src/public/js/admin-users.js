@@ -308,7 +308,7 @@ function initEventListeners() {
             return;
         }
 
-        const updatedUserData = {
+        let updatedUserData = {
             userId,
             username: username,
             first_name: first_name,
@@ -317,7 +317,7 @@ function initEventListeners() {
             is_admin: is_admin,
             is_subscribed: is_subscribed,
         };
-
+        
         const confirmEdit = window.confirm("Are you sure you want to edit this user?");
 
         if (confirmEdit)
@@ -329,6 +329,9 @@ function initEventListeners() {
                     updatedUserData,
                     false
                 );
+
+                console.log(response.body)
+
                 const json = JSON.parse(response.body);
                 if (json.success) {
                     alert("Edit operation successful");

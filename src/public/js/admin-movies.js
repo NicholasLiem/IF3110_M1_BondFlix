@@ -301,35 +301,19 @@ function initEventListeners() {
         }
     });
 
-    Elements.editContentForm.addEventListener("submit", async () => {
+    Elements.editContentForm.addEventListener("submit", async (event) => {
+        event.preventDefault();
         try {
             const httpClient = new HttpClient();
-            const updatedVideo = Elements.editContentVideoInput.files[0];
-            const updatedThumbnail =
-                Elements.editContentThumbnailInput.files[0];
             let updatedVideoFilePath = null;
             let updatedThumbnailFilePath = null;
 
             const description = Elements.editContentDescriptionInput.value;
-            if (description.length > 255) {
-                alert("Description should not exceed 255 characters.");
+            if (description.length > 1023) {
+                alert("Description should not exceed 1023 characters.");
                 return;
             }
 
-            if (updatedVideo !== undefined) {
-                updatedVideoFilePath = await uploadFile(
-                    httpClient,
-                    updatedVideo,
-                    "videos"
-                );
-            }
-            if (updatedThumbnail !== undefined) {
-                updatedThumbnailFilePath = await uploadFile(
-                    httpClient,
-                    updatedThumbnail,
-                    "thumbnails"
-                );
-            }
             const updateContentParams = {
                 content_id: ContentTable.currentContentId,
                 title: Elements.editContentTitleInput.value,
@@ -337,13 +321,30 @@ function initEventListeners() {
                 release_date: Elements.editContentReleaseDateInput.value,
             };
 
-            if (updatedVideoFilePath !== null) {
-                updateContentParams["content_file_path"] = updatedVideoFilePath;
+            const updatedVideoInput = Elements.editContentVideoInput;
+            if (updatedVideoInput.files[0]) {
+                updateContentParams.content_file_path = await uploadFile(
+                    httpClient,
+                    updatedVideoInput.files[0],
+                    "videos"
+                );
             }
-            if (updatedThumbnailFilePath !== null) {
-                updateContentParams["thumbnail_file_path"] =
-                    updatedThumbnailFilePath;
+            const updatedThumbnailInput = Elements.editContentThumbnailInput;
+            if (updatedThumbnailInput.files[0]) {
+                updateContentParams.thumbnail_file_path = await uploadFile(
+                    httpClient,
+                    updatedThumbnailInput.files[0],
+                    "thumbnails"
+                );
             }
+
+            // if (updatedVideoFilePath !== null) {
+            //     updateContentParams["content_file_path"] = updatedVideoFilePath;
+            // }
+            // if (updatedThumbnailFilePath !== null) {
+            //     updateContentParams["thumbnail_file_path"] =
+            //         updatedThumbnailFilePath;
+            // }
 
             const confirmEdit = window.confirm(
                 "Are you sure you want to edit this content?"
@@ -433,8 +434,8 @@ async function onSubmitNewContentModal(modal) {
         const httpClient = new HttpClient();
 
         const description = Elements.newContentDescriptionInput.value;
-        if (description.length > 255) {
-            alert("Description should not exceed 255 characters.");
+        if (description.length > 1023) {
+            alert("Description should not exceed 1023 characters.");
             return;
         }
         const videoFilePath = await uploadFile(

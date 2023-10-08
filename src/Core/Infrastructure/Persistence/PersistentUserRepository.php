@@ -163,7 +163,6 @@ class PersistentUserRepository implements UserRepository
         $lastName = $user->getLastName();
         $isAdmin = $user->getIsAdmin();
         $isSubscribed = $user->getIsSubscribed();
-
         $newPasswordHash = $user->getPasswordHash();
         if (!empty($newPasswordHash)) {
             $stmt->bindParam(':new_password', $newPasswordHash);

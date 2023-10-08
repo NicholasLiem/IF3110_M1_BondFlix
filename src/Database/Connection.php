@@ -45,7 +45,8 @@ class Connection {
         return self::$appliedMigrations;
     }
 
-    private static function runMigrations(PDO $db) {
+    private static function runMigrations(PDO $db): void
+    {
         self::extracted($db, "migrations");
     }
 
