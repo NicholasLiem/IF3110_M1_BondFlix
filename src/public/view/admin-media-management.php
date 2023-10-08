@@ -25,44 +25,63 @@ $username = $_SESSION['username'];
         <div class="genre-container">
             <h2>Manage Genre</h2>
             <div class="input-with-button">
-                <label for="edit_genre_id">Select a Genre to Edit</label>
-                <select name="edit_genre_id" id="edit_genre_id" required>
-                </select>
-                <button id="edit_genre_button" type="submit">Edit Genre</button>
-                <button id="delete_genre_button" type="submit">Delete Genre</button>
+                <div>         
+                    <label for="edit_genre_id">Select a Genre to Edit</label>
+                    <select name="edit_genre_id" id="edit_genre_id" required></select>
+                </div>
+                <div>
+                    <button id="edit_genre_button" type="submit">Edit Genre</button>
+                    <button id="delete_genre_button" type="submit">Delete Genre</button>
+                </div>
             </div>
             <div class="input-with-button">
                 <form id="add-genre-form">
-                    <label for="input-genre">Add New Genre</label>
-                    <input type="text" name="genre_name" id="input-genre" placeholder="New Genre Name" required>
-                    <button type="submit" id="add-genre-button">Add Genre</button>
+                    <div>
+                        <label for="input-genre">Add New Genre</label>
+                        <input type="text" name="genre_name" id="input-genre" placeholder="New Genre Name" required>
+                    </div>
+                    <div>
+                        <button type="submit" id="add-genre-button">Add Genre</button>
+                    </div>
                 </form>
             </div>
         </div>
         <div id="content-genre-container">
-            <h2>Manage content genre</h2>
-            <div class="input-with-button">
-                <form id="find-content-genre">
-                    <label for="content-id">Find a Content's Genres</label>
-                    <input type="text" id="content-id" required placeholder="Content Id" />
-                    <button type="submit" id="find-content-genre">Find Genre</button>
-                </form>
+            <div>
+                <h2>Manage content genre</h2>
+                <div class="input-with-button">
+                    <form id="find-content-genre">
+                        <div>
+                            <label for="content-id">Find a Content's Genres</label>
+                            <input type="text" id="content-id" required placeholder="Content Id" />
+                        </div>
+                        <div>
+                            <button type="submit" id="find-content-genre">Find Genre</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="input-with-button">
+                    <form id="add-new-content-genre">
+                        <div>
+                            <label for="content-new-genre-dropdown">Add a Content's Genre</label>
+                            <select name="content-new-genre-dropdown" id="content-new-genre-dropdown" required>
+                            </select>
+                        </div>
+                        <div>
+                            <button type="submit" id="add-content-genre">Add Genre</button>
+                        </div>
+                    </form>
+                </div>
             </div>
-            <div class="input-with-button">
-                <form id="add-new-content-genre">
-                    <label for="content-new-genre-dropdown">Add a Content's Genre</label>
-                    <select name="content-new-genre-dropdown" id="content-new-genre-dropdown" required>
-                    </select>
-                    <button type="submit" id="add-content-genre">Add Genre</button>
-                </form>
+            <div>
+                <table class="admin-table" id="content-genre-table">
+                    <tr>
+                        <th>Genre ID</th>
+                        <th>Genre Name</th>
+                        <th>Delete</th>
+                    </tr>
+                </table>
             </div>
-            <table class="admin-table" id="content-genre-table">
-                <tr>
-                    <th>Genre ID</th>
-                    <th>Genre Name</th>
-                    <th>Delete</th>
-                </tr>
-            </table>
         </div>
     </div>
     <div id="editGenreModal" class="modal">
