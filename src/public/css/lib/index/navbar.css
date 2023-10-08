@@ -33,6 +33,9 @@
     align-items: center;
 }
 
+#menu-right .hamburger-button {
+    display: none;
+}
 
 .navbar > div {
     display: flex;
@@ -52,6 +55,10 @@
     border: 0;
     width: 40px;
     height: 40px;
+}
+
+.navbar .account-menu-for-phone {
+    display: none;
 }
 
 #profile-picture-navbar {
@@ -142,3 +149,47 @@
 .filter-container input[type="date"]:hover::after {
     opacity: 1;
 }
+
+#phone-navbar-search-input {
+    position: absolute;
+    top: 80px;
+    left: 30px;
+    display: none;
+}
+
+@media screen and (max-width: 700px) {
+    .navbar {
+        gap: 50px;
+    }
+
+    .navbar #menu-left {
+        display: none;
+    }
+
+    .navbar #menu-right {
+        margin-right: 8vw;
+    }
+
+    .navbar #menu-right .search-bar {
+        position: absolute;
+        top: 80px;
+        left: 30px;
+    }
+
+    .navbar #menu-right .hamburger-button {
+        display: block;
+        width: 40px;
+        height: 40px;
+    }
+
+    .navbar #menu-right .navbar-account-button {
+        display: none;
+    }
+}
+
+@media screen and (max-width: 400px) {
+    .navbar .account-menu {
+        right: 10%;
+    }
+}
+
