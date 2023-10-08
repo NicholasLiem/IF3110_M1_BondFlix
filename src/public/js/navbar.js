@@ -48,6 +48,12 @@ async function logout() {
 function updateGenres(genres){
     const genreDropdown = document.getElementById('genre-dropdown');
     genreDropdown.innerHTML = '';
+
+    const allGenresOption = document.createElement('option');
+    allGenresOption.value = 'all';
+    allGenresOption.textContent = 'All Genres';
+    genreDropdown.appendChild(allGenresOption);
+
     for (const genre of genres) {
         const option = document.createElement('option');
         option.value = genre.genre_id;

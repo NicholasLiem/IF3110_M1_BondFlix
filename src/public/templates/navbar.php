@@ -20,10 +20,11 @@
         </div>
         <input type="text" class="search-bar" placeholder="Search a movie" id="navbar-search-input">
         <div class="filter-container">
+            <button class="navbar-filter-button" id="sort-filter-button">Sort Title ↑</button>
             <select id="genre-dropdown">
             </select>
-            <input type="date" id="release-date-filter" title="Release Date">
-            <button class="filter-button" >Filter</button>
+            <input type="date" id="release-date-filter">
+            <button class="navbar-filter-button" id="navbar-filter-button">Filter ✗</button>
         </div>
         <button class="navbar-account-button">
             <img src="/public/avatar.png" id='profile-picture-navbar' alt="profile picture">

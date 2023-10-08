@@ -72,6 +72,15 @@
     border-radius: 4px;
 }
 
+#sort-filter-button {
+    background-color: black;
+    box-sizing: border-box;
+    border-radius: 4px;
+    outline: none;
+    border-color: white;
+    color: white;
+}
+
 .filter-container {
     display: flex;
     align-items: center;
@@ -84,6 +93,7 @@
 }
 
 .filter-container input[type="date"] {
+    color-scheme: dark;
     background-color: black;
     padding: 5px;
     box-sizing: border-box;
@@ -94,9 +104,9 @@
 }
 
 .filter-container button {
-    background-color: black;
+    background-color: white;
     outline: none;
-    color: white;
+    color: black;
     border: 1px solid white;
     border-radius: 5px;
     padding: 5px 10px;
@@ -125,13 +135,14 @@
     height: 40px;
     border-radius: 4px;
     outline: none;
-    padding: 4px;
+    padding: 5px;
     background-color: black;
     color: white;
     border-color: white;
 }
 
 .filter-container input[type="date"]:hover::after {
+    color-scheme: dark;
     content: attr(title);
     background-color: #333;
     color: white;
@@ -144,6 +155,18 @@
     opacity: 0;
     transition: opacity 0.3s ease;
     pointer-events: none;
+}
+
+.filter-container input[type="date"]::before {
+    color-scheme: dark;
+    content: attr(title);
+    font-family: "Roboto", "sans-serif";
+    font-size: 16px;
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateX(-50%);
+    color: white;
 }
 
 .filter-container input[type="date"]:hover::after {

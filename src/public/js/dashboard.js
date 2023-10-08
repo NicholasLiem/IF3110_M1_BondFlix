@@ -12,9 +12,7 @@ const DashboardTable = {
 let debounceTimer;
 
 const Elements = {
-    recommendationsContainer: document.getElementById(
-        "search-result-container"
-    ),
+    recommendationsContainer: document.getElementById("search-result-container"),
     navbarSearchInput: document.getElementById("navbar-search-input"),
     mostRecommend: document.getElementById("most-recommended"),
     mostRecommendWrapper: document.getElementById("most-recommended-wrapper"),
@@ -22,6 +20,10 @@ const Elements = {
     nextPageButton: document.getElementById("nextPageButton"),
     currentPageButton: document.getElementById("currentPageButton"),
     playMainLinkButton: document.getElementById("play-btn-link"),
+    genreDropdown: document.getElementById("genre-dropdown"),
+    dateFilterSelect: document.getElementById("release-date-filter"),
+    filterEnableButton: document.getElementById("navbar-filter-button"),
+    sortFilterButton: document.getElementById("sort-filter-button")
 };
 
 function handlePaginationButtons() {
@@ -32,15 +34,18 @@ function handlePaginationButtons() {
         DashboardTable.totalPages === 0;
 }
 function updateContents(contents) {
-    if (Elements.recommendationsContainer) {
-        Elements.recommendationsContainer.innerHTML = "";
-    }
-
+    const recommendationsContainer = Elements.recommendationsContainer;
+    let firstContent;
     if (contents && contents.length > 0) {
         if (!DashboardTable.firstContent) {
             DashboardTable.firstContent = contents[0];
         }
-        const firstContent = DashboardTable.firstContent;
+
+        if (DashboardTable.firstContent !== contents[0]){
+            firstContent = contents[0];
+        } else {
+            firstContent = DashboardTable.firstContent;
+        }
         const contentId = firstContent.content_id;
         const thumbnailPath = firstContent.thumbnail_file_path;
         const movieTitle = firstContent.title;
@@ -79,6 +84,7 @@ function updateContents(contents) {
                 movieDescription
             );
         }
+
         if (DashboardTable.searchState) {
             Elements.mostRecommendWrapper.style.maxHeight = "0";
         } else {
@@ -88,12 +94,16 @@ function updateContents(contents) {
         const noResultsMessage = document.createElement("h2");
         noResultsMessage.style.fontWeight = "normal";
         noResultsMessage.textContent = "No movies at the moment";
-        if (Elements.recommendationsContainer) {
-            Elements.recommendationsContainer.appendChild(noResultsMessage);
-        }
+        recommendationsContainer.appendChild(noResultsMessage);
     }
 }
 
+function clearRecommendations() {
+    const recommendationsContainer = Elements.recommendationsContainer;
+    while (recommendationsContainer.firstChild) {
+        recommendationsContainer.removeChild(recommendationsContainer.firstChild);
+    }
+}
 async function fetchData() {
     try {
         const httpClient = new HttpClient();
@@ -101,12 +111,19 @@ async function fetchData() {
         let url = `/api/content?query=${query}&sortAscending=${DashboardTable.isAscending}&page=${DashboardTable.currentPage}&pageSize=${DashboardTable.pageSize}`;
 
         if (DashboardTable.filterEnabled) {
-            url += ``;
+            if (Elements.genreDropdown){
+                const genreValue = Elements.genreDropdown.value;
+                url += `&genre_id=${genreValue}`;
+            }
+            if (Elements.dateFilterSelect){
+                const dateValue = Elements.dateFilterSelect.value;
+                url += `&released_before=${dateValue}`
+            }
         }
-
         const response = await httpClient.get(url, null, false);
 
         const data = JSON.parse(response.body).data;
+        clearRecommendations();
         DashboardTable.totalPages = parseInt(response.headers["x-total-pages"]);
         updateContents(data);
         handlePaginationButtons();
@@ -139,6 +156,48 @@ function initEventListeners() {
             DashboardTable.currentPage++;
             fetchData();
         }
+    });
+
+    if (Elements.genreDropdown) {
+        Elements.genreDropdown.addEventListener("change", () => {
+            if (DashboardTable.filterEnabled) {
+                DashboardTable.searchState = true;
+                fetchData();
+            }
+        });
+    }
+
+    if (Elements.dateFilterSelect) {
+        Elements.dateFilterSelect.addEventListener("change", () => {
+            if (DashboardTable.filterEnabled) {
+                DashboardTable.searchState = true;
+                fetchData();
+            }
+        });
+    }
+
+    Elements.sortFilterButton.addEventListener("click", () => {
+        DashboardTable.isAscending = !DashboardTable.isAscending;
+        Elements.sortFilterButton.textContent = `Sort Title ${
+            DashboardTable.isAscending ? "↑" : "↓"
+        }`;
+        if (DashboardTable.filterEnabled) {
+            DashboardTable.searchState = true;
+            fetchData();
+        }
+    });
+
+    Elements.filterEnableButton.addEventListener("click", () => {
+        DashboardTable.filterEnabled = !DashboardTable.filterEnabled;
+        DashboardTable.searchState = false;
+        Elements.filterEnableButton.textContent = `Filter ${
+            DashboardTable.filterEnabled ? "✓" : "✗"
+        }`;
+        Elements.filterEnableButton.style.color =
+            DashboardTable.filterEnabled ? "white" : "black";
+        Elements.filterEnableButton.style.backgroundColor =
+            DashboardTable.filterEnabled ? "black" : "white";
+        fetchData();
     });
 }
 

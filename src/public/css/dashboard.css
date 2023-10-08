@@ -199,7 +199,7 @@ body {
     flex-direction: column;
     flex-grow: 1;
     min-height: 100vh;
-    min-width: 100vw;
+    min-width: 100%;
 }
 
 .pagination {

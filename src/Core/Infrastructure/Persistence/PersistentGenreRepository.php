@@ -125,6 +125,9 @@ class PersistentGenreRepository implements GenreRepository
         return true;
     }
 
+    /**
+     * @throws Exception
+     */
     public function getAllGenre(): array {
         try {
             $stmt = $this->db->prepare("
@@ -151,6 +154,38 @@ class PersistentGenreRepository implements GenreRepository
         } catch (Exception $e) {
             Logger::getInstance()->logMessage('Failed to fetch all genres: ' . $e->getMessage());
             throw new Exception("Failed to fetch all genres");
+        }
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function getAllContentIdFromGenreId(int $genreId): array
+    {
+        try {
+            $stmt = $this->db->prepare("
+        SELECT content_id
+        FROM genre_content
+        WHERE genre_id = :genre_id
+        ");
+
+            $stmt->bindParam(':genre_id', $genreId);
+
+            if (!$stmt->execute()) {
+                throw new Exception("Query execution failed");
+            }
+
+            $contentIds = [];
+
+            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                $contentIds[] = $row['content_id'];
+            }
+
+            return $contentIds;
+
+        } catch (Exception $e) {
+            Logger::getInstance()->logMessage('Failed to fetch content IDs: ' . $e->getMessage());
+            throw new Exception("Failed to fetch content IDs");
         }
     }
 }

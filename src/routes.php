@@ -35,7 +35,7 @@ try {
     $loginHandler = LoginHandler::getInstance($serviceContainer->getAuthService());
     $registerHandler = RegisterHandler::getInstance($serviceContainer->getAuthService());
     $logoutHandler = LogoutHandler::getInstance($serviceContainer->getAuthService());
-    $contentHandler = ContentHandler::getInstance($serviceContainer->getContentService());
+    $contentHandler = ContentHandler::getInstance($serviceContainer->getContentService(), $serviceContainer->getGenreService());
     $contentActorHandler = ContentActorHandler::getInstance($serviceContainer->getContentService());
     $contentCategoryHandler = ContentCategoryHandler::getInstance($serviceContainer->getContentService());
     $contentDirectorHandler = ContentDirectorHandler::getInstance($serviceContainer->getContentService());
