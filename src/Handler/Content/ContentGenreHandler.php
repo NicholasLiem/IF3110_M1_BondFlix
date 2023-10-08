@@ -57,7 +57,7 @@ class ContentGenreHandler extends BaseHandler {
             $response = new Response(true, HttpStatusCode::OK ,"Genre(s) retrieved successfully", $genresArray);
 
         } else {
-            $response = new Response(false, HttpStatusCode::OK, "There is no genre", null);
+            $response = new Response(true, HttpStatusCode::OK, "There is no genre", []);
         }
         $response->encode_to_JSON();
     }

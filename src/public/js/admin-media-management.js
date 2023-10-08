@@ -29,24 +29,28 @@ async function fetchGenreOptions() {
         const genreResponse = await httpClient.get("/api/genre", null, false);
         const genreJson = JSON.parse(genreResponse.body);
 
-        genreData = {};
-        editGenreDropdown.innerHTML = "";
+        if (genreJson.data && genreJson.data.length > 0) {
+            genreData = {};
+            editGenreDropdown.innerHTML = "";
 
-        genreJson.data.forEach((genre) => {
-            genreData[genre.genre_id] = genre.genre_name;
-        });
+            genreJson.data.forEach((genre) => {
+                genreData[genre.genre_id] = genre.genre_name;
+            });
 
-        for (genre_id in genreData) {
-            editGenreDropdown.innerHTML += `<option value="${genre_id}">${genreData[genre_id]}</option>`;
+            for (genre_id in genreData) {
+                editGenreDropdown.innerHTML += `<option value="${genre_id}">${genreData[genre_id]}</option>`;
+            }
+
+            selectedGenreIdToEdit =
+                editGenreDropdown.options[editGenreDropdown.selectedIndex].value;
         }
 
-        selectedGenreIdToEdit =
-            editGenreDropdown.options[editGenreDropdown.selectedIndex].value;
     } catch (error) {
         console.error("An error occurred during fetch data:", error);
         alert(`An error occurred during fetch data: ${error.message}`);
     }
 }
+
 
 async function addNewGenre() {
     const genre_name = genreNameInput.value;
@@ -89,7 +93,8 @@ async function editGenre(newGenreName) {
 
         if (json.success) {
             alert("Edit genre successful");
-            await fetchGenreOptions();
+            await fetchGenreOptions()
+            window.location.reload();
         } else {
             console.error("Edit genre failed:", json.error);
             alert("Edit operation failed: " + json.error);
@@ -113,8 +118,10 @@ async function deleteGenre(genreIdToDelete) {
         alert(`Failed to delete content genre: ${responseJson.message}`);
         return;
     }
+
     alert("Genre deleted successfully");
     await fetchGenreOptions();
+    window.location.reload();
 }
 
 function resetTable(table) {
@@ -214,7 +221,10 @@ closeButtons.forEach((button) => {
 
 deleteGenreButton.addEventListener("click", async (event) => {
     const genreIdToDelete = editGenreDropdown.value;
-    await deleteGenre(genreIdToDelete);
+    const confirmDelete = confirm("Are you sure you want to delete this item?");
+    if (confirmDelete) {
+        await deleteGenre(genreIdToDelete);
+    }
 });
 
 saveEditGenreButton.addEventListener("click", (event) => {
@@ -240,17 +250,19 @@ document.addEventListener("click", async (event) => {
     if (event.target.classList.contains("delete-button")) {
         const genreIdToDelete =
             event.target.parentElement.parentElement.dataset["genreId"];
-        deleteContentGenre(genreIdToDelete);
-        alert("Content genre deleted successfully");
-        resetTable(contentGenreTable);
-        await fetchContentGenreData();
+        const confirmDelete = confirm("Are you sure you want to delete this item?");
+        if (confirmDelete) {
+            deleteContentGenre(genreIdToDelete);
+            alert("Content genre deleted successfully");
+            resetTable(contentGenreTable);
+            await fetchContentGenreData();
+        }
     }
 });
 
 addNewContentGenreForm.addEventListener("submit", async (event) => {
     event.preventDefault();
     const new_genre_id = contentNewGenreDropdown.value;
-    console.log(new_genre_id);
     addContentGenre(new_genre_id);
     resetTable(contentGenreTable);
     await fetchContentGenreData();
