@@ -185,11 +185,27 @@
     .navbar #menu-right .navbar-account-button {
         display: none;
     }
+
+    .more-recommendation {
+        margin-top: 120px;
+    }
+
+    .filter-container {
+        display: none;
+    }
 }
 
 @media screen and (max-width: 400px) {
+
+    .more-recommendation {
+        margin-top: 120px;
+    }
+
     .navbar .account-menu {
         right: 10%;
+    }
+    .filter-container {
+        display: none;
     }
 }
 
