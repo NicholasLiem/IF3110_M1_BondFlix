@@ -58,6 +58,12 @@ UPDATE users SET is_admin = true WHERE username = your_username;
 
 ## **Screenshot of Application**
 
+## **Screenshot of Google Lighthouse**
+
+## **Bonus yang dikerjakan**
+1. Dockerize
+2. Google Lighthouse
+
 ## **Pembagian Kerja - Workload Breakdown**
 **Anggota Kelompok**
 
