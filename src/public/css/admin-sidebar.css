@@ -58,12 +58,24 @@
     color: #fff;
 }
 
-h3 {
+.admin-sidebar h3 {
     font-weight: normal;
     font-family: "Roboto", "sans-serif";
-    text-align: center;
+    text-align: left;
     font-size: 16px;
-    color: #fff;
+    color: #7e7e7e;
     padding: 0;
     margin: 0;
+}
+
+.admin-sidebar .sidebar-item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.admin-sidebar svg {
+    width: 24px;
+    stroke-width: 2px;
+    margin-bottom: -4px;
 }
