@@ -6,7 +6,7 @@
 </aside> -->
 <nav class="navbar">
     <div>
-        <a href="/dashboard"><img class="logo" src="/public/logo.png" alt="Bondflix logo"></a>
+        <a href="/dashboard"><img class="logo" src="/public/logo.webp" alt="Bondflix logo"></a>
         <div id="menu-left">
             <a href="/mylist">My List</a>
             <a href="/dashboard">Movies</a>
