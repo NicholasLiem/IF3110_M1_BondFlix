@@ -37,6 +37,8 @@ include BASE_PATH . "/public/templates/header.php";
                             <button id="delete-button" class="add-delete-button"></button>
                         </div>
                     </div>
+                    <div id="genre-container" style="display: flex; flex-direction: row">
+                    </div>
                     <p id="movie-release-date"></p>
                     <p id="movie-description"></p>
 

@@ -92,7 +92,6 @@ body {
     z-index: 1;
 }
 
-
 .description-card {
     position: relative;
     z-index: 2;
@@ -200,10 +199,10 @@ body {
     flex-direction: column;
     flex-grow: 1;
     min-height: 100vh;
+    min-width: 100%;
 }
 
-.pagination
-{
+.pagination {
     margin-top: auto;
     margin-bottom: 50px;
     align-self: center;
@@ -247,4 +246,27 @@ body {
     padding-bottom: 5px;
     padding-top: 5px;
     font-weight: normal;
+}
+
+@media screen and (max-width: 400px) {
+    #most-recommended {
+        width: 100vw;
+    }
+
+    .recommendations-content {
+        flex-direction: column;
+    }
+
+    .recommendations-content img {
+        width: 300px;
+        height: 150px;
+    }
+
+    .description-card {
+        width: 60%;
+    }
+
+    .more-recommendation {
+        margin-top: 120px;
+    }
 }

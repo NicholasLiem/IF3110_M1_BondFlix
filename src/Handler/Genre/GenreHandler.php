@@ -113,5 +113,7 @@ class GenreHandler extends BaseHandler
         }
 
         $this->service->removeGenre($params['genre_id']);
+        $response = new Response(true, HttpStatusCode::OK, "Genre deleted successfully", null);
+        $response->encode_to_JSON();
     }
 }

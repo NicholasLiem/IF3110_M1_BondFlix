@@ -92,3 +92,12 @@ body {
     justify-content: space-between;
     align-items: center;
 }
+
+.genre {
+    padding: 5px;
+    background-color: yellow;
+    border-radius: 4px;
+    color: black;
+    font-family: "Roboto", "sans-serif";
+    font-size: 12px;
+}

@@ -2,6 +2,7 @@
 namespace Handler\Content;
 
 use Core\Application\Services\ContentService;
+use Core\Application\Services\GenreService;
 use Exception;
 use Handler\BaseHandler;
 use Utils\ArrayMapper\ArrayMapper;
@@ -14,16 +15,19 @@ class ContentHandler extends BaseHandler {
     
     protected static ContentHandler $instance;
     protected ContentService $service;
-    private function __construct(ContentService $contentService)
+    protected GenreService $genreService;
+    private function __construct(ContentService $contentService, GenreService $genreService)
     {
         $this->service = $contentService;
+        $this->genreService = $genreService;
     }
 
-    public static function getInstance($contentService): ContentHandler
+    public static function getInstance(ContentService $contentService, GenreService $genreService): ContentHandler
     {
         if (!isset(self::$instance)) {
             self::$instance = new static(
-                $contentService
+                $contentService,
+                $genreService
             );
         }
         return self::$instance;
@@ -43,20 +47,35 @@ class ContentHandler extends BaseHandler {
             $pageSize = isset($params['pageSize']) ? intval($params['pageSize']) : 10;
             if (isset($params['content_id'])) {
                 $content = $this->service->getContentById($params['content_id']);
-                if ($content){
+                if ($content) {
                     $resultArray[] = $content->toArray();
                 }
             } else {
+                $result = $this->service->getAllContents(null);
+                $filteredResult = $result;
+
                 if (isset($params['query']) && isset($params['sortAscending'])) {
                     $query = $params['query'];
                     $sortAscending = filter_var($params['sortAscending'], FILTER_VALIDATE_BOOLEAN);
 
-                    $result = $this->service->processContentQuery($query);
-                    $filteredResult = $result;
+                    if (isset($params["genre_id"])) {
+                        $genre_id = filter_var($params["genre_id"], FILTER_VALIDATE_INT);
+                        if ($genre_id) {
+                            $content_ids = $this->genreService->getAllContentIdFromGenreId($genre_id);
+                            $filteredResult = array_filter($filteredResult, function ($item) use ($content_ids) {
+                                return in_array($item->getContentId(), $content_ids);
+                            });
+                        }
+                    }
 
-                    /**
-                     * Filtering part
-                     */
+                    if (isset($params['released_before'])) {
+                        $released_before = $params['released_before'];
+                        if (!empty($released_before)) {
+                            $filteredResult = array_filter($filteredResult, function ($item) use ($released_before) {
+                                return strtotime($item->getReleaseDate()) <= strtotime($released_before);
+                            });
+                        }
+                    }
 
                     if ($sortAscending) {
                         usort($filteredResult, function ($a, $b) {
@@ -67,21 +86,15 @@ class ContentHandler extends BaseHandler {
                             return strcmp($b->getTitle(), $a->getTitle());
                         });
                     }
-
-                    $totalPages = ceil(count($filteredResult) / $pageSize);
-                    header("X-Total-Pages: " . $totalPages);
-                    $startIndex = ($page - 1) * $pageSize;
-                    $pagedResult = array_slice($filteredResult, $startIndex, $pageSize);
-                } else {
-                    $contents = $this->service->getAllContents(null);
-                    $totalContents = count($contents);
-                    $totalPages = ceil($totalContents / $pageSize);
-                    header("X-Total-Pages: " . $totalPages);
-                    $page = max(1, min($page, $totalPages));
-
-                    $startIndex = ($page - 1) * $pageSize;
-                    $pagedResult = array_slice($contents, $startIndex, $pageSize);
                 }
+
+                $totalContents = count($filteredResult);
+                $totalPages = ceil($totalContents / $pageSize);
+                header("X-Total-Pages: " . $totalPages);
+                $page = max(1, min($page, $totalPages));
+
+                $startIndex = ($page - 1) * $pageSize;
+                $pagedResult = array_slice($filteredResult, $startIndex, $pageSize);
 
                 $resultArray = ArrayMapper::mapObjectsToArray($pagedResult);
             }
@@ -99,6 +112,7 @@ class ContentHandler extends BaseHandler {
             return;
         }
     }
+
 
     protected function post($params = null): void
     {

@@ -12,4 +12,6 @@ interface GenreRepository
     public function deleteGenreById(int $genre_id);
     public function getAllGenre(): array;
 
+    public function getAllContentIdFromGenreId(int $genreId) : array;
+
 }

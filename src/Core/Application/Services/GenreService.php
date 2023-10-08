@@ -24,6 +24,10 @@ class GenreService
         $this->genreRepository->deleteGenreById($id);
     }
 
+    public function getAllContentIdFromGenreId(int $genreId) : array {
+        return $this->genreRepository->getAllContentIdFromGenreId($genreId);
+    }
+
     /**
      * @throws Exception
      */
