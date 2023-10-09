@@ -100,8 +100,10 @@ function updateContents(contents) {
 
 function clearRecommendations() {
     const recommendationsContainer = Elements.recommendationsContainer;
-    while (recommendationsContainer.firstChild) {
-        recommendationsContainer.removeChild(recommendationsContainer.firstChild);
+    if (recommendationsContainer && recommendationsContainer.firstChild !== null){
+        while (recommendationsContainer.firstChild) {
+            recommendationsContainer.removeChild(recommendationsContainer.firstChild);
+        }
     }
 }
 async function fetchData() {

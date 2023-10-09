@@ -226,6 +226,14 @@ body {
     position: relative;
     display: inline-flex;
     flex-direction: column-reverse;
+    transition:ease-in-out;
+    transition-duration: 0.2s;
+}
+
+.recommendation:hover {
+    transition:ease-in-out;
+    transition-duration: 0.2s;
+    scale:105%;
 }
 
 .recommendation img {
