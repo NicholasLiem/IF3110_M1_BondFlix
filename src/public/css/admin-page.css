@@ -14,7 +14,7 @@ body {
     width: auto;
     min-height: 100vh;
     height: auto;
-    background-image: url("/public/assets/netflix_bg.png");
+    background-image: url("/public/assets/netflix_bg.webp");
     overflow: auto;
     position: relative;
     flex-wrap: wrap;

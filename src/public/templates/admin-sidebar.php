@@ -12,7 +12,7 @@ $username = $_SESSION['username'];
 <script src="/public/js/admin-sidebar.js"></script>
 <nav class="admin-sidebar" id="sidebar">
     <ul>
-        <li><a href="/admin"><img src="/public/logo.png" alt="Bondflix logo" class="logo-img"/></a></li>
+        <li><a href="/admin"><img src="/public/logo.webp" alt="Bondflix logo" class="logo-img"/></a></li>
         <li><h3>Welcome, <?php echo $username ?></h3></li>
         <li>
             <a href="/admin/users">
